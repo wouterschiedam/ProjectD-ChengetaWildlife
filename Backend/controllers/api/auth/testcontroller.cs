@@ -14,7 +14,7 @@ namespace ProjectD_ChengetaWildlife.controllers.api.auth
             Database database = new Database();
             DataTable data1 = database.BuildQuery("SELECT soundtype FROM mqttdata")
                 .Select();
-
+            database.Close();
             return Ok(JsonConvert.SerializeObject(data1));
         }
     }
