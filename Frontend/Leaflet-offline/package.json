@@ -1,0 +1,12 @@
+{
+  "name": "chengeta-wildlife",
+  "version": "1.0.0",
+  "private": true,
+  "dependencies": {
+    "leaflet-easyprint": "^2.1.9",
+    "leaflet-simple-map-screenshoter": "^0.4.5",
+    "leaflet.browser.print": "^2.0.2",
+    "parcel-bundler": "^1.6.1"
+  },
+  "scripts": {}
+}
