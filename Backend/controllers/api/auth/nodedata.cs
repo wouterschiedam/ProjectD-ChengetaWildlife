@@ -2,17 +2,19 @@
 using Newtonsoft.Json;
 using System.Data;
 
-namespace ProjectD_ChengetaWildlife.controllers.api.auth
+namespace ProjectD_ChengetaWildlife.controllers
 {
-    [Route("api/auth/test")]
+    
+    [Route("api/auth/mqttdata")]
     [ApiController]
-    public class testcontroller : Controller
+    public class Nodedata : Controller
     {
+
         [HttpGet]
-        public IActionResult Index()
+        public IActionResult GetActionResult()
         {
             Database database = new Database();
-            DataTable data1 = database.BuildQuery("SELECT soundtype FROM mqttdata")
+            DataTable data1 = database.BuildQuery("SELECT * FROM mqttdata")
                 .Select();
             database.Close();
             return Ok(JsonConvert.SerializeObject(data1));

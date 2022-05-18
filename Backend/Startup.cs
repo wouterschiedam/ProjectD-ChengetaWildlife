@@ -69,6 +69,11 @@ namespace ProjectD_ChengetaWildlife
 					pattern: "createNewUser",
 					defaults: new createNewUser()
 				);
+				endpoints.MapControllerRoute(
+					name: "/api/auth/",
+					pattern: "nodedata",
+					defaults: new Nodedata()
+				);
 			});
 		}
 	}
