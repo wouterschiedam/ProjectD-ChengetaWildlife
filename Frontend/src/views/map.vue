@@ -1,39 +1,87 @@
 <template>
-  <div class="map-container">
-    <div class="map-image">
-      <app-header></app-header>
-      <img
-        alt="image"
-        src="/playground_assets/gray-vector.svg"
-        class="map-image1"
-      />
-      <div class="map-bg"></div>
+    <div class="map-container">
+        <div class="map-image">
+            <app-header></app-header>
+            <img alt="image"
+                 src="/playground_assets/gray-vector.svg"
+                 class="map-image1" />
+            <div class="map-bg"></div>
+        </div>
+        <div><button onclick=printMapHtml()>Print map</button></div>
+        <div id="map" class="map-container1">
+            <l-map style="height: 100%" :zoom="zoom" :center="center">
+            <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
+            <l-marker :lat-lng="markerLatLng"></l-marker>
+            </l-map>
+        </div>
+        <button class="print-container" @click=fullScreenView()>Full Screen</button>
+        <br>
+        <button @click=printMapHtml()>Print map</button>
+        <app-footer></app-footer>
     </div>
-    <div id="map" class="map-container1"></div>
-    <app-footer></app-footer>
-  </div>
 </template>
 
 <script>
-import AppHeader from '../components/header'
-import AppFooter from '../components/footer'
+    import AppHeader from '../components/header'
+    import AppFooter from '../components/footer'
+    import { LMap, LTileLayer, LMarker } from 'vue2-leaflet';
+    import html2canvas from 'html2canvas';
 
-export default {
-  name: 'Map',
-  components: {
-    AppHeader,
-    AppFooter,
-  },
-  metaInfo: {
-    title: 'Map - Chengeta wildlife',
-    meta: [
-      {
-        property: 'og:title',
-        content: 'Map - Chengeta wildlife',
-      },
-    ],
-  },
-}
+    export default {
+        name: 'Map',
+        components: {
+            AppHeader,
+            AppFooter,
+            LMap,
+            LTileLayer,
+            LMarker
+        },
+        data() {
+            return {
+                url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+                attribution:
+                    '&copy; <a target="_blank" href="http://osm.org/copyright%22%3EOpenStreetMap</a> contributors',
+                zoom: 15,
+                center: [51.505, -0.159],
+                markerLatLng: [51.504, -0.159]
+            };
+        },
+        methods: {
+            fullScreenView() {
+                var mapId = document.getElementById('map');
+                mapId.requestFullscreen();
+            },
+            printMapHtml() {
+                const screenshotTarget = document.getElementById('map');
+                html2canvas(screenshotTarget, {
+                    useCORS: true,
+                    allowTaint: true
+                }).then((canvas) => {
+                    const base64image = canvas.toDataURL("image/png");
+                    var temp_link = document.createElement('a');
+                    temp_link.href = base64image;
+                    temp_link.download = "map.png";
+                    temp_link.click();
+                });
+            }
+        },
+        mounted() {
+                var legend = L.control({ position: "bottomleft" });
+
+                legend.onAdd = function (map) {
+                    var div = L.DomUtil.create("div", "legend");
+                    div.innerHTML += "<h4>Legend</h4>";
+                    div.innerHTML += '<i style="background: #d90000"></i><span>Gunshot</span><br>';
+                    div.innerHTML += '<i style="background: #696e6c"></i><span>Vehicle</span><br>';
+                    div.innerHTML += '<i style="background: #20a120"></i><span>Animal</span><br>';
+                    div.innerHTML += '<i style="background: #000000"></i><span>Unknown</span><br>';
+                    // div.innerHTML += '<i class="icon" style="background-image: url(https://d30y9cdsu7xlg0.cloudfront.net/png/194515-200.png);background-repeat: no-repeat;"></i><span>Grænse</span><br>';
+
+                    return div;
+                };
+                legend.addTo(l-map);
+        }
+    }
 </script>
 
 <style scoped>
