@@ -1,18 +1,13 @@
-<div>
-  <link href="./header.css" rel="stylesheet" />
-  <div data-role="Header" class="header-header">
-    <a href="index.html" class="header-navlink">
-      <img
-        alt="image"
-        src="public/playground_assets/217332412_177488101085809_6155924843160933349_n-1500h.jpg"
-        class="header-image"
-      />
-    </a>
+<template>
+  <div data-role="Header" class="header-header" v-bind:class="rootClassName">
+    <router-link to="/" class="header-navlink">
+      <img :alt="image_alt" :src="image_src" class="header-image" />
+    </router-link>
     <div class="header-container">
-      <a href="index.html" class="header-navlink1">
-        <h1 class="header-heading textSM"><span></span></h1>
-      </a>
-      <a href="login.html" class="header-navlink2">
+      <router-link to="/" class="header-navlink1">
+        <h1 class="header-heading textSM">{{ heading1 }}</h1>
+      </router-link>
+      <router-link to="/login" class="header-navlink2">
         <div class="header-container1">
           <svg viewBox="0 0 1024 1024" class="header-icon">
             <path
@@ -21,8 +16,8 @@
           </svg>
           <span class="header-text textSM">Login</span>
         </div>
-      </a>
-      <a href="sound.html" class="header-navlink3">
+      </router-link>
+      <router-link to="/sound" class="header-navlink3">
         <div class="header-container2">
           <svg viewBox="0 0 877.7142857142857 1024" class="header-icon02">
             <path
@@ -31,8 +26,8 @@
           </svg>
           <span class="header-text1 textSM">Geluidsdetectie</span>
         </div>
-      </a>
-      <a href="map.html" class="header-navlink4">
+      </router-link>
+      <router-link to="/map" class="header-navlink4">
         <div class="header-container3">
           <svg viewBox="0 0 1024 1024" class="header-icon04">
             <path
@@ -50,7 +45,7 @@
           </svg>
           <span class="header-text2 textSM">Maps</span>
         </div>
-      </a>
+      </router-link>
     </div>
     <div data-type="BurgerMenu" class="header-burger-menu">
       <svg viewBox="0 0 1024 1024" class="header-icon09">
@@ -61,9 +56,9 @@
     </div>
     <div data-type="MobileMenu" class="header-mobile-menu">
       <div class="header-top">
-        <a href="index.html" class="header-navlink5">
-          <h1 class="header-heading1 textSM"><span>NOTUS PRO</span></h1>
-        </a>
+        <router-link to="/" class="header-navlink5">
+          <h1 class="header-heading1 textSM">{{ heading11 }}</h1>
+        </router-link>
         <div data-type="CloseMobileMenu" class="header-close-menu">
           <svg viewBox="0 0 1024 1024" class="header-icon11">
             <path
@@ -73,7 +68,7 @@
         </div>
       </div>
       <div class="header-mid">
-        <a href="login.html" class="header-navlink6">
+        <router-link to="/login" class="header-navlink6">
           <div class="header-container4">
             <svg viewBox="0 0 1024 1024" class="header-icon13">
               <path
@@ -82,7 +77,7 @@
             </svg>
             <span class="header-text3 textSM">PROFILE</span>
           </div>
-        </a>
+        </router-link>
         <div class="header-container5">
           <svg viewBox="0 0 1024 1024" class="header-icon15">
             <path
@@ -118,4 +113,302 @@
       </div>
     </div>
   </div>
-</div>
+</template>
+
+<script>
+export default {
+  name: 'Header',
+  props: {
+    image_src: {
+      type: String,
+      default:
+        '/playground_assets/217332412_177488101085809_6155924843160933349_n-1500h.jpg',
+    },
+    rootClassName: String,
+    image_alt: {
+      type: String,
+      default: 'image',
+    },
+    heading11: {
+      type: String,
+      default: 'NOTUS PRO',
+    },
+    heading1: String,
+  },
+}
+</script>
+
+<style scoped>
+.header-header {
+  flex: 0 0 auto;
+  width: 100%;
+  height: 75px;
+  display: flex;
+  padding: var(--dl-space-space-unitandhalf);
+  z-index: 1;
+  align-items: center;
+  margin-bottom: 0.75rem;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.header-navlink {
+  display: contents;
+}
+.header-image {
+  width: var(--dl-size-size-tripleunit);
+  height: var(--dl-size-size-tripleunit);
+  object-fit: cover;
+  text-decoration: none;
+}
+.header-container {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.header-navlink1 {
+  display: contents;
+}
+.header-heading {
+  color: var(--dl-color-gray-white);
+  font-weight: 700;
+  margin-right: var(--dl-space-space-unit);
+  text-decoration: none;
+}
+.header-navlink2 {
+  display: contents;
+}
+.header-container1 {
+  display: flex;
+  align-self: center;
+  transition: 0.3s;
+  align-items: center;
+  margin-right: var(--dl-space-space-unit);
+  flex-direction: row;
+  justify-content: flex-start;
+  text-decoration: none;
+}
+
+.header-icon {
+  fill: var(--dl-color-pimary-900);
+  width: 13px;
+}
+.header-text {
+  color: var(--dl-color-gray-white);
+  margin-left: var(--dl-space-space-halfunit);
+}
+.header-navlink3 {
+  display: contents;
+}
+.header-container2 {
+  display: flex;
+  align-self: center;
+  transition: 0.3s;
+  align-items: center;
+  margin-right: var(--dl-space-space-unit);
+  flex-direction: row;
+  justify-content: flex-start;
+  text-decoration: none;
+}
+
+.header-icon02 {
+  fill: var(--dl-color-pimary-900);
+  width: 13px;
+}
+.header-text1 {
+  color: var(--dl-color-gray-white);
+  margin-left: var(--dl-space-space-halfunit);
+}
+.header-navlink4 {
+  display: contents;
+}
+.header-container3 {
+  display: flex;
+  align-self: center;
+  transition: 0.3s;
+  align-items: center;
+  margin-left: var(--dl-space-space-halfunit);
+  flex-direction: row;
+  justify-content: flex-start;
+  text-decoration: none;
+}
+
+.header-icon04 {
+  fill: var(--dl-color-pimary-900);
+  width: 13px;
+}
+.header-text2 {
+  color: var(--dl-color-gray-white);
+  margin-left: var(--dl-space-space-halfunit);
+  text-decoration: none;
+}
+.header-burger-menu {
+  display: none;
+  align-items: center;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.header-icon09 {
+  width: 24px;
+  height: 24px;
+}
+.header-mobile-menu {
+  top: 0px;
+  flex: 0 0 auto;
+  left: 0px;
+  width: 100%;
+  height: 100vh;
+  display: none;
+  padding: var(--dl-space-space-unitandhalf);
+  z-index: 100;
+  position: absolute;
+  align-items: flex-start;
+  flex-direction: column;
+  background-color: #fff;
+}
+.header-top {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  margin-bottom: var(--dl-space-space-unit);
+  flex-direction: row;
+  justify-content: space-between;
+}
+.header-navlink5 {
+  display: contents;
+}
+.header-heading1 {
+  color: var(--dl-color-secondary-400);
+  font-weight: 700;
+  margin-right: var(--dl-space-space-unit);
+  text-decoration: none;
+}
+.header-close-menu {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.header-icon11 {
+  width: 24px;
+  height: 24px;
+}
+.header-mid {
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.header-navlink6 {
+  display: contents;
+}
+.header-container4 {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+  flex-direction: row;
+  text-decoration: none;
+}
+.header-icon13 {
+  fill: var(--dl-color-secondary-400);
+  width: 13px;
+}
+.header-text3 {
+  color: var(--dl-color-secondary-400);
+  margin-left: var(--dl-space-space-halfunit);
+}
+.header-container5 {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  text-decoration: none;
+}
+.header-icon15 {
+  fill: var(--dl-color-secondary-400);
+  width: 13px;
+}
+.header-text4 {
+  color: var(--dl-color-secondary-400);
+  margin-left: var(--dl-space-space-halfunit);
+}
+.header-bot {
+  flex: 0 0 auto;
+  display: flex;
+  margin-top: auto;
+  align-items: center;
+  flex-direction: row;
+}
+.header-icon20 {
+  fill: var(--dl-color-secondary-400);
+  width: 24px;
+  height: 24px;
+  margin-top: var(--dl-space-space-halfunit);
+  margin-right: 0.75rem;
+  margin-bottom: var(--dl-space-space-halfunit);
+}
+.header-icon22 {
+  fill: var(--dl-color-secondary-400);
+  width: 24px;
+  height: 24px;
+  margin-top: var(--dl-space-space-halfunit);
+  margin-left: 0.75rem;
+  margin-right: 0.75rem;
+  margin-bottom: var(--dl-space-space-halfunit);
+}
+.header-icon24 {
+  fill: var(--dl-color-secondary-400);
+  width: 24px;
+  height: 24px;
+  margin-top: var(--dl-space-space-halfunit);
+  margin-left: 0.75rem;
+  margin-right: 0.75rem;
+  margin-bottom: var(--dl-space-space-halfunit);
+}
+.header-root-class-name {
+  margin-bottom: 0px;
+}
+@media(max-width: 991px) {
+  .header-header {
+    max-width: 1320px;
+    margin-bottom: var(--dl-space-space-triplequarter);
+  }
+  .header-icon20 {
+    margin-top: 0px;
+    margin-bottom: 0px;
+  }
+  .header-icon22 {
+    margin-top: 0px;
+    margin-bottom: 0px;
+  }
+  .header-icon24 {
+    margin-top: 0px;
+    margin-bottom: 0px;
+  }
+}
+@media(max-width: 767px) {
+  .header-header {
+    background-color: var(--dl-color-gray-white);
+  }
+  .header-heading {
+    color: var(--dl-color-secondary-400);
+  }
+  .header-container1 {
+    display: none;
+  }
+  .header-container2 {
+    display: none;
+  }
+  .header-container3 {
+    display: none;
+  }
+  .header-burger-menu {
+    display: flex;
+  }
+  .header-icon09 {
+    fill: var(--dl-color-secondary-400);
+  }
+  .header-root-class-name {
+    margin-bottom: 0px;
+  }
+}
+</style>
