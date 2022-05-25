@@ -110,7 +110,7 @@ namespace ProjectD_ChengetaWildlife.controllers {
 				byte[] crypto = crypt.ComputeHash(Encoding.ASCII.GetBytes(newPassword));
 				string hash = Encoding.ASCII.GetString(crypto);
 
-				if (row["email"].ToString() == email_input && row["password"].ToString() == password_input) {
+				if (row["email"].ToString() == email_input && row["password"].ToString() == hash) {
 					database.Close();
 					return JsonSerializer.Serialize(new {
 						id = Int32.Parse(row["id"].ToString()),

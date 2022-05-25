@@ -10,23 +10,15 @@
       <div class="login-bg"></div>
     </div>
     <div class="login-container1">
-      <h1 class="login-text">Log in</h1>
+      <h1 class="login-text">Nieuw account aanmaken</h1>
       <div class="login-container2">
-        <input
-          type="text"
-          placeholder="Email"
-          id="email"
-          class="login-textinput input"
-        />
-        <input
-          type="text"
-          id="password"
-          placeholder="Wachtwoord"
-          class="login-textinput1 input"
-        />
+        <input type="text" placeholder="Voornaam" id="Naam" class="login-textinput input" />
+        <input type="text" placeholder="Email" id="Email" class="login-textinput input" />
+        <input type="text" placeholder="Wachtwoord" id="wachtwoord" class="login-textinput input" />
+        <input type="text" placeholder="Wachtwoord herhalen" id="wachtwoord2" class="login-textinput input" />
+
         <a class="h3-error">{{ errormessage }}</a>
-        <button class="login-button button" @click="login()">Inloggen</button>
-        <button class="login-button button" @click="Account()">Nieuw account aanmaken</button>
+        <button class="login-button button" @click="login()">Account aanmaken</button>
       </div>
     </div>
     <app-footer rootClassName="footer-root-class-name1"></app-footer>
@@ -34,83 +26,72 @@
 </template>
 
 <script>
-import AppHeader from "../components/header";
-import AppFooter from "../components/footer";
+import AppHeader from '../components/header'
+import AppFooter from '../components/footer'
+import axios from 'axios';
+// import { VueCookieNext } from "vue-cookie-next";
 import router from "../router";
-import axios from "axios";
+
 export default {
-  name: "Login",
+  name: 'Login',
   components: {
     AppHeader,
     AppFooter,
   },
-  data() {
-    return {
-      errormessage: "",
-      message_email: "",
-      message_password: "",
-    };
-  },
-  methods: {
-    Account: function(){
-      router.push({name: "newUser"}); 
-    },
-    validateEmail: function () {
-      const re =
-        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-      return re.test(
-        String(document.getElementById("email").value).toLowerCase()
-      );
-    },
-    login: function () {
-      if (!this.validateEmail()) {
-        this.errormessage = "Voer een geldig e-mail adres in";
-        return;
-      }
-      if (document.getElementById("password").value == "") {
-        this.errormessage = "Voer een wachtwoord in";
-        return;
-      }
-      var bodyFormData = new FormData();
-      bodyFormData.append("email", document.getElementById("email").value);
-      bodyFormData.append(
-        "password",
-        document.getElementById("password").value
-      );
-      axios.post("/api/auth/login", bodyFormData).then((response) => {
-        this.errormessage = response.data.message;
-        if (response.data.twoFAenabled == true) {
-          router.push({
-            name: "2FAverify",
-            params: {
-              id: response.data.id,
-              email: response.data.email,
-              password: response.data.password,
-            },
-          });
-        } else if (response.data.twoFAenabled == false) {
-          router.push({
-            name: "2FAsetup",
-            params: {
-              id: response.data.id,
-              email: response.data.email,
-              password: response.data.password,
-            },
-          });
-        }
-      });
-    },
+  data(){
+    return{
+      verified: '',
+      token: '',
+      errormessage: '',
+      isSuperUser: false,
+    }
   },
   metaInfo: {
-    title: "Log in - Chengeta wildlife",
+    title: 'Log in - Chengeta wildlife',
     meta: [
       {
-        property: "og:title",
-        content: "Log in - Chengeta wildlife",
+        property: 'og:title',
+        content: 'Log in - Chengeta wildlife',
       },
     ],
   },
-};
+  methods: {
+    passwordCheck: function(){
+      if(document.getElementById("wachtwoord").value != document.getElementById("wachtwoord2").value){
+        this.errormessage = 'Wachtwoorden komen niet overeen';
+        return false
+      }
+      return true
+    },
+    nameCheck: function(){
+      if(document.getElementById("Naam").value == ''){
+        this.errormessage = 'Vul een voornaam in';
+        return false;
+      }
+      return true
+    },
+    validateEmail: function() {
+      const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+      if (!re.test(String(Email.value).toLowerCase())) {
+        this.errormessage = "Het ingevoerde email adress is niet geldig";
+        return false;
+      }
+      else {
+        return true;
+      }
+    },
+    createAccount: async function(){
+      if(this.nameCheck() && this.nameCheck() && this.validateEmail()){
+        var bodyFormData = new FormData();
+        bodyFormData.append("Name", document.getElementById("Naam").value);
+        bodyFormData.append("Email", document.getElementById("Email").value);
+        bodyFormData.append("Password", document.getElementById("wachtwoord").value);
+      //bodyFormData.append("oauth", VueCookieNext.getCookie("token"));
+        axios.post("api/auth/createnewUser", bodyFormData).then(Response)
+      }
+    }
+  }
+}
 </script>
 
 <style scoped>
@@ -162,12 +143,11 @@ export default {
 .login-container1 {
   flex: 0 0 auto;
   width: 770px;
-  height: 334px;
+  height: 40%;
   display: flex;
   z-index: 100;
   max-width: 80%;
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
-    0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1),0 10px 10px -5px rgba(0,0,0,0.04);
   margin-top: -12rem;
   align-items: flex-start;
   border-radius: var(--dl-radius-radius-radius75);
@@ -205,7 +185,7 @@ export default {
   transform: scale(1.1);
 }
 
-@media (max-width: 479px) {
+@media(max-width: 479px) {
   .login-container1 {
     width: 100%;
   }

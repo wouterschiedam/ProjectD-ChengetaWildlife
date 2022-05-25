@@ -27,9 +27,9 @@ namespace ProjectD_ChengetaWildlife.controllers
 
 			string secret = "";
 			string token = HttpContext.Request.Form["token_input"];
-			string id = (HttpContext.Request.Form["id"].ToString());
-			string email = HttpContext.Request.Form["email"].ToString();
-			string password = HttpContext.Request.Form["password"].ToString();
+			string id = (HttpContext.Request.Form["id"]);
+			string email = HttpContext.Request.Form["email"];
+			string password = HttpContext.Request.Form["password"];
 			string oauth_token = "";
 			string superuser = "";
 			Database database = new Database();

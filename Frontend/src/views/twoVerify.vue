@@ -29,6 +29,7 @@ import AppHeader from '../components/header'
 import AppFooter from '../components/footer'
 import axios from 'axios';
 import router from "../router";
+
 export default {
   name: 'Login',
   components: {
@@ -38,10 +39,10 @@ export default {
   props: ['id','email', 'password'],
   data(){
     return{
-      qrcodeManual: '',
-      qrcode: '',
+      verified: '',
+      token: '',
       errormessage: '',
-      
+      isSuperUser: false,
     }
   },
   metaInfo: {
@@ -56,13 +57,22 @@ export default {
   methods: {
     login : async function(){
     var bodyFormData = new FormData();
-    bodyFormData.append("id", this.id);
     bodyFormData.append("token_input", document.getElementById("PIN").value)
+    bodyFormData.append("id", this.id);
     bodyFormData.append("email", this.email)
     bodyFormData.append("password", this.password )
-    await axios.post("/api/auth/2FAverify", bodyFormData).then((Response) => {verified.value = Response.data.isCorrectPIN, token.value = Response.data.token,errormessage.value = Response.data.error, isSuperUser.value = Response.data.superUser})
+    await axios.post("/api/auth/2FAverify", bodyFormData).then((Response) => {verified = Response.data.isCorrectPIN, token = Response.data.token,errormessage = Response.data.error, isSuperUser = Response.data.superUser})
+    if(verified){
+      VueCookieNext.setCookie("token", decodeURI(token.value), {expire :"2h"});
+      VueCookieNext.setCookie("superUser", isSuperUser.value, {expire: "2h"});
+      router.push({ name: 'Home' });
+    }
+    else{
+      this.errormessage = errormessage;
+    }
     }
   }
+
 }
 </script>
 

@@ -9,6 +9,7 @@ import Allsounds from './views/allsounds'
 import Home from './views/home'
 import twoFAsetup from './views/twoSetup'
 import twoFAverify from './views/twoVerify'
+import newUser from './views/createnewAccount'
 import './style.css'
 
 Vue.use(Router)
@@ -52,6 +53,12 @@ export default new Router({
       name: '2FAverify',
       path: '/2FAverify',
       component: twoFAverify,
+      props: true,
+    },
+    {
+      name: 'newUser',
+      path: '/newUser',
+      component: newUser,
       props: true,
     }
   ],
