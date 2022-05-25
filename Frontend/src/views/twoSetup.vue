@@ -69,11 +69,11 @@ export default {
       bodyFormData.append("password", this.password);
       console.log(bodyFormData)
       await axios.post("/api/auth/2FAverify", bodyFormData).then((Response) =>
-        {isVerified = Response.data.isCorrectPIN,
-        token = Response.data.token,
-        errormessage = Response.data.error})
-      if(isVerified){
-        VueCookieNext.setCookie("token", decodeURI(token), {expire :"2h"});
+        {this.isVerified = Response.data.isCorrectPIN,
+        this.token = Response.data.token,
+        this.errormessage = Response.data.error})
+      if(this.isVerified){
+        //VueCookieNext.setCookie("token", decodeURI(token), {expire :"2h"});
         router.push({
           name: "Home"
         })
@@ -89,9 +89,6 @@ export default {
     axios.post('/api/auth/2FA', bodyFormData).then(response => {
       this.qrcodeManual = response.data.qrCodeManual
       this.qrcode = response.data.qrCodeImageUrl
-    })
-    router.push({
-      name: "Home"
     })
   }
   

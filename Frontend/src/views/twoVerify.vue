@@ -11,10 +11,13 @@
     </div>
     <div class="login-container1">
       <h1 class="login-text">2 Staps verificatie</h1>
-        <img class="login-text" :src="qrcode" />
-        <h5 class="login-text">{{qrcodeManual}}</h5>
       <div class="login-container2">
-        <input type="text" placeholder="PIN-code" id="PIN" class="login-textinput input" />
+        <input
+          type="text"
+          placeholder="PIN-code"
+          id="PIN"
+          class="login-textinput input"
+        />
 
         <a class="h3-error">{{ errormessage }}</a>
         <button class="login-button button" @click="login()">Verifiëren</button>
@@ -25,55 +28,58 @@
 </template>
 
 <script>
-import AppHeader from '../components/header'
-import AppFooter from '../components/footer'
-import axios from 'axios';
+import AppHeader from "../components/header";
+import AppFooter from "../components/footer";
+import axios from "axios";
 import router from "../router";
 
 export default {
-  name: 'Login',
+  name: "Login",
   components: {
     AppHeader,
     AppFooter,
   },
-  props: ['id','email', 'password'],
-  data(){
-    return{
-      verified: '',
-      token: '',
-      errormessage: '',
+  props: ["id", "email", "password"],
+  data() {
+    return {
+      verified: false,
+      token: "",
+      errormessage: "",
       isSuperUser: false,
-    }
+    };
   },
   metaInfo: {
-    title: 'Log in - Chengeta wildlife',
+    title: "Log in - Chengeta wildlife",
     meta: [
       {
-        property: 'og:title',
-        content: 'Log in - Chengeta wildlife',
+        property: "og:title",
+        content: "Log in - Chengeta wildlife",
       },
     ],
   },
   methods: {
-    login : async function(){
-    var bodyFormData = new FormData();
-    bodyFormData.append("token_input", document.getElementById("PIN").value)
-    bodyFormData.append("id", this.id);
-    bodyFormData.append("email", this.email)
-    bodyFormData.append("password", this.password )
-    await axios.post("/api/auth/2FAverify", bodyFormData).then((Response) => {verified = Response.data.isCorrectPIN, token = Response.data.token,errormessage = Response.data.error, isSuperUser = Response.data.superUser})
-    if(verified){
-      VueCookieNext.setCookie("token", decodeURI(token.value), {expire :"2h"});
-      VueCookieNext.setCookie("superUser", isSuperUser.value, {expire: "2h"});
-      router.push({ name: 'Home' });
-    }
-    else{
-      this.errormessage = errormessage;
-    }
-    }
-  }
-
-}
+    login: async function () {
+      var bodyFormData = new FormData();
+      bodyFormData.append("token_input", document.getElementById("PIN").value);
+      bodyFormData.append("id", this.id);
+      bodyFormData.append("email", this.email);
+      bodyFormData.append("password", this.password);
+      await axios.post("/api/auth/2FAverify", bodyFormData).then((Response) => {
+        (this.verified = Response.data.isCorrectPIN),
+          (this.token = Response.data.token),
+          (this.errormessage = Response.data.error),
+          (this.isSuperUser = Response.data.superUser);
+      });
+      if (this.verified) {
+        // VueCookieNext.setCookie("token", decodeURI(token.value), {expire :"2h"});
+        // VueCookieNext.setCookie("superUser", isSuperUser.value, {expire: "2h"});
+        router.push({ name: "Home" });
+      } else {
+        this.errormessage = errormessage;
+      }
+    },
+  },
+};
 </script>
 
 <style scoped>
@@ -129,7 +135,8 @@ export default {
   display: flex;
   z-index: 100;
   max-width: 80%;
-  box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1),0 10px 10px -5px rgba(0,0,0,0.04);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
+    0 10px 10px -5px rgba(0, 0, 0, 0.04);
   margin-top: -12rem;
   align-items: flex-start;
   border-radius: var(--dl-radius-radius-radius75);
@@ -167,7 +174,7 @@ export default {
   transform: scale(1.1);
 }
 
-@media(max-width: 479px) {
+@media (max-width: 479px) {
   .login-container1 {
     width: 100%;
   }
