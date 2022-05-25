@@ -1,305 +1,145 @@
-.header-header {
-  flex: 0 0 auto;
-  width: 100%;
-  height: 75px;
-  display: flex;
-  padding: var(--dl-space-space-unitandhalf);
-  z-index: 1;
-  align-items: center;
-  margin-bottom: 0.75rem;
-  flex-direction: row;
-  justify-content: space-between;
-}
-.header-navlink {
-  display: contents;
-}
-.header-image {
-  width: var(--dl-size-size-tripleunit);
-  height: var(--dl-size-size-tripleunit);
-  object-fit: cover;
-  text-decoration: none;
-}
-.header-container {
-  display: flex;
-  align-items: center;
-  flex-direction: row;
-  justify-content: space-between;
-}
-.header-navlink1 {
-  display: contents;
-}
-.header-heading {
-  color: var(--dl-color-gray-white);
-  font-weight: 700;
-  margin-right: var(--dl-space-space-unit);
-  text-decoration: none;
-}
-.header-navlink2 {
-  display: contents;
-}
-.header-container1 {
-  display: flex;
-  align-self: center;
-  transition: 0.3s;
-  align-items: center;
-  margin-right: var(--dl-space-space-unit);
-  flex-direction: row;
-  justify-content: flex-start;
-  text-decoration: none;
-}
+<template>
+  <div class="allsounds-container">
+    <div class="allsounds-image">
+      <app-header></app-header>
+      <img
+        alt="image"
+        src="/playground_assets/gray-vector.svg"
+        class="allsounds-image1"
+      />
+      <div class="allsounds-container01">
+        <h1 class="allsounds-text"><span>Waargenomen geluiden</span></h1>
+        <div class="allsounds-container02">
+          <label class="allsounds-text02">Afspelen</label>
+          <label class="allsounds-text03">Id</label>
+        </div>
+        <div class="allsounds-container03">
+          <div class="allsounds-container04">
+            <svg viewBox="0 0 1024 1024" class="allsounds-icon">
+              <path
+                d="M426 704l256-192-256-192v384zM512 86q176 0 301 125t125 301-125 301-301 125-301-125-125-301 125-301 301-125z"
+              ></path>
+            </svg>
+            <label class="allsounds-text04">5832583</label>
+          </div>
+          <div class="allsounds-container05">
+            <svg viewBox="0 0 1024 1024" class="allsounds-icon02">
+              <path
+                d="M426 704l256-192-256-192v384zM512 86q176 0 301 125t125 301-125 301-301 125-301-125-125-301 125-301 301-125z"
+              ></path>
+            </svg>
+            <label class="allsounds-text05">2199709</label>
+          </div>
+          <div class="allsounds-container06">
+            <svg viewBox="0 0 1024 1024" class="allsounds-icon04">
+              <path
+                d="M426 704l256-192-256-192v384zM512 86q176 0 301 125t125 301-125 301-301 125-301-125-125-301 125-301 301-125z"
+              ></path>
+            </svg>
+            <label class="allsounds-text06">3061811</label>
+          </div>
+          <div class="allsounds-container07">
+            <svg viewBox="0 0 1024 1024" class="allsounds-icon06">
+              <path
+                d="M426 704l256-192-256-192v384zM512 86q176 0 301 125t125 301-125 301-301 125-301-125-125-301 125-301 301-125z"
+              ></path>
+            </svg>
+            <label class="allsounds-text07">0388667</label>
+          </div>
+          <div class="allsounds-container08">
+            <svg viewBox="0 0 1024 1024" class="allsounds-icon08">
+              <path
+                d="M426 704l256-192-256-192v384zM512 86q176 0 301 125t125 301-125 301-301 125-301-125-125-301 125-301 301-125z"
+              ></path>
+            </svg>
+            <label class="allsounds-text08">1613551</label>
+          </div>
+          <div class="allsounds-container09">
+            <svg viewBox="0 0 1024 1024" class="allsounds-icon10">
+              <path
+                d="M426 704l256-192-256-192v384zM512 86q176 0 301 125t125 301-125 301-301 125-301-125-125-301 125-301 301-125z"
+              ></path>
+            </svg>
+            <label class="allsounds-text09">6546322</label>
+          </div>
+          <div class="allsounds-container10">
+            <svg viewBox="0 0 1024 1024" class="allsounds-icon12">
+              <path
+                d="M426 704l256-192-256-192v384zM512 86q176 0 301 125t125 301-125 301-301 125-301-125-125-301 125-301 301-125z"
+              ></path>
+            </svg>
+            <label class="allsounds-text10">5569585</label>
+          </div>
+          <div class="allsounds-container11">
+            <svg viewBox="0 0 1024 1024" class="allsounds-icon14">
+              <path
+                d="M426 704l256-192-256-192v384zM512 86q176 0 301 125t125 301-125 301-301 125-301-125-125-301 125-301 301-125z"
+              ></path>
+            </svg>
+            <label class="allsounds-text11">7240092</label>
+          </div>
+          <div class="allsounds-container12">
+            <svg viewBox="0 0 1024 1024" class="allsounds-icon16">
+              <path
+                d="M426 704l256-192-256-192v384zM512 86q176 0 301 125t125 301-125 301-301 125-301-125-125-301 125-301 301-125z"
+              ></path>
+            </svg>
+            <label class="allsounds-text12">9188789</label>
+          </div>
+          <div class="allsounds-container13">
+            <svg viewBox="0 0 1024 1024" class="allsounds-icon18">
+              <path
+                d="M426 704l256-192-256-192v384zM512 86q176 0 301 125t125 301-125 301-301 125-301-125-125-301 125-301 301-125z"
+              ></path>
+            </svg>
+            <label class="allsounds-text13">5884827</label>
+          </div>
+          <div class="allsounds-container14">
+            <svg viewBox="0 0 1024 1024" class="allsounds-icon20">
+              <path
+                d="M426 704l256-192-256-192v384zM512 86q176 0 301 125t125 301-125 301-301 125-301-125-125-301 125-301 301-125z"
+              ></path>
+            </svg>
+            <label class="allsounds-text14">4212807</label>
+          </div>
+          <div class="allsounds-container15">
+            <svg viewBox="0 0 1024 1024" class="allsounds-icon22">
+              <path
+                d="M426 704l256-192-256-192v384zM512 86q176 0 301 125t125 301-125 301-301 125-301-125-125-301 125-301 301-125z"
+              ></path>
+            </svg>
+            <label class="allsounds-text15">1448410</label>
+          </div>
+        </div>
+      </div>
+      <app-footer rootClassName="footer-root-class-name"></app-footer>
+    </div>
+  </div>
+</template>
 
-.header-icon {
-  fill: var(--dl-color-pimary-900);
-  width: 13px;
-}
-.header-text {
-  color: var(--dl-color-gray-white);
-  margin-left: var(--dl-space-space-halfunit);
-}
-.header-navlink3 {
-  display: contents;
-}
-.header-container2 {
-  display: flex;
-  align-self: center;
-  transition: 0.3s;
-  align-items: center;
-  margin-right: var(--dl-space-space-unit);
-  flex-direction: row;
-  justify-content: flex-start;
-  text-decoration: none;
-}
+<script>
+import AppHeader from '../components/header'
+import AppFooter from '../components/footer'
 
-.header-icon02 {
-  fill: var(--dl-color-pimary-900);
-  width: 13px;
+export default {
+  name: 'Allsounds',
+  components: {
+    AppHeader,
+    AppFooter,
+  },
+  metaInfo: {
+    title: 'All sounds - Chengeta wildlife',
+    meta: [
+      {
+        property: 'og:title',
+        content: 'All sounds - Chengeta wildlife',
+      },
+    ],
+  },
 }
-.header-text1 {
-  color: var(--dl-color-gray-white);
-  margin-left: var(--dl-space-space-halfunit);
-}
-.header-navlink4 {
-  display: contents;
-}
-.header-container3 {
-  display: flex;
-  align-self: center;
-  transition: 0.3s;
-  align-items: center;
-  margin-left: var(--dl-space-space-halfunit);
-  flex-direction: row;
-  justify-content: flex-start;
-  text-decoration: none;
-}
+</script>
 
-.header-icon04 {
-  fill: var(--dl-color-pimary-900);
-  width: 13px;
-}
-.header-text2 {
-  color: var(--dl-color-gray-white);
-  margin-left: var(--dl-space-space-halfunit);
-  text-decoration: none;
-}
-.header-burger-menu {
-  display: none;
-  align-items: center;
-  flex-direction: row;
-  justify-content: space-between;
-}
-.header-icon09 {
-  width: 24px;
-  height: 24px;
-}
-.header-mobile-menu {
-  top: 0px;
-  flex: 0 0 auto;
-  left: 0px;
-  width: 100%;
-  height: 100vh;
-  display: none;
-  padding: var(--dl-space-space-unitandhalf);
-  z-index: 100;
-  position: absolute;
-  align-items: flex-start;
-  flex-direction: column;
-  background-color: #fff;
-}
-.header-top {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  margin-bottom: var(--dl-space-space-unit);
-  flex-direction: row;
-  justify-content: space-between;
-}
-.header-navlink5 {
-  display: contents;
-}
-.header-heading1 {
-  color: var(--dl-color-secondary-400);
-  font-weight: 700;
-  margin-right: var(--dl-space-space-unit);
-  text-decoration: none;
-}
-.header-close-menu {
-  display: flex;
-  align-items: center;
-  flex-direction: row;
-  justify-content: space-between;
-}
-.header-icon11 {
-  width: 24px;
-  height: 24px;
-}
-.header-mid {
-  display: flex;
-  align-items: flex-start;
-  flex-direction: column;
-  justify-content: space-between;
-}
-.header-navlink6 {
-  display: contents;
-}
-.header-container4 {
-  display: flex;
-  align-items: center;
-  margin-bottom: 8px;
-  flex-direction: row;
-  text-decoration: none;
-}
-.header-icon13 {
-  fill: var(--dl-color-secondary-400);
-  width: 13px;
-}
-.header-text3 {
-  color: var(--dl-color-secondary-400);
-  margin-left: var(--dl-space-space-halfunit);
-}
-.header-container5 {
-  display: flex;
-  align-items: center;
-  flex-direction: row;
-  text-decoration: none;
-}
-.header-icon15 {
-  fill: var(--dl-color-secondary-400);
-  width: 13px;
-}
-.header-text4 {
-  color: var(--dl-color-secondary-400);
-  margin-left: var(--dl-space-space-halfunit);
-}
-.header-bot {
-  flex: 0 0 auto;
-  display: flex;
-  margin-top: auto;
-  align-items: center;
-  flex-direction: row;
-}
-.header-icon20 {
-  fill: var(--dl-color-secondary-400);
-  width: 24px;
-  height: 24px;
-  margin-top: var(--dl-space-space-halfunit);
-  margin-right: 0.75rem;
-  margin-bottom: var(--dl-space-space-halfunit);
-}
-.header-icon22 {
-  fill: var(--dl-color-secondary-400);
-  width: 24px;
-  height: 24px;
-  margin-top: var(--dl-space-space-halfunit);
-  margin-left: 0.75rem;
-  margin-right: 0.75rem;
-  margin-bottom: var(--dl-space-space-halfunit);
-}
-.header-icon24 {
-  fill: var(--dl-color-secondary-400);
-  width: 24px;
-  height: 24px;
-  margin-top: var(--dl-space-space-halfunit);
-  margin-left: 0.75rem;
-  margin-right: 0.75rem;
-  margin-bottom: var(--dl-space-space-halfunit);
-}
-.header-root-class-name {
-  margin-bottom: 0px;
-}
-@media(max-width: 991px) {
-  .header-header {
-    max-width: 1320px;
-    margin-bottom: var(--dl-space-space-triplequarter);
-  }
-  .header-icon20 {
-    margin-top: 0px;
-    margin-bottom: 0px;
-  }
-  .header-icon22 {
-    margin-top: 0px;
-    margin-bottom: 0px;
-  }
-  .header-icon24 {
-    margin-top: 0px;
-    margin-bottom: 0px;
-  }
-}
-@media(max-width: 767px) {
-  .header-header {
-    background-color: var(--dl-color-gray-white);
-  }
-  .header-heading {
-    color: var(--dl-color-secondary-400);
-  }
-  .header-container1 {
-    display: none;
-  }
-  .header-container2 {
-    display: none;
-  }
-  .header-container3 {
-    display: none;
-  }
-  .header-burger-menu {
-    display: flex;
-  }
-  .header-icon09 {
-    fill: var(--dl-color-secondary-400);
-  }
-  .header-root-class-name {
-    margin-bottom: 0px;
-  }
-}
-
-.footer-container {
-  width: 100%;
-  display: flex;
-  padding: var(--dl-space-space-doubleunit);
-  align-items: center;
-  flex-direction: column;
-  justify-content: center;
-  background-color: var(--dl-color-pimary-900);
-}
-.footer-text {
-  color: var(--dl-color-secondary-500);
-  align-self: center;
-}
-.footer-root-class-name {
-  align-self: center;
-  margin-top: var(--dl-space-space-triplequarter);
-}
-.footer-root-class-name1 {
-  margin-top: 11rem;
-}
-.footer-root-class-name2 {
-  margin-top: 13.5rem;
-}
-@media(max-width: 479px) {
-  .footer-root-class-name1 {
-    margin-top: 11rem;
-  }
-}
-
+<style scoped>
 .allsounds-container {
   width: 100%;
   height: auto;
@@ -319,7 +159,7 @@
   align-items: center;
   flex-direction: column;
   background-size: cover;
-  background-image: url("public/playground_assets/prachtige-omgeving-van-de-bomen-savannepleinen-tijdens-zonsondergang-perfect-voor-achtergrond-het-landschap-die-1775295162-1500w.jpg");
+  background-image: url("/playground_assets/prachtige-omgeving-van-de-bomen-savannepleinen-tijdens-zonsondergang-perfect-voor-achtergrond-het-landschap-die-1775295162-1500w.jpg");
 }
 .allsounds-image1 {
   left: auto;
@@ -831,3 +671,4 @@
     width: 100%;
   }
 }
+</style>

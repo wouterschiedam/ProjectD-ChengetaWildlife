@@ -1,323 +1,135 @@
-.header-header {
-  flex: 0 0 auto;
-  width: 100%;
-  height: 75px;
-  display: flex;
-  padding: var(--dl-space-space-unitandhalf);
-  z-index: 1;
-  align-items: center;
-  margin-bottom: 0.75rem;
-  flex-direction: row;
-  justify-content: space-between;
-}
-.header-navlink {
-  display: contents;
-}
-.header-image {
-  width: var(--dl-size-size-tripleunit);
-  height: var(--dl-size-size-tripleunit);
-  object-fit: cover;
-  text-decoration: none;
-}
-.header-container {
-  display: flex;
-  align-items: center;
-  flex-direction: row;
-  justify-content: space-between;
-}
-.header-navlink1 {
-  display: contents;
-}
-.header-heading {
-  color: var(--dl-color-gray-white);
-  font-weight: 700;
-  margin-right: var(--dl-space-space-unit);
-  text-decoration: none;
-}
-.header-navlink2 {
-  display: contents;
-}
-.header-container1 {
-  display: flex;
-  align-self: center;
-  transition: 0.3s;
-  align-items: center;
-  margin-right: var(--dl-space-space-unit);
-  flex-direction: row;
-  justify-content: flex-start;
-  text-decoration: none;
-}
+<template>
+  <div class="home-container">
+    <div class="home-hero">
+      <div class="home-bg">
+        <img
+          alt="image"
+          src="/playground_assets/why-wildlife-900h.jpg"
+          class="home-image"
+        />
+      </div>
+      <app-header></app-header>
+      <div class="home-container1">
+        <div class="home-container2">
+          <h1 class="home-text"><span>Chengata Wildlife</span></h1>
+          <span class="home-text02">
+            <span>
+              Chengeta Wildlife is actief in belangrijke gebieden in Afrika om
+              rangers op te leiden
+              <span v-html="rawg0o3"></span>
+            </span>
+            <br />
+            <span>
+              en duurzame gemeenschapinspanningen te ondersteunen om de lokale
+              wilde dieren
+            </span>
+            <br />
+            <span>te beschermen.</span>
+          </span>
+        </div>
+        <img
+          alt="image"
+          src="/playground_assets/gray-vector.svg"
+          class="home-image1"
+        />
+        <img
+          alt="image"
+          src="/playground_assets/white-vector.svg"
+          class="home-image2"
+        />
+      </div>
+    </div>
+    <div class="home-section1">
+      <div class="home-container3">
+        <div class="home-container4">
+          <h3 class="home-text08 healine">Onze missie</h3>
+          <span class="home-text09 textXL">
+            <span class="home-text10">
+              Lokaal geleide en duurzame bescherming van de natuur bieden, waarbij
+              de mens als deel van het ecosysteem wordt erkend. Het is intelligent
+              gericht, deskundig en gerechtelijk toegepast, kosteneffectief en
+              geharmoniseerd met alle andere bestaande inspanningen ter
+              bescherming van in het wild levende dieren en planten.
+            </span>
+          </span>
+        </div>
+        <div class="home-cards-container">
+          <div class="home-card1">
+            <div class="home-container5">
+              <svg viewBox="0 0 1024 1024" class="home-icon">
+                <path
+                  d="M639.403 658.091l32 241.152-137.429-82.475c-13.269-7.851-29.995-8.363-43.904 0l-137.429 82.475 32.043-241.109c39.296 15.829 82.304 24.533 127.317 24.533s88.021-8.747 127.403-24.576zM654.165 554.283c-2.475 1.28-4.821 2.773-6.955 4.48-39.253 24.448-85.547 38.571-135.211 38.571-70.699 0-134.656-28.587-181.035-74.965s-74.965-110.336-74.965-181.035 28.587-134.656 74.965-181.035 110.336-74.965 181.035-74.965 134.656 28.587 181.035 74.965 74.965 110.336 74.965 181.035-28.587 134.656-74.965 181.035c-11.861 11.861-24.875 22.571-38.869 31.915zM304.64 612.48l-48.256 363.221c-3.115 23.339 13.312 44.8 36.693 47.915 9.984 1.323 19.669-0.939 27.563-5.717l191.36-114.816 191.403 114.816c20.224 12.117 46.421 5.589 58.539-14.635 5.205-8.661 6.955-18.389 5.717-27.563l-48.213-363.307c11.947-9.173 23.296-19.115 33.92-29.739 61.696-61.696 99.968-147.072 99.968-241.323s-38.272-179.627-99.968-241.365-147.115-99.968-241.365-99.968-179.627 38.272-241.365 99.968-99.968 147.115-99.968 241.365 38.272 179.627 99.968 241.365c10.667 10.667 22.016 20.608 33.963 29.781z"
+                ></path>
+              </svg>
+            </div>
+            <h6 class="home-text11 textXL"><span>Ons werk</span></h6>
+            <span class="home-text13">
+              Chengeta Wildlife maintains a simple operating principle across five
+              key pillars to support the protection of wildlife.
+            </span>
+          </div>
+          <div class="home-card2">
+            <app-component></app-component>
+            <h6 class="home-text14 textXL">Onze projecten</h6>
+            <span class="home-text15">
+              Chengeta wildlife houdt zich bezig in natuurgebieden in Africa om
+              rangers opteleiden en de wilde dieren te beschermen.
+            </span>
+          </div>
+          <div class="home-card3">
+            <div class="home-container6">
+              <svg viewBox="0 0 1024 1024" class="home-icon2">
+                <path
+                  d="M636 938h-6q-92-24-158-90-38-38-65-103t-27-119q0-52 38-89t92-37 93 37 39 89q0 34 25 58t63 24 64-24 26-58q0-120-91-206t-219-86q-92 0-168 47t-114 125q-24 50-24 120 0 80 28 154 6 20-14 26t-26-12q-32-82-32-168 0-78 30-138 42-90 129-144t191-54q146 0 249 99t103 237q0 52-39 88t-93 36-92-36-38-88q0-34-26-59t-64-25-63 25-25 59q0 112 80 192 56 56 140 78 18 2 14 26-4 16-20 16zM530 626q0 74 55 128t137 54q4 0 18-2t23-2 18 3 11 13q4 22-18 26-24 4-52 4-80 0-132-38-102-70-102-186 0-22 22-22 20 0 20 22zM416 930q-8 0-14-6-54-54-86-114-46-80-46-184 0-94 71-162t171-68 171 68 71 162q0 20-22 20t-22-20q0-78-58-133t-140-55-140 55-58 133q0 96 38 164 26 46 80 104 16 14 0 30-6 6-16 6zM150 414q-22 0-22-20 0-4 4-12 64-92 160-140 100-52 220-52t220 52q98 48 160 138 4 8 4 12 0 14-16 20t-24-8q-60-82-144-124-92-46-200-47t-200 47q-90 46-146 126-6 8-16 8zM760 190q-8 0-10-2-118-60-238-60-130 0-238 60-10 6-20 0t-10-18q0-14 10-20 116-64 258-64 130 0 258 64 18 10 8 28-8 12-18 12z"
+                ></path>
+              </svg>
+            </div>
+            <h6 class="home-text16 textXL"><span>Hoe kan je helpen</span></h6>
+            <span class="home-text18">
+              Get involved with Chengeta Wildlife by supporting our work with a
+              donation, creating your own fundraiser or shopping at our online
+              store.
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <app-footer></app-footer>
+  </div>
+</template>
 
-.header-icon {
-  fill: var(--dl-color-pimary-900);
-  width: 13px;
-}
-.header-text {
-  color: var(--dl-color-gray-white);
-  margin-left: var(--dl-space-space-halfunit);
-}
-.header-navlink3 {
-  display: contents;
-}
-.header-container2 {
-  display: flex;
-  align-self: center;
-  transition: 0.3s;
-  align-items: center;
-  margin-right: var(--dl-space-space-unit);
-  flex-direction: row;
-  justify-content: flex-start;
-  text-decoration: none;
-}
+<script>
+import AppHeader from '../components/header'
+import AppComponent from '../components/component'
+import AppFooter from '../components/footer'
 
-.header-icon02 {
-  fill: var(--dl-color-pimary-900);
-  width: 13px;
-}
-.header-text1 {
-  color: var(--dl-color-gray-white);
-  margin-left: var(--dl-space-space-halfunit);
-}
-.header-navlink4 {
-  display: contents;
-}
-.header-container3 {
-  display: flex;
-  align-self: center;
-  transition: 0.3s;
-  align-items: center;
-  margin-left: var(--dl-space-space-halfunit);
-  flex-direction: row;
-  justify-content: flex-start;
-  text-decoration: none;
-}
+export default {
+  name: 'Home',
+  components: {
+    AppHeader,
+    AppComponent,
+    AppFooter,
+  },
 
-.header-icon04 {
-  fill: var(--dl-color-pimary-900);
-  width: 13px;
-}
-.header-text2 {
-  color: var(--dl-color-gray-white);
-  margin-left: var(--dl-space-space-halfunit);
-  text-decoration: none;
-}
-.header-burger-menu {
-  display: none;
-  align-items: center;
-  flex-direction: row;
-  justify-content: space-between;
-}
-.header-icon09 {
-  width: 24px;
-  height: 24px;
-}
-.header-mobile-menu {
-  top: 0px;
-  flex: 0 0 auto;
-  left: 0px;
-  width: 100%;
-  height: 100vh;
-  display: none;
-  padding: var(--dl-space-space-unitandhalf);
-  z-index: 100;
-  position: absolute;
-  align-items: flex-start;
-  flex-direction: column;
-  background-color: #fff;
-}
-.header-top {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  margin-bottom: var(--dl-space-space-unit);
-  flex-direction: row;
-  justify-content: space-between;
-}
-.header-navlink5 {
-  display: contents;
-}
-.header-heading1 {
-  color: var(--dl-color-secondary-400);
-  font-weight: 700;
-  margin-right: var(--dl-space-space-unit);
-  text-decoration: none;
-}
-.header-close-menu {
-  display: flex;
-  align-items: center;
-  flex-direction: row;
-  justify-content: space-between;
-}
-.header-icon11 {
-  width: 24px;
-  height: 24px;
-}
-.header-mid {
-  display: flex;
-  align-items: flex-start;
-  flex-direction: column;
-  justify-content: space-between;
-}
-.header-navlink6 {
-  display: contents;
-}
-.header-container4 {
-  display: flex;
-  align-items: center;
-  margin-bottom: 8px;
-  flex-direction: row;
-  text-decoration: none;
-}
-.header-icon13 {
-  fill: var(--dl-color-secondary-400);
-  width: 13px;
-}
-.header-text3 {
-  color: var(--dl-color-secondary-400);
-  margin-left: var(--dl-space-space-halfunit);
-}
-.header-container5 {
-  display: flex;
-  align-items: center;
-  flex-direction: row;
-  text-decoration: none;
-}
-.header-icon15 {
-  fill: var(--dl-color-secondary-400);
-  width: 13px;
-}
-.header-text4 {
-  color: var(--dl-color-secondary-400);
-  margin-left: var(--dl-space-space-halfunit);
-}
-.header-bot {
-  flex: 0 0 auto;
-  display: flex;
-  margin-top: auto;
-  align-items: center;
-  flex-direction: row;
-}
-.header-icon20 {
-  fill: var(--dl-color-secondary-400);
-  width: 24px;
-  height: 24px;
-  margin-top: var(--dl-space-space-halfunit);
-  margin-right: 0.75rem;
-  margin-bottom: var(--dl-space-space-halfunit);
-}
-.header-icon22 {
-  fill: var(--dl-color-secondary-400);
-  width: 24px;
-  height: 24px;
-  margin-top: var(--dl-space-space-halfunit);
-  margin-left: 0.75rem;
-  margin-right: 0.75rem;
-  margin-bottom: var(--dl-space-space-halfunit);
-}
-.header-icon24 {
-  fill: var(--dl-color-secondary-400);
-  width: 24px;
-  height: 24px;
-  margin-top: var(--dl-space-space-halfunit);
-  margin-left: 0.75rem;
-  margin-right: 0.75rem;
-  margin-bottom: var(--dl-space-space-halfunit);
-}
-.header-root-class-name {
-  margin-bottom: 0px;
-}
-@media(max-width: 991px) {
-  .header-header {
-    max-width: 1320px;
-    margin-bottom: var(--dl-space-space-triplequarter);
-  }
-  .header-icon20 {
-    margin-top: 0px;
-    margin-bottom: 0px;
-  }
-  .header-icon22 {
-    margin-top: 0px;
-    margin-bottom: 0px;
-  }
-  .header-icon24 {
-    margin-top: 0px;
-    margin-bottom: 0px;
-  }
-}
-@media(max-width: 767px) {
-  .header-header {
-    background-color: var(--dl-color-gray-white);
-  }
-  .header-heading {
-    color: var(--dl-color-secondary-400);
-  }
-  .header-container1 {
-    display: none;
-  }
-  .header-container2 {
-    display: none;
-  }
-  .header-container3 {
-    display: none;
-  }
-  .header-burger-menu {
-    display: flex;
-  }
-  .header-icon09 {
-    fill: var(--dl-color-secondary-400);
-  }
-  .header-root-class-name {
-    margin-bottom: 0px;
-  }
-}
+  data() {
+    return {
+      rawg0o3: ' ',
+    }
+  },
 
-.app-component-container {
-  flex: 0 0 auto;
-  width: 3rem;
-  height: 3rem;
-  display: flex;
-  box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1),0 4px 6px -2px rgba(0,0,0,0.05);
-  align-items: center;
-  border-radius: var(--dl-radius-radius-round);
-  flex-direction: column;
-  justify-content: center;
-  background-image: linear-gradient(180deg, #38bdf8, #0284c7);
+  metaInfo: {
+    title: 'Chengeta wildlife',
+    meta: [
+      {
+        property: 'og:title',
+        content: 'Chengeta wildlife',
+      },
+    ],
+  },
 }
-.app-component-icon {
-  fill: var(--dl-color-gray-white);
-  width: 24px;
-  height: 24px;
-}
+</script>
 
-.footer-container {
-  width: 100%;
-  display: flex;
-  padding: var(--dl-space-space-doubleunit);
-  align-items: center;
-  flex-direction: column;
-  justify-content: center;
-  background-color: var(--dl-color-pimary-900);
-}
-.footer-text {
-  color: var(--dl-color-secondary-500);
-  align-self: center;
-}
-.footer-root-class-name {
-  align-self: center;
-  margin-top: var(--dl-space-space-triplequarter);
-}
-.footer-root-class-name1 {
-  margin-top: 11rem;
-}
-.footer-root-class-name2 {
-  margin-top: 13.5rem;
-}
-@media(max-width: 479px) {
-  .footer-root-class-name1 {
-    margin-top: 11rem;
-  }
-}
-
+<style scoped>
 .home-container {
   width: 100%;
   height: auto;
@@ -607,3 +419,4 @@
     text-align: left;
   }
 }
+</style>

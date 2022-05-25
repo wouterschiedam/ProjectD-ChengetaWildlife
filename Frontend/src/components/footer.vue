@@ -1,3 +1,21 @@
+<template>
+  <div class="footer-container" v-bind:class="rootClassName">
+    <span class="footer-text textSM">
+      Copyright © 2022 Hogeschool Rotterdam Project-D
+    </span>
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'Footer',
+  props: {
+    rootClassName: String,
+  },
+}
+</script>
+
+<style scoped>
 .footer-container {
   width: 100%;
   display: flex;
@@ -26,3 +44,4 @@
     margin-top: 11rem;
   }
 }
+</style>

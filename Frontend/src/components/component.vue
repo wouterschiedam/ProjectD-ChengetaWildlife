@@ -1,5 +1,4 @@
-<div>
-  <link href="./component.css" rel="stylesheet" />
+<template>
   <div class="component-container">
     <svg viewBox="0 0 1097.142857142857 1024" class="component-icon">
       <path
@@ -7,4 +6,31 @@
       ></path>
     </svg>
   </div>
-</div>
+</template>
+
+<script>
+export default {
+  name: 'AppComponent',
+  props: {},
+}
+</script>
+
+<style scoped>
+.component-container {
+  flex: 0 0 auto;
+  width: 3rem;
+  height: 3rem;
+  display: flex;
+  box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1),0 4px 6px -2px rgba(0,0,0,0.05);
+  align-items: center;
+  border-radius: var(--dl-radius-radius-round);
+  flex-direction: column;
+  justify-content: center;
+  background-image: linear-gradient(180deg, #38bdf8, #0284c7);
+}
+.component-icon {
+  fill: var(--dl-color-gray-white);
+  width: 24px;
+  height: 24px;
+}
+</style>
