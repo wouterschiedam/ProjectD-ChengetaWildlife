@@ -56,7 +56,6 @@ namespace ProjectD_ChengetaWildlife.controllers {
 				.Query();
 
 			database.Close();
-			Console.WriteLine("test");
 			return JsonSerializer.Serialize(new{
 				qrCodeImageUrl,
 				qrCodeManual
