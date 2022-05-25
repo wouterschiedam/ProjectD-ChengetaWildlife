@@ -40,7 +40,7 @@ namespace ProjectD_ChengetaWildlife.controllers {
 			{
 				rString += ((char)(random.Next(1, 26) + 64)).ToString();
 			}
-			var setupInfo = tfa.GenerateSetupCode("star-shl", email, rString, true);
+			var setupInfo = tfa.GenerateSetupCode("Chengeta", email, rString, true);
 
 			string qrCodeImageUrl = setupInfo.QrCodeSetupImageUrl;
 			string qrCodeManual = setupInfo.ManualEntryKey;
@@ -56,6 +56,7 @@ namespace ProjectD_ChengetaWildlife.controllers {
 				.Query();
 
 			database.Close();
+			Console.WriteLine("test");
 			return JsonSerializer.Serialize(new{
 				qrCodeImageUrl,
 				qrCodeManual

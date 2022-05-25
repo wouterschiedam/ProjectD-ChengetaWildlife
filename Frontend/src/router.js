@@ -7,6 +7,8 @@ import Map from './views/map'
 import Login from './views/login'
 import Allsounds from './views/allsounds'
 import Home from './views/home'
+import twoFAsetup from './views/twoSetup'
+import twoFAverify from './views/twoVerify'
 import './style.css'
 
 Vue.use(Router)
@@ -28,6 +30,7 @@ export default new Router({
       name: 'Log in',
       path: '/login',
       component: Login,
+      props: true,
     },
     {
       name: 'All sounds',
@@ -39,5 +42,17 @@ export default new Router({
       path: '/',
       component: Home,
     },
+    {
+      name: '2FAsetup',
+      path: '/2FAsetup',
+      component: twoFAsetup,
+      props: true,
+    },
+    {
+      name: '2FAverify',
+      path: '/2FAverify',
+      component: twoFAverify,
+      props: true,
+    }
   ],
 })
