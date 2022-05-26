@@ -3,42 +3,87 @@
     <div class="login-container1">
       <h1 class="login-text">Log in</h1>
       <div class="login-container2">
-        <input type="text" placeholder="Email" class="login-textinput input" />
+        <input type="text" id="email" placeholder="Email" class="login-textinput input" />
         <input
+          id="password"
           type="text"
           placeholder="Wachtwoord"
           class="login-textinput1 input"
         />
-        <button class="login-button button">Inloggen</button>
+        <a>{{errormessage}}</a>
+        <button class="login-button button" @click="login()">Inloggen</button>
       </div>
     </div>
     <app-footer rootClassName="footer-root-class-name1"></app-footer>
-    <app-header1 rootClassName="header1-root-class-name1"></app-header1>
+
   </div>
 </template>
 
 <script>
-import AppFooter from '../components/footer'
-import AppHeader1 from '../components/header1'
-
+import AppHeader from "../components/header";
+import AppFooter from "../components/footer";
+import router from "../router";
+import axios from "axios";
 export default {
-  name: 'Login',
+  name: "Login",
   components: {
+    AppHeader,
     AppFooter,
-    AppHeader1,
+  },
+  data() {
+    return {
+      errormessage: "",
+      message_email: "",
+      message_password: "",
+    };
+  },
+  methods: {
+    Account: function(){
+      router.push({name: "newUser"}); 
+    },
+    validateEmail: function () {
+      const re =
+        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+      return re.test(
+        String(document.getElementById("email").value).toLowerCase()
+      );
+    },
+    login: function () {
+      if (!this.validateEmail()) {
+        this.errormessage = "Voer een geldig e-mail adres in";
+        return;
+      }
+      if (document.getElementById("password").value == "") {
+        this.errormessage = "Voer een wachtwoord in";
+        return;
+      }
+      var bodyFormData = new FormData();
+      bodyFormData.append("email", document.getElementById("email").value);
+      bodyFormData.append(
+        "password",
+        document.getElementById("password").value
+      );
+      axios.post("/api/auth/login", bodyFormData).then((response) => {
+        this.errormessage = response.data.message;
+        if (response.data.twoFAenabled == true) {
+          router.push({
+            name: "dashboard",
+          });
+        }
+      });
+    },
   },
   metaInfo: {
-    title: 'Chengeta wildlife',
+    title: "Log in - Chengeta wildlife",
     meta: [
       {
-        property: 'og:title',
-        content: 'Chengeta wildlife',
+        property: "og:title",
+        content: "Log in - Chengeta wildlife",
       },
     ],
   },
-}
+};
 </script>
-
 <style scoped>
 .login-container {
   width: 100%;
