@@ -20,7 +20,7 @@ import AppHeader1 from '../components/header1'
 import AppFooter from '../components/footer'
 
 export default {
-  name: 'Dashboard',
+  name: 'Dashboard', 
   components: {
     AppHeader1,
     AppFooter,
