@@ -1,32 +1,24 @@
 <template>
   <div class="login-container">
-    <div class="login-image">
-      <app-header></app-header>
-      <img
-        alt="image"
-        src="/playground_assets/gray-vector.svg"
-        class="login-image1"
-      />
-      <div class="login-bg"></div>
-    </div>
     <div class="login-container1">
       <h1 class="login-text">Log in</h1>
       <div class="login-container2">
         <input
+          style="width: 40%;"
           type="text"
-          placeholder="Email"
           id="email"
+          placeholder="Email"
           class="login-textinput input"
         />
         <input
-          type="text"
+          style="width: 40%;"
           id="password"
+          type="password"
           placeholder="Wachtwoord"
           class="login-textinput1 input"
         />
-        <a class="h3-error">{{ errormessage }}</a>
+        <a style="margin-bottom: 5%">{{ errormessage }}</a>
         <button class="login-button button" @click="login()">Inloggen</button>
-        <button class="login-button button" @click="Account()">Nieuw account aanmaken</button>
       </div>
     </div>
     <app-footer rootClassName="footer-root-class-name1"></app-footer>
@@ -52,8 +44,11 @@ export default {
     };
   },
   methods: {
-    Account: function(){
-      router.push({name: "newUser"}); 
+    toggleShow() {
+      this.showPassword = !this.showPassword;
+    },
+    Account: function () {
+      router.push({ name: "newUser" });
     },
     validateEmail: function () {
       const re =
@@ -79,23 +74,9 @@ export default {
       );
       axios.post("/api/auth/login", bodyFormData).then((response) => {
         this.errormessage = response.data.message;
-        if (response.data.twoFAenabled == true) {
+        if (response.data.success == true) {
           router.push({
-            name: "2FAverify",
-            params: {
-              id: response.data.id,
-              email: response.data.email,
-              password: response.data.password,
-            },
-          });
-        } else if (response.data.twoFAenabled == false) {
-          router.push({
-            name: "2FAsetup",
-            params: {
-              id: response.data.id,
-              email: response.data.email,
-              password: response.data.password,
-            },
+            name: "dashboard",
           });
         }
       });
@@ -112,7 +93,6 @@ export default {
   },
 };
 </script>
-
 <style scoped>
 .login-container {
   width: 100%;
@@ -122,78 +102,59 @@ export default {
   align-items: center;
   flex-direction: column;
   justify-content: flex-start;
-  background-color: var(--dl-color-pimary-900);
-}
-.login-image {
-  flex: 0 0 auto;
-  width: 100%;
-  height: 500px;
-  display: flex;
-  position: relative;
-  align-items: center;
-  flex-direction: column;
-  background-size: cover;
-  background-image: url("https://images.unsplash.com/photo-1499336315816-097655dcfbda?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1000&q=80");
-}
-.login-image1 {
-  left: auto;
-  right: auto;
-  width: 100%;
-  bottom: -1px;
-  z-index: 100;
-  position: absolute;
-  object-fit: cover;
-}
-.login-bg {
-  top: auto;
-  flex: 0 0 auto;
-  left: auto;
-  right: 0px;
-  width: 100%;
-  bottom: auto;
-  height: 100%;
-  display: flex;
-  opacity: 0.5;
-  position: absolute;
-  align-items: flex-start;
-  flex-direction: column;
-  background-color: var(--dl-color-gray-black);
+  background-color: #c3c5c9;
 }
 .login-container1 {
-  flex: 0 0 auto;
-  width: 770px;
-  height: 334px;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  width: 531px;
+  bottom: 0px;
+  height: 354px;
+  margin: auto;
   display: flex;
   z-index: 100;
+  position: absolute;
   max-width: 80%;
   box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
     0 10px 10px -5px rgba(0, 0, 0, 0.04);
-  margin-top: -12rem;
   align-items: flex-start;
   border-radius: var(--dl-radius-radius-radius75);
-  margin-bottom: var(--dl-space-space-fiveunits);
   flex-direction: column;
-  background-color: var(--dl-color-gray-white);
+  background-color: #d9d9da;
 }
 .login-text {
   color: #000000;
   align-self: center;
 }
 .login-container2 {
+  top: 0px;
+  left: 0px;
+  right: 0px;
   width: 100%;
-  height: 222px;
+  bottom: 0px;
+  height: 30%;
+  color: red;
+  margin: auto;
   display: flex;
-  margin-top: var(--dl-space-space-tripleunit);
+  position: absolute;
+  align-self: center;
+  margin-top: auto;
   align-items: center;
-  margin-bottom: var(--dl-space-space-tripleunit);
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: auto;
   flex-direction: column;
 }
 .login-textinput {
   margin-bottom: var(--dl-space-space-unit);
   padding-bottom: var(--dl-space-space-halfunit);
+  color: black;
 }
 .login-textinput1 {
   margin-bottom: var(--dl-space-space-unit);
+    color: black;
+
 }
 .login-button {
   color: #ffffff;
@@ -203,6 +164,7 @@ export default {
 }
 .login-button:hover {
   transform: scale(1.1);
+  cursor: pointer;
 }
 
 @media (max-width: 479px) {
