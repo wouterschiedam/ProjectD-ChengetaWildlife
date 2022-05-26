@@ -113,9 +113,11 @@ export default {
     border: 1px solid black;
     color: black;
     width: 100%;
+
 }
 .soundInfo div {
-    padding: 5%;
+    padding: 1%;
+    margin-right: 5%;
 }
 .titles {
     display: flex;
@@ -123,6 +125,7 @@ export default {
 .soundInfo h3 {
     color: black;
 }
+
 .dashboard-container {
   width: 100%;
   display: flex;
@@ -184,12 +187,12 @@ export default {
 .dashboard-geluidendata {
   flex: 0 0 auto;
   left: 200px;
-  width: 984px;
+  width: 100%;
   bottom: 0px;
   height: 371px;
   display: flex;
   position: absolute;
-  align-items: flex-start;
+  /* align-items: flex-start; */
   flex-direction: column;
 }
 @media(max-width: 991px) {
