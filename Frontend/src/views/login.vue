@@ -65,7 +65,7 @@ export default {
       );
       axios.post("/api/auth/login", bodyFormData).then((response) => {
         this.errormessage = response.data.message;
-        if (response.data.twoFAenabled == true) {
+        if (response.data.succes == true) {
           router.push({
             name: "dashboard",
           });
