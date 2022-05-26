@@ -14,7 +14,7 @@ namespace ProjectD_ChengetaWildlife.controllers
         public IActionResult GetActionResult()
         {
             Database database = new Database();
-            DataTable data1 = database.BuildQuery("SELECT * FROM mqttdata")
+            DataTable data1 = database.BuildQuery("SELECT * FROM mqttdata LIMIT 10")
                 .Select();
             database.Close();
             return Ok(JsonConvert.SerializeObject(data1));

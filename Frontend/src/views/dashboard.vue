@@ -9,21 +9,88 @@
           <span class="dashboard-text1">Historische data</span>
         </div>
       </div>
-      <div class="dashboard-geluidendata"></div>
+      <div class="dashboard-geluidendata">
+          <h1 style="color: black">Sounds</h1>
+          <div v-for="sound in sounds" :key="sound.sound">
+              <div class="soundInfo">
+                  <div>
+                      <h3>ID</h3>
+                      <div>
+                        {{ sound.id }}
+                      </div>
+                  </div>
+                  <div>
+                      <h3>Latitude</h3>
+                      <div>
+                        {{ sound.latitude }}
+                      </div>
+                  </div>
+                  <div>
+                      <h3>Longitude</h3>
+                      <div>
+                        {{ sound.longitude }}
+                      </div>
+                  </div>
+                  <div>
+                      <h3>Soundtype</h3>
+                      <div>
+                        {{ sound.soundtype }}
+                      </div>
+                  </div>
+                  <div>
+                      <h3>Probability</h3>
+                      <div>
+                        {{ sound.probability }}
+                      </div>
+                  </div>
+                  <div>
+                      <h3>Sound</h3>
+                      <div>
+                      {{ sound.sound }}
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
     </div>
-    <app-footer rootClassName="footer-root-class-name3"></app-footer>
+    <!--<app-footer rootClassName="footer-root-class-name3"></app-footer>-->
   </div>
 </template>
 
 <script>
 import AppHeader1 from '../components/header1'
-import AppFooter from '../components/footer'
+    import AppFooter from '../components/footer'
+    import axios from 'axios'
 
 export default {
   name: 'Dashboard',
+        data() {
+            return {
+                sounds: [],
+                id: 0,
+                latitude: '',
+                longitude: '',
+                soundtype: '',
+                probability: 0,
+                sound: '',
+                time: 0
+            }
+        },
+        methods: {
+            GetSounds() {
+                axios.get("api/auth/mqttdata")
+                    .then((response) => {
+                        this.sounds = response.data;
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                        alert(error);
+                    })
+            }
+        },
   components: {
     AppHeader1,
-    AppFooter,
+/*    AppFooter,*/
   },
   metaInfo: {
     title: 'dashboard - Chengeta wildlife',
@@ -34,10 +101,28 @@ export default {
       },
     ],
   },
+        mounted() {
+            this.GetSounds();
+        }
 }
 </script>
 
 <style scoped>
+.soundInfo {
+    display: flex;
+    border: 1px solid black;
+    color: black;
+    width: 100%;
+}
+.soundInfo div {
+    padding: 5%;
+}
+.titles {
+    display: flex;
+}
+.soundInfo h3 {
+    color: black;
+}
 .dashboard-container {
   width: 100%;
   display: flex;
