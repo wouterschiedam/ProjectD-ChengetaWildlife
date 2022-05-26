@@ -3,19 +3,25 @@
     <div class="login-container1">
       <h1 class="login-text">Log in</h1>
       <div class="login-container2">
-        <input type="text" id="email" placeholder="Email" class="login-textinput input" />
         <input
-          id="password"
+          style="width: 40%;"
           type="text"
+          id="email"
+          placeholder="Email"
+          class="login-textinput input"
+        />
+        <input
+          style="width: 40%;"
+          id="password"
+          type="password"
           placeholder="Wachtwoord"
           class="login-textinput1 input"
         />
-        <a>{{errormessage}}</a>
+        <a style="margin-bottom: 5%">{{ errormessage }}</a>
         <button class="login-button button" @click="login()">Inloggen</button>
       </div>
     </div>
     <app-footer rootClassName="footer-root-class-name1"></app-footer>
-
   </div>
 </template>
 
@@ -38,8 +44,11 @@ export default {
     };
   },
   methods: {
-    Account: function(){
-      router.push({name: "newUser"}); 
+    toggleShow() {
+      this.showPassword = !this.showPassword;
+    },
+    Account: function () {
+      router.push({ name: "newUser" });
     },
     validateEmail: function () {
       const re =
@@ -107,7 +116,8 @@ export default {
   z-index: 100;
   position: absolute;
   max-width: 80%;
-  box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1),0 10px 10px -5px rgba(0,0,0,0.04);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
+    0 10px 10px -5px rgba(0, 0, 0, 0.04);
   align-items: flex-start;
   border-radius: var(--dl-radius-radius-radius75);
   flex-direction: column;
@@ -124,6 +134,7 @@ export default {
   width: 100%;
   bottom: 0px;
   height: 30%;
+  color: red;
   margin: auto;
   display: flex;
   position: absolute;
@@ -138,9 +149,12 @@ export default {
 .login-textinput {
   margin-bottom: var(--dl-space-space-unit);
   padding-bottom: var(--dl-space-space-halfunit);
+  color: black;
 }
 .login-textinput1 {
   margin-bottom: var(--dl-space-space-unit);
+    color: black;
+
 }
 .login-button {
   color: #ffffff;
@@ -150,9 +164,10 @@ export default {
 }
 .login-button:hover {
   transform: scale(1.1);
+  cursor: pointer;
 }
 
-@media(max-width: 479px) {
+@media (max-width: 479px) {
   .login-container1 {
     width: 100%;
   }
