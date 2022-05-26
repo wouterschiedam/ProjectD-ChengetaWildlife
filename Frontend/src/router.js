@@ -4,7 +4,7 @@ import Meta from 'vue-meta'
 
 import Login from './views/login'
 import Dashboard from './views/dashboard'
-
+import test from './views/testdashboard'
 import './style.css'
 
 Vue.use(Router)
@@ -22,5 +22,10 @@ export default new Router({
       path: '/dashboard',
       component: Dashboard,
     },
+    {
+      name: 'test',
+      path: '/test',
+      component: test,
+    }
   ],
 })
