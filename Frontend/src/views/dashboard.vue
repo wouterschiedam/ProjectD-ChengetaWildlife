@@ -1,9 +1,7 @@
 <template>
   <div>
     <app-header1 rootClassName="header1-root-class-name"></app-header1>
-    <div class="sidebar">
-
-    </div>
+    <sidebar></sidebar>
     <div class="dashboard-map" id="map">
       <l-map
         style="height: 100%; width: 100%"
@@ -57,10 +55,12 @@ import { latLngBounds, latLng } from "leaflet";
 import { LMap, LTileLayer, LMarker, LCircle } from "vue2-leaflet";
 import html2canvas from "html2canvas";
 import axios from "axios";
+
 export default {
   name: "Dashboard",
 
   components: {
+    Sidebar,
     AppHeader1,
     AppFooter,
     LMap,
