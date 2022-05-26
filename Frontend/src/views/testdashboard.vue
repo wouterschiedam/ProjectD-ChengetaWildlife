@@ -240,7 +240,7 @@ td {
 }
 /* STYLING DATA */
 .dashboard-geluidendata {
-  top: 62%;
+    margin-top: 10%;
   width: 100%;
   display: flex;
   height: 40%;
@@ -459,9 +459,6 @@ aside .sidebar a:hover span {
   td {
     padding: 3px;
     text-align: center;
-  }
-  .dashboard-geluidendata {
-    top: 63%;
   }
 }
 </style>

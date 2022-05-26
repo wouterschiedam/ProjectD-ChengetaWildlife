@@ -177,16 +177,6 @@ td {
   margin-bottom: 3%;
 }
 .dashboard-map {
-  top: 0px;
-  left: 17%;
-  flex: 0 0 auto;
-  width: 80%;
-  height: 517px;
-  display: flex;
-  position: relative;
-  align-self: flex-end;
-  align-items: flex-start;
-  flex-direction: column;
 }
 .dashboard-geluidendata {
   flex: 0 0 auto;
