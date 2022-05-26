@@ -23,7 +23,6 @@ export default {
   align-items: center;
   flex-direction: column;
   justify-content: center;
-  background-color: var(--dl-color-pimary-900);
 }
 .footer-text {
   color: var(--dl-color-secondary-500);
@@ -34,10 +33,16 @@ export default {
   margin-top: var(--dl-space-space-triplequarter);
 }
 .footer-root-class-name1 {
-  margin-top: 11rem;
+  left: 0px;
+  bottom: 0px;
+  position: absolute;
+  background-color: #c3c5c9;
 }
 .footer-root-class-name2 {
   margin-top: 13.5rem;
+}
+.footer-root-class-name3 {
+  margin-top: 0rem;
 }
 @media(max-width: 479px) {
   .footer-root-class-name1 {

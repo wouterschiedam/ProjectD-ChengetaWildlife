@@ -2,13 +2,11 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Meta from 'vue-meta'
 
-import Sound from './views/sound'
-import Map from './views/map'
 import Login from './views/login'
 import Allsounds from './views/allsounds'
-import Home from './views/home'
-import twoFAsetup from './views/twoSetup'
-import twoFAverify from './views/twoVerify'
+import Dashboard from './views/dashboard'
+import Map from './views/map'
+import Sound from './views/sound'
 import './style.css'
 
 Vue.use(Router)
@@ -17,20 +15,9 @@ export default new Router({
   mode: 'history',
   routes: [
     {
-      name: 'Sound',
-      path: '/sound',
-      component: Sound,
-    },
-    {
-      name: 'Map',
-      path: '/map',
-      component: Map,
-    },
-    {
       name: 'Log in',
-      path: '/login',
+      path: '/',
       component: Login,
-      props: true,
     },
     {
       name: 'All sounds',
@@ -38,21 +25,19 @@ export default new Router({
       component: Allsounds,
     },
     {
-      name: 'Home',
-      path: '/',
-      component: Home,
+      name: 'dashboard',
+      path: '/dashboard',
+      component: Dashboard,
     },
     {
-      name: '2FAsetup',
-      path: '/2FAsetup',
-      component: twoFAsetup,
-      props: true,
+      name: 'Map',
+      path: '/map',
+      component: Map,
     },
     {
-      name: '2FAverify',
-      path: '/2FAverify',
-      component: twoFAverify,
-      props: true,
-    }
+      name: 'Sound',
+      path: '/sound',
+      component: Sound,
+    },
   ],
 })

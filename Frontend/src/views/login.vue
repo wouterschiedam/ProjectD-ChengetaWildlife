@@ -1,112 +1,42 @@
 <template>
   <div class="login-container">
-    <div class="login-image">
-      <app-header></app-header>
-      <img
-        alt="image"
-        src="/playground_assets/gray-vector.svg"
-        class="login-image1"
-      />
-      <div class="login-bg"></div>
-    </div>
     <div class="login-container1">
       <h1 class="login-text">Log in</h1>
       <div class="login-container2">
+        <input type="text" placeholder="Email" class="login-textinput input" />
         <input
           type="text"
-          placeholder="Email"
-          id="email"
-          class="login-textinput input"
-        />
-        <input
-          type="text"
-          id="password"
           placeholder="Wachtwoord"
           class="login-textinput1 input"
         />
-        <a class="h3-error">{{ errormessage }}</a>
-        <button class="login-button button" @click="login()">Inloggen</button>
+        <button class="login-button button">Inloggen</button>
       </div>
     </div>
     <app-footer rootClassName="footer-root-class-name1"></app-footer>
+    <app-header1 rootClassName="header1-root-class-name1"></app-header1>
   </div>
 </template>
 
 <script>
-import AppHeader from "../components/header";
-import AppFooter from "../components/footer";
-import router from "../router";
-import axios from "axios";
+import AppFooter from '../components/footer'
+import AppHeader1 from '../components/header1'
+
 export default {
-  name: "Login",
+  name: 'Login',
   components: {
-    AppHeader,
     AppFooter,
-  },
-  data() {
-    return {
-      errormessage: "",
-      message_email: "",
-      message_password: "",
-    };
-  },
-  methods: {
-    validateEmail: function () {
-      const re =
-        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-      return re.test(
-        String(document.getElementById("email").value).toLowerCase()
-      );
-    },
-    login: function () {
-      if (!this.validateEmail()) {
-        this.errormessage = "Voer een geldig e-mail adres in";
-        return;
-      }
-      if (document.getElementById("password").value == "") {
-        this.errormessage = "Voer een wachtwoord in";
-        return;
-      }
-      var bodyFormData = new FormData();
-      bodyFormData.append("email", document.getElementById("email").value);
-      bodyFormData.append(
-        "password",
-        document.getElementById("password").value
-      );
-      axios.post("/api/auth/login", bodyFormData).then((response) => {
-        this.errormessage = response.data.message;
-        if (response.data.twoFAenabled == false) {
-          router.push({
-            name: "2FAsetup",
-            params: {
-              id: response.data.id,
-              email: response.data.email,
-              password: response.data.password,
-            },
-          });
-        } else if (response.data.twoFAenabled == true) {
-          router.push({
-            name: "2FAsetup",
-            params: {
-              id: response.data.id,
-              email: response.data.email,
-              password: response.data.password,
-            },
-          });
-        }
-      });
-    },
+    AppHeader1,
   },
   metaInfo: {
-    title: "Log in - Chengeta wildlife",
+    title: 'Chengeta wildlife',
     meta: [
       {
-        property: "og:title",
-        content: "Log in - Chengeta wildlife",
+        property: 'og:title',
+        content: 'Chengeta wildlife',
       },
     ],
   },
-};
+}
 </script>
 
 <style scoped>
@@ -118,70 +48,46 @@ export default {
   align-items: center;
   flex-direction: column;
   justify-content: flex-start;
-  background-color: var(--dl-color-pimary-900);
-}
-.login-image {
-  flex: 0 0 auto;
-  width: 100%;
-  height: 500px;
-  display: flex;
-  position: relative;
-  align-items: center;
-  flex-direction: column;
-  background-size: cover;
-  background-image: url("https://images.unsplash.com/photo-1499336315816-097655dcfbda?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1000&q=80");
-}
-.login-image1 {
-  left: auto;
-  right: auto;
-  width: 100%;
-  bottom: -1px;
-  z-index: 100;
-  position: absolute;
-  object-fit: cover;
-}
-.login-bg {
-  top: auto;
-  flex: 0 0 auto;
-  left: auto;
-  right: 0px;
-  width: 100%;
-  bottom: auto;
-  height: 100%;
-  display: flex;
-  opacity: 0.5;
-  position: absolute;
-  align-items: flex-start;
-  flex-direction: column;
-  background-color: var(--dl-color-gray-black);
+  background-color: #c3c5c9;
 }
 .login-container1 {
-  flex: 0 0 auto;
-  width: 770px;
-  height: 334px;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  width: 531px;
+  bottom: 0px;
+  height: 354px;
+  margin: auto;
   display: flex;
   z-index: 100;
+  position: absolute;
   max-width: 80%;
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
-    0 10px 10px -5px rgba(0, 0, 0, 0.04);
-  margin-top: -12rem;
+  box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1),0 10px 10px -5px rgba(0,0,0,0.04);
   align-items: flex-start;
   border-radius: var(--dl-radius-radius-radius75);
-  margin-bottom: var(--dl-space-space-fiveunits);
   flex-direction: column;
-  background-color: var(--dl-color-gray-white);
+  background-color: #d9d9da;
 }
 .login-text {
   color: #000000;
   align-self: center;
 }
 .login-container2 {
+  top: 0px;
+  left: 0px;
+  right: 0px;
   width: 100%;
-  height: 222px;
+  bottom: 0px;
+  height: 30%;
+  margin: auto;
   display: flex;
-  margin-top: var(--dl-space-space-tripleunit);
+  position: absolute;
+  align-self: center;
+  margin-top: auto;
   align-items: center;
-  margin-bottom: var(--dl-space-space-tripleunit);
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: auto;
   flex-direction: column;
 }
 .login-textinput {
@@ -201,7 +107,7 @@ export default {
   transform: scale(1.1);
 }
 
-@media (max-width: 479px) {
+@media(max-width: 479px) {
   .login-container1 {
     width: 100%;
   }

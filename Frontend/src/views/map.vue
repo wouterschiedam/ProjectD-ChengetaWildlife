@@ -69,12 +69,10 @@ export default {
   object-fit: cover;
 }
 .map-bg {
-  top: auto;
   flex: 0 0 auto;
-  left: auto;
   right: 0px;
   width: 100%;
-  bottom: auto;
+  bottom: 0px;
   height: 100%;
   display: flex;
   opacity: 0.5;

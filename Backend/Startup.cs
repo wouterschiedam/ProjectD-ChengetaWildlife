@@ -55,16 +55,6 @@ namespace ProjectD_ChengetaWildlife
 				);
 				endpoints.MapControllerRoute(
 					name: "/api/auth/",
-					pattern: "2FA",
-					defaults: new twoFAsetup()
-				);
-				endpoints.MapControllerRoute(
-					name: "/api/auth/",
-					pattern: "2FAverify",
-					defaults: new twoFAverify()
-				);
-				endpoints.MapControllerRoute(
-					name: "/api/auth/",
 					pattern: "createNewUser",
 					defaults: new createNewUser()
 				);
