@@ -5,6 +5,7 @@
       <div class="dashboard-map" id="map">
             <l-map style="height: 100%; Width: 100%;" :zoom="zoom" :center="center" :bounds ="bounds" :max-bounds="maxBounds">
             <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
+            <l-marker :lat-lng="markerLatLng"></l-marker>
             <l-Circle
               :lat-lng="circle.center"
               :radius="circle.radius"
@@ -55,9 +56,16 @@
 <script>
 import AppHeader1 from '../components/header1'
 import AppFooter from '../components/footer'
-import { latLngBounds, latLng } from "leaflet";
+import { latLngBounds, latLng, Icon } from "leaflet";
 import { LMap, LTileLayer, LMarker, LCircle } from 'vue2-leaflet';
 import html2canvas from 'html2canvas';
+
+delete Icon.Default.prototype._getIconUrl;
+Icon.Default.mergeOptions({
+  iconRetinaUrl: require('leaflet/dist/images/marker-icon-2x.png'),
+  iconUrl: require('leaflet/dist/images/marker-icon.png'),
+  shadowUrl: require('leaflet/dist/images/marker-shadow.png')
+}) 
 
 export default {
   name: 'Dashboard',
@@ -78,6 +86,13 @@ export default {
                 axios.get("api/auth/mqttdata")
                     .then((response) => {
                         this.sounds = response.data;
+                        this.Markers = response.data;
+                                                response.data.forEach((element) => {
+                        this.Markers.push({
+                          sounds: [element.longitude.split(',')[0], element.latitude.split(',')[1]],
+                          });
+                          Markers.addTo(LMap); // hier gebleven, maar werkt niet
+                        });                    
                     })
                     .catch(function (error) {
                         console.log(error);
@@ -100,6 +115,7 @@ export default {
                 '&copy; <a target="_blank" href="http://osm.org/copyright%22%3EOpenStreetMap</a> contributors',
             zoom: 16,
             center: [51.505, -0.159],
+            markerLatLng: [-2.82991732677597, 23.58716201782228],
             bounds: latLngBounds([
                   [-2.30081290280357, 23.16963806152345],
                   [-2.82991732677597, 23.58716201782228]
@@ -108,7 +124,6 @@ export default {
                   [-2.30081290280357, 23.16963806152345],
                   [-2.82991732677597, 23.58716201782228]
                 ]),
-            Markers: [],
             circle : {
               center: [-2.45, 13.359],
               radius: 1000,
@@ -117,7 +132,9 @@ export default {
             circle: {
               center: [-44.55, 23.34],
               radius: 1118,
-              color: 'red'}
+              color: 'red'
+            },
+            
         };
   },
     methods: {
@@ -137,6 +154,7 @@ export default {
                 temp_link.download = "map.png";
                 temp_link.click();
             });
+            
         }
     },
       mounted() {
