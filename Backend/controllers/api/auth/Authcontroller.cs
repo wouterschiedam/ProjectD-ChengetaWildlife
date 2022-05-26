@@ -49,45 +49,45 @@ namespace ProjectD_ChengetaWildlife.controllers {
 
 			Database database = new Database();
 			
-			CheckDB(ClientIP, CurrentTimeStamp, timeout);
-			DataTable data1 = database.BuildQuery("SELECT ipadress,timeout,attempts FROM loginattempts").Select();
-			foreach (DataRow row in data1.Rows){
-				if(ClientIP == row["ipadress"].ToString()){
-					loginAttempt += Int32.Parse(row["attempts"].ToString()) + 1;
-					if(Int32.Parse(row["attempts"].ToString()) > 3){
-						// add the timeout of 5 minutes.
-						unixtime += 5*60 *1000;
-					}
+			// CheckDB(ClientIP, CurrentTimeStamp, timeout);
+			// DataTable data1 = database.BuildQuery("SELECT ipadress,timeout,attempts FROM loginattempts").Select();
+			// foreach (DataRow row in data1.Rows){
+			// 	if(ClientIP == row["ipadress"].ToString()){
+			// 		loginAttempt += Int32.Parse(row["attempts"].ToString()) + 1;
+			// 		if(Int32.Parse(row["attempts"].ToString()) > 3){
+			// 			// add the timeout of 5 minutes.
+			// 			unixtime += 5*60 *1000;
+			// 		}
 					
-					// if IP adress exist in db update it with new counter and timeout
-					database.BuildQuery($"UPDATE loginattempts SET attempts=@counter, timeout=@unixtime WHERE ipadress=@ip")
-						.AddParameter("ip", ClientIP)
-						.AddParameter("counter", loginAttempt)
-						.AddParameter("unixtime", unixtime)
-						.Query();
-					contains = true;
-					timeout = row["timeout"].ToString();
-				}
-			}
+			// 		// if IP adress exist in db update it with new counter and timeout
+			// 		database.BuildQuery($"UPDATE loginattempts SET attempts=@counter, timeout=@unixtime WHERE ipadress=@ip")
+			// 			.AddParameter("ip", ClientIP)
+			// 			.AddParameter("counter", loginAttempt)
+			// 			.AddParameter("unixtime", unixtime)
+			// 			.Query();
+			// 		contains = true;
+			// 		timeout = row["timeout"].ToString();
+			// 	}
+			// }
 
 
-			// if IP adress doesnt exist in db add it
-			if(!contains){
-				loginAttempt += 1;
-				database.BuildQuery($"INSERT INTO loginattempts (ipadress, attempts, timeout) VALUES (@ip, @counter, @unixtime)")
-				.AddParameter("ip", ClientIP)
-				.AddParameter("counter", loginAttempt)
-				.AddParameter("unixtime", unixtime)
-				.Query();
-			}
+			// // if IP adress doesnt exist in db add it
+			// if(!contains){
+			// 	loginAttempt += 1;
+			// 	database.BuildQuery($"INSERT INTO loginattempts (ipadress, attempts, timeout) VALUES (@ip, @counter, @unixtime)")
+			// 	.AddParameter("ip", ClientIP)
+			// 	.AddParameter("counter", loginAttempt)
+			// 	.AddParameter("unixtime", unixtime)
+			// 	.Query();
+			// }
 
 
-			if(CurrentTimeStamp < Int32.Parse(timeout) && loginAttempt > 3){
-				database.Close();
-				return JsonSerializer.Serialize(new {
-					message = "U heeft te veel inlog pogingen gehad probeer het over 5 minuten nog een keer."
-				});
-			}
+			// if(CurrentTimeStamp < Int32.Parse(timeout) && loginAttempt > 3){
+			// 	database.Close();
+			// 	return JsonSerializer.Serialize(new {
+			// 		message = "U heeft te veel inlog pogingen gehad probeer het over 5 minuten nog een keer."
+			// 	});
+			// }
 
 			// if(CurrentTimeStamp > Int32.Parse(timeout)){
 			// // Delete rows if Current time is later then timeout
@@ -121,8 +121,6 @@ namespace ProjectD_ChengetaWildlife.controllers {
 					});
 				}
 			}
-
-
 			database.Close();
 			return JsonSerializer.Serialize(new{
 				success = false,

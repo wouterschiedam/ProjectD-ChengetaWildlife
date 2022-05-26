@@ -27,7 +27,6 @@ namespace ProjectD_ChengetaWildlife
 			services.AddControllers();
 			services.AddSingleton<IConfiguration>(Configuration);
 		}
-
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
 		public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
 		{
@@ -53,16 +52,6 @@ namespace ProjectD_ChengetaWildlife
 					name: "/api/auth/",
 					pattern: "login",
 					defaults: new AuthController()
-				);
-				endpoints.MapControllerRoute(
-					name: "/api/auth/",
-					pattern: "2FA",
-					defaults: new twoFAsetup()
-				);
-				endpoints.MapControllerRoute(
-					name: "/api/auth/",
-					pattern: "2FAverify",
-					defaults: new twoFAverify()
 				);
 				endpoints.MapControllerRoute(
 					name: "/api/auth/",
