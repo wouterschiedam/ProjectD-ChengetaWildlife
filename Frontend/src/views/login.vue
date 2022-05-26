@@ -30,6 +30,7 @@ import AppHeader from "../components/header";
 import AppFooter from "../components/footer";
 import router from "../router";
 import axios from "axios";
+var VueCookie = require('vue-cookie');
 export default {
   name: "Login",
   components: {
@@ -72,6 +73,8 @@ export default {
       axios.post("/api/auth/login", bodyFormData).then((response) => {
         this.errormessage = response.data.message;
         if (response.data.success == true) {
+          this.$cookie.set("token", decodeURI(response.data.uri), {expire :"2h"});
+          this.$cookie.set("superUser", true, {expire: "2h"});
           router.push({
             name: "dashboard",
           });

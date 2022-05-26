@@ -100,7 +100,7 @@ namespace ProjectD_ChengetaWildlife.controllers {
 			// 	// 	.AddParameter("counter", 0)
 			// 	// 	.Query();
 			// }
-				
+			string oauth_token = "";
 			// Execute the query on the database.
 			DataTable data = database.BuildQuery("select * from admins").Select();
 			// Loop through each row in the query and check if the details are correct.
@@ -111,12 +111,9 @@ namespace ProjectD_ChengetaWildlife.controllers {
 				string hash = Encoding.ASCII.GetString(crypto);
 
 				if (row["email"].ToString() == email_input && row["password"].ToString() == hash) {
-					database.Close();
+				database.Close();
 					return JsonSerializer.Serialize(new {
 						id = Int32.Parse(row["id"].ToString()),
-						email = email_input,
-						password = hash,
-						twoFAenabled = bool.Parse(row["twofa"].ToString()),
 						success = true
 					});
 				}
