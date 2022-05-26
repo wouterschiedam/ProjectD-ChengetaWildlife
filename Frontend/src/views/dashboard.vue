@@ -11,46 +11,30 @@
       </div>
       <div class="dashboard-geluidendata">
           <h1 style="color: black">Sounds</h1>
-              <div class="soundInfo">
-                  <div>
-                      <h3>ID</h3>
-                      <p v-for="sound in sounds" :key="sound.id">
-                          {{ sound.id }}
-                      </p>
-                  </div>
-                  <div>
-                      <h3>Latitude</h3>
-                      <p v-for="sound in sounds" :key="sound.latitude">
-                          {{ sound.latitude }}
-                      </p>
-                  </div>
-                  <div>
-                      <h3>Longitude</h3>
-                      <p v-for="sound in sounds" :key="sound.longitude">
-                          {{ sound.longitude }}
-                      </p>
-                  </div>
-                  <div>
-                      <h3>Soundtype</h3>
-                      <p v-for="sound in sounds" :key="sound.soundtype">
-                          {{ sound.soundtype }}
-                      </p>
-                  </div>
-                  <div>
-                      <h3>Probability</h3>
-                      <p v-for="sound in sounds" :key="sound.probability">
-                          {{ sound.probability + "%"}}
-                      </p>
-                  </div>
-                  <div>
-                      <h3>Sound</h3>
-                      <p v-for="sound in sounds" :key="sound.sound">
-                          <audio controls>
-                              <source v-bind:src="sound.sound">
-                          </audio>
-                      </p>
-                  </div>
-              </div>
+              <table style="color: black">
+                  <tr>
+                      <th>ID</th>
+                      <th>Latitude</th>
+                      <th>Longitude</th>
+                      <th>Soundtype</th>
+                      <th>Probability</th>
+                      <th>Sound</th>
+                  </tr>
+                  <tbody v-for="sound in sounds" :key="sound.id">
+                      <tr>
+                          <td> {{ sound.id }} </td>
+                          <td> {{ sound.latitude }} </td>
+                          <td> {{ sound.longitude }} </td>
+                          <td> {{ sound.soundtype }} </td>
+                          <td> {{ sound.probability + "%" }} </td>
+                          <td>
+                              <audio controls>
+                                <source v-bind:src="sound.sound">
+                              </audio>
+                          </td>
+                      </tr>
+                  </tbody>
+              </table>
           </div>
       </div>
     <!--<app-footer rootClassName="footer-root-class-name3"></app-footer>-->
@@ -108,6 +92,17 @@ export default {
 </script>
 
 <style scoped>
+table {
+    width: 300px;
+    border-collapse: collapse;
+}
+table, th, td {
+    border: 1px solid grey;
+}
+th, td {
+    padding: 10px;
+    text-align: left;
+}
 .soundInfo {
     display: flex;
     color: black;
