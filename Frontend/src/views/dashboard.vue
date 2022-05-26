@@ -11,48 +11,48 @@
       </div>
       <div class="dashboard-geluidendata">
           <h1 style="color: black">Sounds</h1>
-          <div v-for="sound in sounds" :key="sound.sound">
               <div class="soundInfo">
                   <div>
                       <h3>ID</h3>
-                      <div>
-                        {{ sound.id }}
-                      </div>
+                      <p v-for="sound in sounds" :key="sound.id">
+                          {{ sound.id }}
+                      </p>
                   </div>
                   <div>
                       <h3>Latitude</h3>
-                      <div>
-                        {{ sound.latitude }}
-                      </div>
+                      <p v-for="sound in sounds" :key="sound.latitude">
+                          {{ sound.latitude }}
+                      </p>
                   </div>
                   <div>
                       <h3>Longitude</h3>
-                      <div>
-                        {{ sound.longitude }}
-                      </div>
+                      <p v-for="sound in sounds" :key="sound.longitude">
+                          {{ sound.longitude }}
+                      </p>
                   </div>
                   <div>
                       <h3>Soundtype</h3>
-                      <div>
-                        {{ sound.soundtype }}
-                      </div>
+                      <p v-for="sound in sounds" :key="sound.soundtype">
+                          {{ sound.soundtype }}
+                      </p>
                   </div>
                   <div>
                       <h3>Probability</h3>
-                      <div>
-                        {{ sound.probability }}
-                      </div>
+                      <p v-for="sound in sounds" :key="sound.probability">
+                          {{ sound.probability + "%"}}
+                      </p>
                   </div>
                   <div>
                       <h3>Sound</h3>
-                      <div>
-                      {{ sound.sound }}
-                      </div>
+                      <p v-for="sound in sounds" :key="sound.sound">
+                          <audio controls>
+                              <source v-bind:src="sound.sound">
+                          </audio>
+                      </p>
                   </div>
               </div>
           </div>
       </div>
-    </div>
     <!--<app-footer rootClassName="footer-root-class-name3"></app-footer>-->
   </div>
 </template>
@@ -101,29 +101,25 @@ export default {
       },
     ],
   },
-        mounted() {
-            this.GetSounds();
-        }
+  mounted() {
+    this.GetSounds();
+  }
 }
 </script>
 
 <style scoped>
 .soundInfo {
     display: flex;
-    border: 1px solid black;
     color: black;
     width: 100%;
 
 }
 .soundInfo div {
-    padding: 1%;
-    margin-right: 5%;
+    margin: 2% 8% 0 0;
 }
-.titles {
-    display: flex;
-}
-.soundInfo h3 {
-    color: black;
+
+.soundInfo div p {
+    margin-bottom: 3%;
 }
 
 .dashboard-container {
@@ -193,6 +189,7 @@ export default {
   display: flex;
   position: absolute;
   /* align-items: flex-start; */
+  margin-left: 2%;
   flex-direction: column;
 }
 @media(max-width: 991px) {
