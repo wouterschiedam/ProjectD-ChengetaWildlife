@@ -50,12 +50,20 @@
           :max-bounds="maxBounds"
         >
           <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
-          <l-Circle
-            :lat-lng="circle.center"
-            :radius="circle.radius"
-            :color="circle.color"
-          />
-        </l-map>
+          
+         <l-marker v-for="marker in Markers" :key="marker.id"
+         :lat-lng="[marker.latitude, marker.longitude]">
+          <l-popup>
+            <h3>{{ marker.id }}</h3>
+            <p>{{ marker.latitude }}</p>
+             <p>{{ marker.longitude }}</p>
+              <p>{{ marker.soundtype }}</p>
+               <p>{{ marker.probability }}</p>
+                <p>{{ marker.time }}</p>
+          </l-popup>
+      </l-marker>
+
+      </l-map>
       </div>
       <!-- MAIN - DATA -->
       <div class="dashboard-geluidendata">
@@ -96,7 +104,6 @@
   <div v-else style="color: black; text-align: center;">
     <h1>Error</h1>
     <h2>404 Page not found</h2>
-
   </div>
 </template>
 
@@ -104,10 +111,13 @@
 import AppHeader1 from "../components/header1";
 import AppFooter from "../components/footer";
 import { latLngBounds, latLng } from "leaflet";
-import { LMap, LTileLayer, LMarker, LCircle } from "vue2-leaflet";
+import { LMap, LTileLayer, LMarker, LCircle, LPopup } from "vue2-leaflet";
 import html2canvas from "html2canvas";
 import axios from "axios";
 import router from "../router";
+import markerIconPng from "leaflet/dist/images/marker-icon.png"
+
+
 export default {
   name: "Dashboard",
   components: {
@@ -117,10 +127,12 @@ export default {
     LTileLayer,
     LMarker,
     LCircle,
+    LPopup
   },
   props: ["LoggedIn", "superUser"],
   data() {
     return {
+
       sounds: [],
       id: 0,
       latitude: "",
@@ -142,17 +154,7 @@ export default {
         [-2.30081290280357, 23.16963806152345],
         [-2.82991732677597, 23.58716201782228],
       ]),
-      Markers: [],
-      circle: {
-        center: [-2.45, 13.359],
-        radius: 1000,
-        color: "#ff7800",
-      },
-      circle: {
-        center: [-44.55, 23.34],
-        radius: 1118,
-        color: "red",
-      },
+      Markers: {id: 13, latitude: "-1.5911952104643539", longitude: "23.40987496105848", soundtype: "gunshot"},
     };
   },
   methods: {
@@ -180,6 +182,8 @@ export default {
         .get("api/auth/mqttdata")
         .then((response) => {
           this.sounds = response.data;
+          this.Markers = response.data;
+          console.log(this.Markers)
         })
         .catch(function (error) {
           console.log(error);
@@ -214,7 +218,6 @@ export default {
     ],
   },
   mounted() {
-    console.log(this.$cookie.get('superUser'));
     this.GetSounds();
   },
 };
