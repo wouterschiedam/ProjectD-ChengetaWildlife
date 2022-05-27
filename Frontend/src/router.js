@@ -5,11 +5,13 @@ var VueCookie = require('vue-cookie');
 import Login from './views/login'
 import Dashboard from './views/dashboard'
 import test from './views/testdashboard'
+import newUser from './views/newUser'
 import './style.css'
 
 Vue.use(Router)
 Vue.use(Meta)
 Vue.use(VueCookie)
+
 export default new Router({
   mode: 'history',
   routes: [
@@ -17,16 +19,26 @@ export default new Router({
       name: 'Log in',
       path: '/',
       component: Login,
+      props: true
     },
     {
       name: 'dashboard',
       path: '/dashboard',
       component: Dashboard,
+      props: true
     },
     {
       name: 'test',
       path: '/test',
       component: test,
+      props:  true
+    },
+    {
+      name: 'newUser',
+      path: '/newUser',
+      component: newUser,
+      props: true
     }
   ],
 })
+

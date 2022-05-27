@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container"  v-if="isLoggedIn()">
     <aside>
       <div class="top">
         <div class="logo">
@@ -13,11 +13,11 @@
         </div>
       </div>
       <div class="sidebar">
-        <a href="#">
+        <a @click="router.push({name: 'test'}, )">
           <span class="material-icons-sharp">grid_view</span>
           <h3>Dashboard</h3>
         </a>
-        <a @click="fullScreenView()" class="active">
+        <a @click="fullScreenView()">
           <span class="material-icons-sharp">fullscreen</span>
           <h3>Fullscreen</h3>
         </a>
@@ -29,7 +29,11 @@
           <span class="material-icons-sharp">work_history</span>
           <h3>Historische data</h3>
         </a>
-        <a href="#">
+        <a v-if="this.superUser" @click="Account()">
+          <span class="material-icons-sharp">person_add</span>
+          <h3>Nieuw account</h3>
+        </a>
+        <a @click="Logout()">
           <span class="material-icons-sharp">logout</span>
           <h3>Uitloggen</h3>
         </a>
@@ -89,6 +93,11 @@
       </button>
     </div>
   </div>
+  <div v-else style="color: black; text-align: center;">
+    <h1>Error</h1>
+    <h2>404 Page not found</h2>
+
+  </div>
 </template>
 
 <script>
@@ -98,6 +107,7 @@ import { latLngBounds, latLng } from "leaflet";
 import { LMap, LTileLayer, LMarker, LCircle } from "vue2-leaflet";
 import html2canvas from "html2canvas";
 import axios from "axios";
+import router from "../router";
 export default {
   name: "Dashboard",
   components: {
@@ -108,9 +118,9 @@ export default {
     LMarker,
     LCircle,
   },
+  props: ["LoggedIn", "superUser"],
   data() {
     return {
-
       sounds: [],
       id: 0,
       latitude: "",
@@ -146,6 +156,17 @@ export default {
     };
   },
   methods: {
+    Account: function(){
+      router.push({name: "newUser", params: {LoggedIn: this.LoggedIn, superUser: this.superUser}}); 
+    },
+    Logout(){
+      this.$cookie.delete('token');
+      this.$cookie.delete('superUser');
+      router.push({name: "Log in"});
+    },
+    isLoggedIn(){
+      return this.LoggedIn;
+    },
     Sidebaropen(){
         var sideMenu = document.getElementById(menu-btn);
         sideMenu.style.display = "block";	
@@ -193,6 +214,7 @@ export default {
     ],
   },
   mounted() {
+    console.log(this.$cookie.get('superUser'));
     this.GetSounds();
   },
 };

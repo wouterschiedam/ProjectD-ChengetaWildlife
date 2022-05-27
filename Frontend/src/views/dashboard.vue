@@ -70,6 +70,7 @@ export default {
   },
   data() {
     return {
+
       sounds: [],
       id: 0,
       latitude: "",

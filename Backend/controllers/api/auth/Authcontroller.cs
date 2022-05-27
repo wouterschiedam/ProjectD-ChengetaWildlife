@@ -100,7 +100,7 @@ namespace ProjectD_ChengetaWildlife.controllers {
 			// 	// 	.AddParameter("counter", 0)
 			// 	// 	.Query();
 			// }
-			string oauth_token = "";
+			
 			// Execute the query on the database.
 			DataTable data = database.BuildQuery("select * from admins").Select();
 			// Loop through each row in the query and check if the details are correct.
@@ -111,10 +111,12 @@ namespace ProjectD_ChengetaWildlife.controllers {
 				string hash = Encoding.ASCII.GetString(crypto);
 
 				if (row["email"].ToString() == email_input && row["password"].ToString() == hash) {
-				database.Close();
+					string oauth_token = GetToken(email_input, password_input);
+					database.Close();
 					return JsonSerializer.Serialize(new {
 						id = Int32.Parse(row["id"].ToString()),
-						success = true
+						success = true,
+						token = oauth_token,
 					});
 				}
 			}
@@ -141,6 +143,24 @@ namespace ProjectD_ChengetaWildlife.controllers {
 					}
 				}
 			}
+			database.Close();
+		}
+		public string GetToken(string email_input, string password_input){
+			string oauth_token;
+			Database database = new Database();
+			using(RandomNumberGenerator rng = new RNGCryptoServiceProvider())
+			{
+				byte[] tokenData = new byte[32];
+				rng.GetBytes(tokenData);
+				oauth_token = Convert.ToBase64String(tokenData);
+			}
+			database.BuildQuery($"UPDATE admins SET oauth_token = @oauth_token WHERE email=@email")
+			.AddParameter("oauth_token", oauth_token)
+			.AddParameter("email", email_input)
+			.AddParameter("password", password_input)
+			.Query();
+			database.Close();
+			return oauth_token;
 		}
 
 	}

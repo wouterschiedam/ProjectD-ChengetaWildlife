@@ -28,6 +28,7 @@ namespace ProjectD_ChengetaWildlife.controllers {
 			string Email = HttpContext.Request.Form["Email"];
             string Password = HttpContext.Request.Form["Password"];
 			string oauth = HttpContext.Request.Form["oauth"].ToString();
+			bool newsuperUser = bool.Parse(HttpContext.Request.Form["Superuser"].ToString());
 			bool superUser = false;
 			
 			if (Name == null || Email == null || Password == null){
@@ -59,10 +60,11 @@ namespace ProjectD_ChengetaWildlife.controllers {
 			DataTable data1 = database.BuildQuery("select superuser from admins WHERE oauth_token = @oauth_token")
 				.AddParameter("oauth_token", oauth)
 				.Select();
-			foreach (DataRow row in data1.Rows){
-				superUser = bool.Parse(row["superuser"].ToString());
-			}
+				
 
+			foreach (DataRow row in data1.Rows){
+				superUser = bool.Parse(row["superuser"].ToString());	
+			}
             //Query to insert the new users information into the database
 			if(superUser){
 				DataTable data = database.BuildQuery($"SELECT (id) FROM admins").Select();
@@ -71,7 +73,7 @@ namespace ProjectD_ChengetaWildlife.controllers {
 					.AddParameter("name", Name)
 					.AddParameter("email", Email)
 					.AddParameter("twofa", false)
-					.AddParameter("superuser", superUser)
+					.AddParameter("superuser", newsuperUser)
 					.AddParameter("password", hash)
 					.AddParameter("salt", newSalt)
 					.Query();

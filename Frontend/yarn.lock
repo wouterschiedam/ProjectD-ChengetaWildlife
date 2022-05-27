@@ -1773,6 +1773,14 @@
   "resolved" "https://registry.npmjs.org/builtin-status-codes/-/builtin-status-codes-3.0.0.tgz"
   "version" "3.0.0"
 
+"bus@^0.1.0":
+  "integrity" "sha512-QZEJkvLM66AK06ooUGryY7Ir0xzhjF3tNm48xy3VSlw5xc+fj9CDsjXAPp5la7EvpMEiyvRHj+25MbXx+f8BaA=="
+  "resolved" "https://registry.npmjs.org/bus/-/bus-0.1.0.tgz"
+  "version" "0.1.0"
+  dependencies:
+    "component-emitter" "*"
+    "require-component" "*"
+
 "bytes@3.0.0":
   "integrity" "sha512-pMhOfFDPiv9t5jjIXkHosWmkSyQbvsgEVNkz0ERHbuLh2T/7j4Mqqpz523Fe8MVY89KC6Sh/QfS2sM+SjgFDcw=="
   "resolved" "https://registry.npmjs.org/bytes/-/bytes-3.0.0.tgz"
@@ -2175,7 +2183,7 @@
   "resolved" "https://registry.npmjs.org/commondir/-/commondir-1.0.1.tgz"
   "version" "1.0.1"
 
-"component-emitter@^1.2.1":
+"component-emitter@*", "component-emitter@^1.2.1":
   "integrity" "sha512-Rd3se6QB+sO1TwqZjscQrurpEPIfO0/yYnSin6Q/rD3mOutHvUrCAhJub3r90uNb+SESBuE0QYoB90YdfatsRg=="
   "resolved" "https://registry.npmjs.org/component-emitter/-/component-emitter-1.3.0.tgz"
   "version" "1.3.0"
@@ -6391,6 +6399,11 @@
     "tough-cookie" "~2.5.0"
     "tunnel-agent" "^0.6.0"
     "uuid" "^3.3.2"
+
+"require-component@*":
+  "integrity" "sha1-mTxs5lri7taBVQlNIfzEXuYaBCM="
+  "resolved" "https://registry.npmjs.org/require-component/-/require-component-0.1.1.tgz"
+  "version" "0.1.1"
 
 "require-directory@^2.1.1":
   "integrity" "sha1-jGStX9MNqxyXbiNE/+f3kqam30I="

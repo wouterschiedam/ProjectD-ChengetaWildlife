@@ -39,15 +39,13 @@ export default {
   },
   data() {
     return {
+      LoggedIn: false,
       errormessage: "",
       message_email: "",
       message_password: "",
     };
   },
   methods: {
-    Account: function(){
-      router.push({name: "newUser"}); 
-    },
     validateEmail: function () {
       const re =
         /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -73,10 +71,11 @@ export default {
       axios.post("/api/auth/login", bodyFormData).then((response) => {
         this.errormessage = response.data.message;
         if (response.data.success == true) {
-          this.$cookie.set("token", decodeURI(response.data.uri), {expire :"2h"});
+          this.$cookie.set("token", decodeURI(response.data.token), {expire :"2h"});
           this.$cookie.set("superUser", true, {expire: "2h"});
           router.push({
-            name: "dashboard",
+            name: "test",
+            params: {LoggedIn : true, superUser: this.$cookie.get('superUser')},
           });
         }
       });
