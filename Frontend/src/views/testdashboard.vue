@@ -254,7 +254,6 @@ td {
   margin-bottom: 3%;
 }
 .dashboard-map {
-  top: 6%;
   flex: 0 0 auto;
   width: 100%;
   height: 517px;
@@ -265,7 +264,6 @@ td {
 }
 /* STYLING DATA */
 .dashboard-geluidendata {
-  top: 62%;
   width: 100%;
   display: flex;
   height: 40%;
