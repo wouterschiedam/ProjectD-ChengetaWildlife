@@ -320,10 +320,10 @@ audio {
 }
 /* STYLING DATA */
 .dashboard-geluidendata {
-  margin-top: 5%;
+  margin-top: 1%;
   width: 100%;
   display: flex;
-  height: 70%;
+  height: 50%;
   position: absolute;
   overflow-x: hidden;
   overflow-y: auto;
