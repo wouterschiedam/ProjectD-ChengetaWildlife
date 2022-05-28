@@ -156,13 +156,10 @@ table {
   width: 300px;
   border-collapse: collapse;
 }
-table,
-th,
-td {
+table, th, td {
   border: 1px solid grey;
 }
-th,
-td {
+th, td {
   padding: 10px;
   text-align: left;
 }
