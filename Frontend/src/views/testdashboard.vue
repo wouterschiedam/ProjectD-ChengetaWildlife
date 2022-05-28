@@ -86,9 +86,7 @@
                   sound.soundtype == 'vehicle' ? 'yellow' : 
                   sound.soundtype == 'animal' ? 'orange' : 
                   sound.soundtype == 'unknown' ? 'black' : 'white'">{{ sound.soundtype }}</td>
-              <td><Progress :transitionDuration="5000" strokeColor="white"
-          :radius="45"
-          :strokeWidth="7"
+              <td><Progress :transitionDuration="4000" strokeColor="white"
           v-bind:value="sound.probability"/></td>
               <td>
                 <audio controls>
