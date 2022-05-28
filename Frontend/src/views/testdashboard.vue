@@ -86,10 +86,13 @@
                   sound.soundtype == 'vehicle' ? 'yellow' : 
                   sound.soundtype == 'animal' ? 'orange' : 
                   sound.soundtype == 'unknown' ? 'black' : 'white'">{{ sound.soundtype }}</td>
-              <td><progress-bar v-bind:value="sound.probability"></progress-bar></td>
+              <td><Progress :transitionDuration="5000" strokeColor="white"
+          :radius="45"
+          :strokeWidth="7"
+          v-bind:value="sound.probability"/></td>
               <td>
                 <audio controls>
-                  <source v-bind:src="sound.sound" />
+                  <source :options="options" v-bind:src="sound.sound" />
                 </audio>
               </td>
             </tr>
@@ -111,6 +114,7 @@
 </template>
 
 <script>
+import Progress from "easy-circular-progress";
 import AppHeader1 from "../components/header1";
 import AppFooter from "../components/footer";
 import { latLngBounds, latLng } from "leaflet";
@@ -130,7 +134,8 @@ export default {
     LTileLayer,
     LMarker,
     LCircle,
-    LPopup
+    LPopup,
+    Progress
   },
   props: ["LoggedIn", "superUser"],
   data() {
