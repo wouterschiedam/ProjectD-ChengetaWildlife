@@ -15,14 +15,6 @@
                     <span class="material-icons-sharp">grid_view</span>
                     <h3>Dashboard</h3>
                 </a>
-                <a @click="fullScreenView()">
-                    <span class="material-icons-sharp">fullscreen</span>
-                    <h3>Fullscreen</h3>
-                </a>
-                <a @click="printMapHtml()">
-                    <span class="material-icons-sharp">print</span>
-                    <h3>Print map</h3>
-                </a>
                 <a href="#">
                     <span class="material-icons-sharp">work_history</span>
                     <h3>Historische data</h3>
@@ -41,6 +33,8 @@
             <h2 style="color: black">Historische data</h2>
             <table class="flat-table flat-table-1">
                 <tr>
+                    <th>Date</th>
+                    <th>Time</th>
                     <th>ID</th>
                     <th>Latitude</th>
                     <th>Longitude</th>
@@ -50,6 +44,8 @@
                 </tr>
                 <tbody v-for="sound in sounds" :key="sound.id">
                     <tr>
+                        <td>{{ new Date(sound.time * 1000).toISOString().slice(0, 10) }}</td>
+                        <td>{{ new Date(sound.time * 1000).toISOString().slice(-13, -5) }}</td>
                         <td>{{ sound.id }}</td>
                         <td>{{ sound.latitude }}</td>
                         <td>{{ sound.longitude }}</td>
@@ -119,7 +115,7 @@
             Logout() {
                 this.$cookie.delete('token');
                 this.$cookie.delete('superUser');
-                router.push({ name: "Log in" });
+                this.$router.push("/");
             },
             async isLoggedIn() {
                 return this.LoggedIn;
@@ -133,7 +129,9 @@
 
 <style scoped>
 .dashboard-geluidendata {
+    width: 100%;
     margin-left: 13%;
     margin-top: 3%;
+    position: absolute;
 }
 </style>

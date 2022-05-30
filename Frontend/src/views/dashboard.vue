@@ -70,6 +70,8 @@
         <h2 style="color: black">Livedata</h2>
         <table class="flat-table flat-table-1">
           <tr>
+            <th>Date</th>
+            <th>Time</th>
             <th>ID</th>
             <th>Latitude</th>
             <th>Longitude</th>
@@ -79,6 +81,8 @@
           </tr>
           <tbody v-for="sound in sounds" :key="sound.id">
             <tr>
+              <td>{{ new Date(sound.time * 1000).toISOString().slice(0, 10) }}</td>
+              <td>{{ new Date(sound.time * 1000).toISOString().slice(-13, -5) }}</td>
               <td>{{ sound.id }}</td>
               <td>{{ sound.latitude }}</td>
               <td>{{ sound.longitude }}</td>
