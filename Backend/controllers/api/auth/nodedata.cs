@@ -11,10 +11,11 @@ namespace ProjectD_ChengetaWildlife.controllers
     {
 
         [HttpGet]
-        public IActionResult GetActionResult()
+        public IActionResult GetActionResult(int limit = 10)
         {
+            string query = limit == 10 ? "SELECT * FROM mqttdata LIMIT 10" : "SELECT * FROM mqttdata LIMIT 100";
             Database database = new Database();
-            DataTable data1 = database.BuildQuery("SELECT * FROM mqttdata LIMIT 10")
+            DataTable data1 = database.BuildQuery(query)
                 .Select();
             database.Close();
             return Ok(JsonConvert.SerializeObject(data1));

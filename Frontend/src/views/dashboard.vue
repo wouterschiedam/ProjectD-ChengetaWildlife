@@ -25,7 +25,7 @@
           <span class="material-icons-sharp">print</span>
           <h3>Print map</h3>
         </a>
-        <a href="#">
+        <a @click="historyData()">
           <span class="material-icons-sharp">work_history</span>
           <h3>Historische data</h3>
         </a>
@@ -175,6 +175,9 @@ export default {
       this.LoggedIn = false
       });
     },
+    historyData() {
+      this.$router.push("historyData");
+    },
     Account: function(){
       router.push({name: "newUser", params: {LoggedIn: this.LoggedIn, superUser: this.superUser}}); 
     },
@@ -196,7 +199,11 @@ export default {
     },
     GetSounds() {
       axios
-        .get("api/auth/mqttdata")
+          .get("api/auth/mqttdata", {
+              params: {
+                  limit: 10
+              }
+          })
         .then((response) => {
           this.sounds = response.data;
           this.Markers = response.data;
@@ -331,37 +338,6 @@ audio {
   position: relative;
   align-items: flex-start;
   flex-direction: column;
-}
-/* STYLING DATA */
-.dashboard-geluidendata {
-  margin-top: 1%;
-  width: 100%;
-  display: flex;
-  height: 50%;
-  position: absolute;
-  overflow-x: hidden;
-  overflow-y: auto;
-  text-align: justify;
-  flex-direction: column;
-}
-/* custom scrollbar */
-::-webkit-scrollbar {
-  width: 10px;
-}
-
-::-webkit-scrollbar-track {
-  background-color: transparent;
-}
-
-::-webkit-scrollbar-thumb {
-  background-color: #d6dee1;
-  border-radius: 20px;
-  border: 6px solid transparent;
-  background-clip: content-box;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background-color: #a8bbbf;
 }
 /* STYLING SIDEBAR */
 a {
@@ -546,5 +522,41 @@ aside .sidebar a:hover span {
   .dashboard-geluidendata {
     top: 63%;
   }
+}
+
+</style>
+
+<style scoped>
+    /* custom scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #d6dee1;
+  border-radius: 20px;
+  border: 6px solid transparent;
+  background-clip: content-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #a8bbbf;
+}
+
+/* STYLING DATA */
+.dashboard-geluidendata {
+  margin-top: 1%;
+  width: 100%;
+  height: 50%;
+  display: flex;
+  position: absolute;
+  overflow-x: hidden;
+  overflow-y: auto;
+  text-align: justify;
+  flex-direction: column;
 }
 </style>
