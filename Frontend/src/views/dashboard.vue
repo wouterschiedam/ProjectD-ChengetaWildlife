@@ -303,10 +303,11 @@ box-shadow: inset 0 -1px rgba(0,0,0,0.25),
 }
 .flat-table-1 tr:hover {
     background: #448dda;
+    filter: drop-shadow(1px 2px 4px #333);
 }
-
 audio:hover {
-    transform: scale(1.1);
+    transform: scale(1.05);
+    filter: drop-shadow(3px 5px 5px #333);
 }
 audio {
     filter: drop-shadow(2px 3px 3px #333);
