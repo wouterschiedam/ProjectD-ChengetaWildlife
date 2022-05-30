@@ -4,7 +4,7 @@ import Meta from 'vue-meta'
 var VueCookie = require('vue-cookie');
 import Login from './views/login'
 import Dashboard from './views/dashboard'
-import test from './views/testdashboard'
+
 import newUser from './views/newUser'
 import './style.css'
 
@@ -26,12 +26,6 @@ export default new Router({
       path: '/dashboard',
       component: Dashboard,
       props: true
-    },
-    {
-      name: 'test',
-      path: '/test',
-      component: test,
-      props:  true
     },
     {
       name: 'newUser',

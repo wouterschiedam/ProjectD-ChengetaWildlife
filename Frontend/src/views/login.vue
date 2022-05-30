@@ -74,7 +74,7 @@ export default {
           this.$cookie.set("token", decodeURI(response.data.token), {expire :"2h"});
           this.$cookie.set("superUser", true, {expire: "2h"});
           router.push({
-            name: "test",
+            name: "dashboard",
             params: {LoggedIn : true, superUser: this.$cookie.get('superUser')},
           });
         }
