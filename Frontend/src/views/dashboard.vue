@@ -301,7 +301,7 @@ box-shadow: inset 0 -1px rgba(0,0,0,0.25),
 .flat-table-1 th{
     background: #2a5784;
 }
-.flat-table-1 tr:hover {
+.flat-table-1 tbody tr:hover {
     background: #448dda;
     filter: drop-shadow(1px 2px 4px #333);
 }
