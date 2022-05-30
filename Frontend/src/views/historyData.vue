@@ -56,7 +56,7 @@
                             {{ sound.soundtype }}
                         </td>
                         <td>
-                            <Progress :transitionDuration="4000" strokeColor="white"
+                            <Progress :transitionDuration="1" strokeColor="white"
                                       v-bind:value="sound.probability" />
                         </td>
                         <td>
