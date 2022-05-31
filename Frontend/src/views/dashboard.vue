@@ -240,6 +240,7 @@ export default {
   },
   created() {
     this.CheckValidSession();
+    this.GetSounds();
     //reload every 60 seconds
     const timer = setInterval(() => {
     this.GetSounds();
