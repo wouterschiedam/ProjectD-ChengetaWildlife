@@ -70,7 +70,6 @@
         <h2 style="color: black">Livedata</h2>
         <table class="flat-table flat-table-1">
           <tr>
-            <th>Date</th>
             <th>Time</th>
             <th>ID</th>
             <th>Latitude</th>
@@ -79,22 +78,23 @@
             <th>Probability</th>
             <th>Sound</th>
           </tr>
-          <tbody v-for="sound in sounds" :key="sound.id">
+          <tbody v-for="sound in sounds">
             <tr>
-              <td>{{ new Date(sound.time * 1000).toISOString().slice(0, 10) }}</td>
-              <td>{{ new Date(sound.time * 1000).toISOString().slice(-13, -5) }}</td>
+              <td>{{ new Date(sound.time * 1000).toLocaleDateString('en-NL') }} <br> {{ new Date(sound.time * 1000).toLocaleTimeString('en-NL') }}</td>
               <td>{{ sound.id }}</td>
               <td>{{ sound.latitude }}</td>
               <td>{{ sound.longitude }}</td>
               <td v-bind:class="sound.soundtype == 'gunshot' ? 'red' : 
-                  sound.soundtype == 'vehicle' ? 'yellow' : 
-                  sound.soundtype == 'animal' ? 'orange' : 
-                  sound.soundtype == 'unknown' ? 'black' : 'white'">{{ sound.soundtype }}</td>
+                    sound.soundtype == 'vehicle' ? 'yellow' : 
+                    sound.soundtype == 'animal' ? 'orange' : 
+                    sound.soundtype == 'unknown' ? 'black' : 'white'">
+                    {{ sound.soundtype }}
+              </td>
               <td><Progress :transitionDuration="4000" strokeColor="white"
           v-bind:value="sound.probability"/></td>
               <td>
                 <audio controls>
-                  <source :options="options" v-bind:src="sound.sound" />
+                  <source v-bind:src="sound.sound" />
                 </audio>
               </td>
             </tr>
@@ -151,6 +151,7 @@ export default {
       probability: 0,
       sound: "",
       time: 0,
+      timer: "",
       url: "http://{s}.tile.osm.org/{z}/{x}/{y}.png",
       attribution:
         '&copy; <a target="_blank" href="http://osm.org/copyright%22%3EOpenStreetMap</a> contributors',
@@ -205,18 +206,21 @@ export default {
       axios
           .get("api/auth/mqttdata", {
               params: {
-                  limit: 10
+                  limit: 15
               }
           })
         .then((response) => {
           this.sounds = response.data;
           this.Markers = response.data;
-          console.log(this.Markers)
+          console.log("updated")
         })
         .catch(function (error) {
           console.log(error);
           alert(error);
         });
+    },
+    cancelAutoUpdate() {
+        clearInterval(this.timer);
     },
     fullScreenView() {
       var mapId = document.getElementById("map");
@@ -248,8 +252,13 @@ export default {
   mounted() {
     this.CheckValidSession();
     this.GetSounds();
-    CheckValidSession();
+    this.timer = setInterval(() => {
+        this.GetSounds()
+    }, 60000)
   },
+  beforeDestroy() {
+    this.cancelAutoUpdate();
+  }
 };
 </script>
 
@@ -289,6 +298,7 @@ box-shadow: inset 0 -1px rgba(0,0,0,0.25),
     inset 0 1px rgba(0,0,0,0.25);
 }
 .flat-table th {
+    text-align: center;
     font-weight: normal;
     -webkit-font-smoothing: antialiased;
     padding: 1em;

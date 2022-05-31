@@ -15,11 +15,7 @@
                     <span class="material-icons-sharp">grid_view</span>
                     <h3>Dashboard</h3>
                 </a>
-                <a href="#">
-                    <span class="material-icons-sharp">work_history</span>
-                    <h3>Historische data</h3>
-                </a>
-                <a v-if="this.superUser" @click="Account()">
+                <a @click="Account()">
                     <span class="material-icons-sharp">person_add</span>
                     <h3>Nieuw account</h3>
                 </a>
@@ -33,7 +29,6 @@
             <h2 style="color: black">Historische data</h2>
             <table class="flat-table flat-table-1">
                 <tr>
-                    <th>Date</th>
                     <th>Time</th>
                     <th>ID</th>
                     <th>Latitude</th>
@@ -42,18 +37,17 @@
                     <th>Probability</th>
                     <th>Sound</th>
                 </tr>
-                <tbody v-for="sound in sounds" :key="sound.id">
+                <tbody v-for="sound in sounds">
                     <tr>
-                        <td>{{ new Date(sound.time * 1000).toISOString().slice(0, 10) }}</td>
-                        <td>{{ new Date(sound.time * 1000).toISOString().slice(-13, -5) }}</td>
+                        <td>{{ new Date(sound.time * 1000).toLocaleDateString('en-NL') }} <br> {{ new Date(sound.time * 1000).toLocaleTimeString('en-NL') }}</td>
                         <td>{{ sound.id }}</td>
                         <td>{{ sound.latitude }}</td>
                         <td>{{ sound.longitude }}</td>
                         <td v-bind:class="sound.soundtype == 'gunshot' ? 'red' :
-                  sound.soundtype == 'vehicle' ? 'yellow' :
-                  sound.soundtype == 'animal' ? 'orange' :
-                  sound.soundtype == 'unknown' ? 'black' : 'white'">
-                            {{ sound.soundtype }}
+                              sound.soundtype == 'vehicle' ? 'yellow' :
+                              sound.soundtype == 'animal' ? 'orange' :
+                              sound.soundtype == 'unknown' ? 'black' : 'white'">
+                              {{ sound.soundtype }}
                         </td>
                         <td>
                             <Progress :transitionDuration="1" strokeColor="white"
@@ -61,7 +55,7 @@
                         </td>
                         <td>
                             <audio controls>
-                                <source :options="options" v-bind:src="sound.sound" />
+                                <source v-bind:src="sound.sound" />
                             </audio>
                         </td>
                     </tr>
@@ -70,6 +64,12 @@
         </div>
     </div>
 </template>
+
+<script type="text/javascript" src="node_modules/vuejs/dist/vue.min.js"></script>
+<script type="text/javascript" src="node_modules/vue-simple-search-dropdown/dist/vue-simple-search-dropdown.min.js"></script>
+<script type="text/javascript">
+    Vue.use(Dropdown);
+</script>
 
 <script>
     import axios from "axios";
@@ -82,7 +82,6 @@
         },
         data() {
             return {
-
                 sounds: [],
                 id: 0,
                 latitude: "",
@@ -90,7 +89,8 @@
                 soundtype: "",
                 probability: 0,
                 sound: "",
-                time: 0
+                time: 0,
+                timer: ""
             }
         },
         methods: {
@@ -98,16 +98,20 @@
                 axios
                     .get("api/auth/mqttdata", {
                         params: {
-                            limit: 0
+                            limit: 150
                         }
                     })
                     .then((response) => {
                         this.sounds = response.data;
+                        console.log("updated");
                     })
                     .catch(function (error) {
                         console.log(error);
                         alert(error);
                     });
+            },
+            cancelAutoUpdate() {
+                clearInterval(this.timer);
             },
             dashboard() {
                 this.$router.push("dashboard");
@@ -123,15 +127,21 @@
         },
         mounted() {
             this.GetSounds();
+            this.timer = setInterval(() => {
+                this.GetSounds()
+            }, 60000)
+        },
+        beforeDestroy() {
+            this.cancelAutoUpdate();
         }
     }
 </script>
 
 <style scoped>
-.dashboard-geluidendata {
-    width: 100%;
-    margin-left: 13%;
-    margin-top: 3%;
-    position: absolute;
-}
+    .dashboard-geluidendata {
+        width: 100%;
+        margin-left: 13%;
+        margin-top: 3%;
+        position: absolute;
+    }
 </style>

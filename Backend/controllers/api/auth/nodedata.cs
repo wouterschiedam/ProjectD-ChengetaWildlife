@@ -11,9 +11,10 @@ namespace ProjectD_ChengetaWildlife.controllers
     {
 
         [HttpGet]
-        public IActionResult GetActionResult(int limit = 10)
+        public IActionResult GetActionResult(int limit = 15, string order = "ORDER BY time DESC")
         {
-            string query = limit == 10 ? "SELECT * FROM mqttdata ORDER BY time DESC LIMIT 10" : "SELECT * FROM mqttdata ORDER BY time DESC LIMIT 150";
+            string query = $"SELECT * FROM mqttdata {order} LIMIT {limit}";
+
             Database database = new Database();
             DataTable data1 = database.BuildQuery(query)
                 .Select();
