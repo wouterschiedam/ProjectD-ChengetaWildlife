@@ -14,7 +14,7 @@ namespace ProjectD_ChengetaWildlife.controllers
         public IActionResult GetActionResult()
         {
             Database database = new Database();
-            DataTable data1 = database.BuildQuery("select * from mqttdata order by time desc limit 10")
+            DataTable data1 = database.BuildQuery("select * from mqttdata order by time desc limit 20")
                 .Select();
             database.Close();
             return Ok(JsonConvert.SerializeObject(data1));
