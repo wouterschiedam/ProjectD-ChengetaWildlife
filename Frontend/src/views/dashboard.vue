@@ -1,5 +1,5 @@
 <template>
-  <div class="container" v-if="isLoggedIn()">
+  <div class="container" v-if="LoggedIn">
     <aside>
       <div class="top">
         <div class="logo">
@@ -135,11 +135,11 @@ export default {
     LPopup,
     Progress
   },
-  props: ["LoggedIn", "superUser"],
+  props: ["superUser"],
   data() {
     return {
-
-      sounds: [],
+      LoggedIn: null,
+      sounds: [], 
       id: 0,
       latitude: "",
       longitude: "",
@@ -172,7 +172,11 @@ export default {
         if(response.data.success){
           this.LoggedIn = true;
         }
-      this.LoggedIn = false
+        else {
+          this.LoggedIn = false
+        }
+      
+      
       });
     },
     Account: function(){
@@ -234,10 +238,9 @@ export default {
       },
     ],
   },
-  mounted() {
+  created() {
     this.CheckValidSession();
     this.GetSounds();
-    CheckValidSession();
   },
 };
 </script>
