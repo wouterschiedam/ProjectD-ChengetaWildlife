@@ -253,13 +253,15 @@ export default {
       });
     },
     countDownTimer() {
-      if (this.timer < 30000) {
+      if (this.timer <= 59) {
         setTimeout(() => {
           this.timer += 1;
           this.countDownTimer();
         }, 1000);
       } else {
         this.timer = 0;
+        this.countDownTimer();
+
       }
     },
   },
