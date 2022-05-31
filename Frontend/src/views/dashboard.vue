@@ -13,7 +13,7 @@
         </div>
       </div>
       <div class="sidebar">
-        <a @click="router.push({name: 'dashboard'}, )">
+        <a @click="router.push({ name: 'dashboard' })">
           <span class="material-icons-sharp">grid_view</span>
           <h3>Dashboard</h3>
         </a>
@@ -50,24 +50,27 @@
           :max-bounds="maxBounds"
         >
           <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
-          
-         <l-marker v-for="marker in Markers" :key="marker.id"
-         :lat-lng="[marker.latitude, marker.longitude]">
-          <l-popup>
-            <h3>{{ marker.id }}</h3>
-            <p>{{ marker.latitude }}</p>
-             <p>{{ marker.longitude }}</p>
-              <p>{{ marker.soundtype }}</p>
-               <p>{{ marker.probability }}</p>
-                <p>{{ marker.time }}</p>
-          </l-popup>
-      </l-marker>
 
-      </l-map>
+          <l-marker
+            v-for="marker in Markers"
+            :key="marker.id"
+            :lat-lng="[marker.latitude, marker.longitude]"
+          >
+            <l-popup>
+              <h3>{{ marker.id }}</h3>
+              <p>{{ marker.latitude }}</p>
+              <p>{{ marker.longitude }}</p>
+              <p>{{ marker.soundtype }}</p>
+              <p>{{ marker.probability }}</p>
+              <p>{{ marker.time }}</p>
+            </l-popup>
+          </l-marker>
+        </l-map>
       </div>
       <!-- MAIN - DATA -->
       <div class="dashboard-geluidendata">
         <h2 style="color: black">Livedata</h2>
+        <h2 style="color: black">Laatste update: {{ this.timer }}s</h2>
         <table class="flat-table flat-table-1">
           <tr>
             <th>ID</th>
@@ -82,12 +85,28 @@
               <td>{{ sound.id }}</td>
               <td>{{ sound.latitude }}</td>
               <td>{{ sound.longitude }}</td>
-              <td v-bind:class="sound.soundtype == 'gunshot' ? 'red' : 
-                  sound.soundtype == 'vehicle' ? 'yellow' : 
-                  sound.soundtype == 'animal' ? 'orange' : 
-                  sound.soundtype == 'unknown' ? 'black' : 'white'">{{ sound.soundtype }}</td>
-              <td><Progress :transitionDuration="4000" strokeColor="white"
-          v-bind:value="sound.probability"/></td>
+              <td
+                v-bind:class="
+                  sound.soundtype == 'gunshot'
+                    ? 'red'
+                    : sound.soundtype == 'vehicle'
+                    ? 'yellow'
+                    : sound.soundtype == 'animal'
+                    ? 'orange'
+                    : sound.soundtype == 'unknown'
+                    ? 'black'
+                    : 'white'
+                "
+              >
+                {{ sound.soundtype }}
+              </td>
+              <td>
+                <Progress
+                  :transitionDuration="4000"
+                  strokeColor="white"
+                  v-bind:value="sound.probability"
+                />
+              </td>
               <td>
                 <audio controls>
                   <source :options="options" v-bind:src="sound.sound" />
@@ -105,7 +124,7 @@
       </button>
     </div>
   </div>
-  <div v-else style="color: black; text-align: center;">
+  <div v-else style="color: black; text-align: center">
     <h1>Error</h1>
     <h2>404 Page not found</h2>
   </div>
@@ -115,13 +134,13 @@
 import Progress from "easy-circular-progress";
 import AppHeader1 from "../components/header1";
 import AppFooter from "../components/footer";
-import { latLngBounds, latLng } from "leaflet";
-import { LMap, LTileLayer, LMarker, LCircle, LPopup } from "vue2-leaflet";
+import { latLngBounds } from "leaflet";
+import { LMap, LTileLayer, LMarker, LPopup } from "vue2-leaflet";
 import html2canvas from "html2canvas";
 import axios from "axios";
 import router from "../router";
-import markerIconPng from "leaflet/dist/images/marker-icon.png"
-var VueCookie = require('vue-cookie');
+
+var VueCookie = require("vue-cookie");
 
 export default {
   name: "Dashboard",
@@ -131,15 +150,15 @@ export default {
     LMap,
     LTileLayer,
     LMarker,
-    LCircle,
     LPopup,
-    Progress
+    Progress,
   },
   props: ["superUser"],
   data() {
     return {
+      timer: 0,
       LoggedIn: null,
-      sounds: [], 
+      sounds: [],
       id: 0,
       latitude: "",
       longitude: "",
@@ -160,43 +179,48 @@ export default {
         [-2.30081290280357, 23.16963806152345],
         [-2.82991732677597, 23.58716201782228],
       ]),
-      Markers: {id: 13, latitude: "-1.5911952104643539", longitude: "23.40987496105848", soundtype: "gunshot"},
+      Markers: {
+        id: 13,
+        latitude: "-1.5911952104643539",
+        longitude: "23.40987496105848",
+        soundtype: "gunshot",
+      },
     };
   },
   methods: {
-    CheckValidSession(){
-      var oauth = VueCookie.get("token")
+    CheckValidSession() {
+      var oauth = VueCookie.get("token");
       var bodyFormData = new FormData();
       bodyFormData.append("oauth", oauth);
-      axios.post("api/auth/session", bodyFormData).then(response => {
-        if(response.data.success){
+      axios.post("api/auth/session", bodyFormData).then((response) => {
+        if (response.data.success) {
           this.LoggedIn = true;
+        } else {
+          this.LoggedIn = false;
         }
-        else {
-          this.LoggedIn = false
-        }
-      
-      
       });
     },
-    Account: function(){
-      router.push({name: "newUser", params: {LoggedIn: this.LoggedIn, superUser: this.superUser}}); 
+    Account: function () {
+      router.push({
+        name: "newUser",
+        params: { LoggedIn: this.LoggedIn, superUser: this.superUser },
+      });
     },
-    Logout(){
-      this.$cookie.delete('token');
-      this.$cookie.delete('superUser');
-      router.push({name: "Log in"});
+    Logout() {
+      this.$cookie.delete("token");
+      this.$cookie.delete("superUser");
+      router.push({ name: "Log in" });
     },
-    async isLoggedIn(){
+    async isLoggedIn() {
       return this.LoggedIn;
     },
-    Sidebaropen(){
-        var sideMenu = document.getElementById(menu-btn);
-        sideMenu.style.display = "block";	
+    Sidebaropen() {
+      var sideMenu = document.getElementById(menu - btn);
+      sideMenu.style.display = "block";
     },
-    Sidebarclose(){
-        var sideMenu = document.getElementById(closee-btn);
-        sideMenu.style.display = "none";
+    Sidebarclose() {
+      var sideMenu = document.getElementById(closee - btn);
+      sideMenu.style.display = "none";
     },
     GetSounds() {
       axios
@@ -204,7 +228,7 @@ export default {
         .then((response) => {
           this.sounds = response.data;
           this.Markers = response.data;
-          console.log(this.Markers)
+  
         })
         .catch(function (error) {
           console.log(error);
@@ -228,6 +252,16 @@ export default {
         temp_link.click();
       });
     },
+    countDownTimer() {
+      if (this.timer < 30000) {
+        setTimeout(() => {
+          this.timer += 1;
+          this.countDownTimer();
+        }, 1000);
+      } else {
+        this.timer = 0;
+      }
+    },
   },
   metaInfo: {
     title: "dashboard - Chengeta wildlife",
@@ -238,14 +272,17 @@ export default {
       },
     ],
   },
+  mounted() {
+    this.GetSounds();
+  },
   created() {
     this.CheckValidSession();
-    this.GetSounds();
-    //reload every 60 seconds
-    const timer = setInterval(() => {
-    this.GetSounds();
-  }, 60000);
     
+    //reload every 60 seconds
+    const counter = setInterval(() => {
+      this.GetSounds();
+    }, 60000);
+    this.countDownTimer();
   },
 };
 </script>
@@ -256,68 +293,68 @@ main {
   width: 100%;
 }
 .red {
-    color: red;
+  color: red;
 }
 .white {
-    color: white;
+  color: white;
 }
 .yellow {
-    color: yellow;
+  color: yellow;
 }
 .black {
-    color: black;
+  color: black;
 }
 .orange {
-    color: orange;
+  color: orange;
 }
 .flat-table {
-    width: 80%;
-    margin-bottom: 20px;
-    border-collapse: collapse;
-    font-family: bold;
-    color: #f7f7f7;
-    border: none;
-    border-radius: 3px;
-    -webkit-border-radius: 3px;
-    -moz-border-radius: 3px;
+  width: 80%;
+  margin-bottom: 20px;
+  border-collapse: collapse;
+  font-family: bold;
+  color: #f7f7f7;
+  border: none;
+  border-radius: 3px;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
 }
-.flat-table th, .flat-table td {
-box-shadow: inset 0 -1px rgba(0,0,0,0.25), 
-    inset 0 1px rgba(0,0,0,0.25);
+.flat-table th,
+.flat-table td {
+  box-shadow: inset 0 -1px rgba(0, 0, 0, 0.25), inset 0 1px rgba(0, 0, 0, 0.25);
 }
 .flat-table th {
-    font-weight: normal;
-    -webkit-font-smoothing: antialiased;
-    padding: 1em;
-    color: white;
-    text-shadow: 0 0 1px rgba(0,0,0,0.1);
-    font-size: 1.5em;
+  font-weight: normal;
+  -webkit-font-smoothing: antialiased;
+  padding: 1em;
+  color: white;
+  text-shadow: 0 0 1px rgba(0, 0, 0, 0.1);
+  font-size: 1.5em;
 }
 .flat-table td {
-    padding: 0.7em 1em 0.7em 1.15em;
-    text-shadow: 0 0 1px rgba(255,255,255,0.1);
-    font-size: 1.4em;
+  padding: 0.7em 1em 0.7em 1.15em;
+  text-shadow: 0 0 1px rgba(255, 255, 255, 0.1);
+  font-size: 1.4em;
 }
 .flat-table tr {
-    -webkit-transition: background 0.3s, box-shadow 0.3s;
-    -moz-transition: background 0.3s, box-shadow 0.3s;
-    transition: background 0.3s, box-shadow 0.3s;
+  -webkit-transition: background 0.3s, box-shadow 0.3s;
+  -moz-transition: background 0.3s, box-shadow 0.3s;
+  transition: background 0.3s, box-shadow 0.3s;
 }
-.flat-table-1 tbody{
-    background: #336ca6;
+.flat-table-1 tbody {
+  background: #336ca6;
 }
-.flat-table-1 th{
-    background: #2a5784;
+.flat-table-1 th {
+  background: #2a5784;
 }
 .flat-table-1 tr:hover {
-    background: #448dda;
+  background: #448dda;
 }
 
 audio:hover {
-    transform: scale(1.1);
+  transform: scale(1.1);
 }
 audio {
-    filter: drop-shadow(2px 3px 3px #333);
+  filter: drop-shadow(2px 3px 3px #333);
 }
 .soundInfo {
   display: flex;
