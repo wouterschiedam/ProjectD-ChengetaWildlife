@@ -13,7 +13,7 @@ namespace ProjectD_ChengetaWildlife.controllers
         [HttpGet]
         public IActionResult GetActionResult(int limit = 15, string order = "ORDER BY time DESC")
         {
-            string query = $"SELECT * FROM mqttdata {order} LIMIT {limit}";
+            string query = $"SELECT pid, time, latitude, longitude, soundtype, sound FROM mqttdata {order} LIMIT {limit}";
 
             Database database = new Database();
             DataTable data1 = database.BuildQuery(query)
