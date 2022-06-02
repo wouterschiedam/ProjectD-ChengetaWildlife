@@ -50,7 +50,7 @@
               <br />
               {{ new Date(sound.time * 1000).toLocaleTimeString("en-NL") }}
             </td>
-            <td>{{ sound.id }}</td>
+            <td>{{ sound.pid }}</td>
             <td>{{ sound.latitude }}</td>
             <td>{{ sound.longitude }}</td>
             <td
@@ -111,7 +111,7 @@ export default {
   data() {
     return {
       sounds: [],
-      id: 0,
+      pid: 0,
       latitude: "",
       longitude: "",
       soundtype: "",

@@ -62,7 +62,7 @@
                 <br />
                 {{ new Date(sound.time * 1000).toLocaleTimeString("en-NL") }}
               </td>
-              <td>{{ sound.id }}</td>
+              <td>{{ sound.pid }}</td>
               <td>{{ sound.latitude }}</td>
               <td>{{ sound.longitude }}</td>
               <td
@@ -135,14 +135,7 @@ export default {
       timer: 0,
       LoggedIn: null,
       sounds: [],
-      id: 0,
       point: null,
-      latitude: "",
-      longitude: "",
-      soundtype: "",
-      probability: 0,
-      sound: "",
-      time: 0,
       timer: "",
       zoom: 13,
       center: L.latLng(47.41322, -1.219482),
@@ -202,9 +195,10 @@ export default {
           this.Markers = response.data;
 
           this.Markers.forEach((element) => {
-            this.marker.push([element.latitude, element.longitude]);
+              this.marker.push([element.latitude, element.longitude]);
           });
 
+          this.createMap();
         })
         .catch(function (error) {
           console.log(error);
@@ -221,17 +215,15 @@ export default {
 
     },
     AddMarkers(map) {
-      console.log(this.marker[5][0]);
-      // var MyMarkers = L.featureGroup();
-      // for (var i = 0; i < 13; i++) {
-      //     console.log(this.marker[i][0]);
-      //     console.log(this.marker[i][1]);
-      //     var marker = new L.marker([this.marker[i][0], this.marker[i][1]]);
-      //     MyMarkers.addLayer(marker);
-      // }
+       var MyMarkers = L.featureGroup();
+       for (var i = 0; i < 13; i++) {
+           console.log(this.marker[i]);
+           var marker = new L.marker([this.marker[i][0], this.marker[i][1]]);
+           MyMarkers.addLayer(marker);
+       }
       
-      // MyMarkers.addTo(map);
-      // map.fitBounds(MyMarkers.getBounds());
+       MyMarkers.addTo(map);
+       map.fitBounds(MyMarkers.getBounds());
 
 
     },
@@ -278,7 +270,6 @@ export default {
   },
   mounted() {
     this.GetSounds();
-    this.createMap();
   },
   created() {
     this.CheckValidSession();
