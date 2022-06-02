@@ -41,61 +41,9 @@
     </aside>
     <!-- MAIN - MAP -->
     <main>
-      <div class="dashboard-map" id="map"></div>
-      <!-- MAIN - DATA -->
-      <div class="dashboard-geluidendata">
-        <h2 style="color: black">Laatste update: {{ this.timer }}s</h2>
-        <table class="flat-table flat-table-1">
-          <tr>
-            <th>Time</th>
-            <th>ID</th>
-            <th>Latitude</th>
-            <th>Longitude</th>
-            <th>Soundtype</th>
-            <th>Probability</th>
-            <th>Sound</th>
-          </tr>
-          <tbody v-for="sound in sounds" :key="sound.id">
-            <tr>
-              <td>
-                {{ new Date(sound.time * 1000).toLocaleDateString("en-NL") }}
-                <br />
-                {{ new Date(sound.time * 1000).toLocaleTimeString("en-NL") }}
-              </td>
-              <td>{{ sound.pid }}</td>
-              <td>{{ sound.latitude }}</td>
-              <td>{{ sound.longitude }}</td>
-              <td
-                v-bind:class="
-                  sound.soundtype == 'gunshot'
-                    ? 'red'
-                    : sound.soundtype == 'vehicle'
-                    ? 'yellow'
-                    : sound.soundtype == 'animal'
-                    ? 'orange'
-                    : sound.soundtype == 'unknown'
-                    ? 'black'
-                    : 'white'
-                "
-              >
-                {{ sound.soundtype }}
-              </td>
-              <td>
-                <Progress
-                  :transitionDuration="4000"
-                  strokeColor="white"
-                  v-bind:value="sound.probability"
-                />
-              </td>
-              <td>
-                <audio controls>
-                  <source v-bind:src="sound.sound" />
-                </audio>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+        <div class="dashboard-map" id="map"></div>
+        <!-- MAIN - DATA -->
+        <DashboardTable/>
     </main>
     <!-- TOP -->
     <div class="top">
@@ -107,14 +55,15 @@
 </template>
 
 <script>
-import Progress from "easy-circular-progress";
 import AppHeader1 from "../components/header1";
 import AppFooter from "../components/footer";
+import DashboardTable from "../components/dashboardTable";
 import { latLngBounds } from "leaflet";
 import { LMap, LTileLayer, LMarker, LPopup, LFeatureGroup } from "vue2-leaflet";
 import html2canvas from "html2canvas";
 import axios from "axios";
 import router from "../router";
+
 
 var VueCookie = require("vue-cookie");
 
@@ -127,14 +76,12 @@ export default {
     LTileLayer,
     LMarker,
     LPopup,
-    Progress,
+    DashboardTable
   },
   props: ["superUser"],
   data() {
     return {
-      timer: 0,
       LoggedIn: null,
-      sounds: [],
       point: null,
       timer: "",
       zoom: 13,
@@ -159,7 +106,7 @@ export default {
       });
     },
     historyData() {
-      this.$router.push("historyData");
+      this.$router.push('/historyData');
     },
     Account: function () {
       router.push({
@@ -191,7 +138,6 @@ export default {
           },
         })
         .then((response) => {
-          this.sounds = response.data;
           this.Markers = response.data;
 
           this.Markers.forEach((element) => {
@@ -224,8 +170,6 @@ export default {
       
        MyMarkers.addTo(map);
        map.fitBounds(MyMarkers.getBounds());
-
-
     },
     cancelAutoUpdate() {
       clearInterval(this.timer);
@@ -268,9 +212,6 @@ export default {
       },
     ],
   },
-  mounted() {
-    this.GetSounds();
-  },
   created() {
     this.CheckValidSession();
 
@@ -280,94 +221,15 @@ export default {
     // }, 60000);
     // this.countDownTimer();
   },
-  beforeDestroy() {
-    this.cancelAutoUpdate();
-  },
 };
 </script>
 
 <style>
 /* STYLING DATA */
 main {
-  width: 100%;
+  width: 50%;
 }
-.red {
-  color: red;
-}
-.white {
-  color: white;
-}
-.yellow {
-  color: yellow;
-}
-.black {
-  color: black;
-}
-.orange {
-  color: orange;
-}
-.flat-table {
-  width: 80%;
-  margin-bottom: 20px;
-  border-collapse: collapse;
-  font-family: bold;
-  color: #f7f7f7;
-  border: none;
-  border-radius: 3px;
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-}
-.flat-table th,
-.flat-table td {
-  box-shadow: inset 0 -1px rgba(0, 0, 0, 0.25), inset 0 1px rgba(0, 0, 0, 0.25);
-}
-.flat-table th {
-  text-align: center;
-  font-weight: normal;
-  -webkit-font-smoothing: antialiased;
-  padding: 1em;
-  color: white;
-  text-shadow: 0 0 1px rgba(0, 0, 0, 0.1);
-  font-size: 1.5em;
-}
-.flat-table td {
-  padding: 0.7em 1em 0.7em 1.15em;
-  text-shadow: 0 0 1px rgba(255, 255, 255, 0.1);
-  font-size: 1.4em;
-}
-.flat-table tr {
-  -webkit-transition: background 0.3s, box-shadow 0.3s;
-  -moz-transition: background 0.3s, box-shadow 0.3s;
-  transition: background 0.3s, box-shadow 0.3s;
-}
-.flat-table-1 tbody {
-  background: #336ca6;
-}
-.flat-table-1 th {
-  background: #2a5784;
-}
-.flat-table-1 tbody tr:hover {
-  background: #448dda;
-  filter: drop-shadow(1px 2px 4px #333);
-}
-audio:hover {
-  transform: scale(1.05);
-  filter: drop-shadow(3px 5px 5px #333);
-}
-audio {
-  filter: drop-shadow(2px 3px 3px #333);
-}
-.soundInfo {
-  display: flex;
-  color: black;
-  width: 100%;
-}
-.soundInfo div {
-  margin: 2% 8% 0 0;
-}
-.soundInfo div p {
-  margin-bottom: 3%;
-}
+
 .dashboard-map {
   flex: 0 0 auto;
   width: 100%;
@@ -406,7 +268,6 @@ small {
 }
 .container {
   display: grid;
-  width: 98%;
   margin: 0 auto;
   gap: 1.8rem;
   grid-template-columns: 14rem 82% auto;
@@ -557,43 +418,5 @@ aside .sidebar a:hover span {
   .dashboard-map {
     width: 95%;
   }
-  .dashboard-geluidendata {
-    top: 63%;
-  }
-}
-</style>
-
-<style scoped>
-/* custom scrollbar */
-::-webkit-scrollbar {
-  width: 10px;
-}
-
-::-webkit-scrollbar-track {
-  background-color: transparent;
-}
-
-::-webkit-scrollbar-thumb {
-  background-color: #d6dee1;
-  border-radius: 20px;
-  border: 6px solid transparent;
-  background-clip: content-box;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background-color: #a8bbbf;
-}
-
-/* STYLING DATA */
-.dashboard-geluidendata {
-  margin-top: 1%;
-  width: 100%;
-  height: 50%;
-  display: flex;
-  position: absolute;
-  overflow-x: hidden;
-  overflow-y: auto;
-  text-align: justify;
-  flex-direction: column;
 }
 </style>
