@@ -25,7 +25,7 @@
           <span class="material-icons-sharp">print</span>
           <h3>Print map</h3>
         </a>
-        <a href="#">
+        <a @click="historyData()">
           <span class="material-icons-sharp">work_history</span>
           <h3>Historische data</h3>
         </a>
@@ -73,6 +73,7 @@
         <h2 style="color: black">Laatste update: {{ this.timer }}s</h2>
         <table class="flat-table flat-table-1">
           <tr>
+            <th>Time</th>
             <th>ID</th>
             <th>Latitude</th>
             <th>Longitude</th>
@@ -80,36 +81,23 @@
             <th>Probability</th>
             <th>Sound</th>
           </tr>
-          <tbody v-for="sound in sounds" :key="sound.id">
+          <tbody v-for="sound in sounds">
             <tr>
+              <td>{{ new Date(sound.time * 1000).toLocaleDateString('en-NL') }} <br> {{ new Date(sound.time * 1000).toLocaleTimeString('en-NL') }}</td>
               <td>{{ sound.id }}</td>
               <td>{{ sound.latitude }}</td>
               <td>{{ sound.longitude }}</td>
-              <td
-                v-bind:class="
-                  sound.soundtype == 'gunshot'
-                    ? 'red'
-                    : sound.soundtype == 'vehicle'
-                    ? 'yellow'
-                    : sound.soundtype == 'animal'
-                    ? 'orange'
-                    : sound.soundtype == 'unknown'
-                    ? 'black'
-                    : 'white'
-                "
-              >
-                {{ sound.soundtype }}
+              <td v-bind:class="sound.soundtype == 'gunshot' ? 'red' : 
+                    sound.soundtype == 'vehicle' ? 'yellow' : 
+                    sound.soundtype == 'animal' ? 'orange' : 
+                    sound.soundtype == 'unknown' ? 'black' : 'white'">
+                    {{ sound.soundtype }}
               </td>
-              <td>
-                <Progress
-                  :transitionDuration="4000"
-                  strokeColor="white"
-                  v-bind:value="sound.probability"
-                />
-              </td>
+              <td><Progress :transitionDuration="4000" strokeColor="white"
+          v-bind:value="sound.probability"/></td>
               <td>
                 <audio controls>
-                  <source :options="options" v-bind:src="sound.sound" />
+                  <source v-bind:src="sound.sound" />
                 </audio>
               </td>
             </tr>
@@ -166,6 +154,7 @@ export default {
       probability: 0,
       sound: "",
       time: 0,
+      timer: "",
       url: "http://{s}.tile.osm.org/{z}/{x}/{y}.png",
       attribution:
         '&copy; <a target="_blank" href="http://osm.org/copyright%22%3EOpenStreetMap</a> contributors',
@@ -200,11 +189,11 @@ export default {
         }
       });
     },
-    Account: function () {
-      router.push({
-        name: "newUser",
-        params: { LoggedIn: this.LoggedIn, superUser: this.superUser },
-      });
+    historyData() {
+      this.$router.push("historyData");
+    },
+    Account: function(){
+      router.push({name: "newUser", params: {LoggedIn: this.LoggedIn, superUser: this.superUser}}); 
     },
     Logout() {
       this.$cookie.delete("token");
@@ -224,16 +213,23 @@ export default {
     },
     GetSounds() {
       axios
-        .get("api/auth/mqttdata")
+          .get("api/auth/mqttdata", {
+              params: {
+                  limit: 15
+              }
+          })
         .then((response) => {
           this.sounds = response.data;
           this.Markers = response.data;
-  
+        
         })
         .catch(function (error) {
           console.log(error);
           alert(error);
         });
+    },
+    cancelAutoUpdate() {
+        clearInterval(this.timer);
     },
     fullScreenView() {
       var mapId = document.getElementById("map");
@@ -286,6 +282,9 @@ export default {
     }, 60000);
     this.countDownTimer();
   },
+  beforeDestroy() {
+    this.cancelAutoUpdate();
+  }
 };
 </script>
 
@@ -325,12 +324,13 @@ main {
   box-shadow: inset 0 -1px rgba(0, 0, 0, 0.25), inset 0 1px rgba(0, 0, 0, 0.25);
 }
 .flat-table th {
-  font-weight: normal;
-  -webkit-font-smoothing: antialiased;
-  padding: 1em;
-  color: white;
-  text-shadow: 0 0 1px rgba(0, 0, 0, 0.1);
-  font-size: 1.5em;
+    text-align: center;
+    font-weight: normal;
+    -webkit-font-smoothing: antialiased;
+    padding: 1em;
+    color: white;
+    text-shadow: 0 0 1px rgba(0,0,0,0.1);
+    font-size: 1.5em;
 }
 .flat-table td {
   padding: 0.7em 1em 0.7em 1.15em;
@@ -378,37 +378,6 @@ audio {
   position: relative;
   align-items: flex-start;
   flex-direction: column;
-}
-/* STYLING DATA */
-.dashboard-geluidendata {
-  margin-top: 1%;
-  width: 100%;
-  display: flex;
-  height: 50%;
-  position: absolute;
-  overflow-x: hidden;
-  overflow-y: auto;
-  text-align: justify;
-  flex-direction: column;
-}
-/* custom scrollbar */
-::-webkit-scrollbar {
-  width: 10px;
-}
-
-::-webkit-scrollbar-track {
-  background-color: transparent;
-}
-
-::-webkit-scrollbar-thumb {
-  background-color: #d6dee1;
-  border-radius: 20px;
-  border: 6px solid transparent;
-  background-clip: content-box;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background-color: #a8bbbf;
 }
 /* STYLING SIDEBAR */
 a {
@@ -593,5 +562,41 @@ aside .sidebar a:hover span {
   .dashboard-geluidendata {
     top: 63%;
   }
+}
+
+</style>
+
+<style scoped>
+    /* custom scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #d6dee1;
+  border-radius: 20px;
+  border: 6px solid transparent;
+  background-clip: content-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #a8bbbf;
+}
+
+/* STYLING DATA */
+.dashboard-geluidendata {
+  margin-top: 1%;
+  width: 100%;
+  height: 50%;
+  display: flex;
+  position: absolute;
+  overflow-x: hidden;
+  overflow-y: auto;
+  text-align: justify;
+  flex-direction: column;
 }
 </style>
