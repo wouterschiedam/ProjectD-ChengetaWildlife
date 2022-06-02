@@ -56,6 +56,7 @@
 
 <script>
 import AppHeader1 from "../components/header1";
+import Progress from "easy-circular-progress";
 import AppFooter from "../components/footer";
 import DashboardTable from "../components/dashboardTable";
 import { latLngBounds } from "leaflet";
@@ -70,7 +71,6 @@ var VueCookie = require("vue-cookie");
 export default {
   name: "Dashboard",
   components: {
-    AppHeader1,
     AppFooter,
     LMap,
     LTileLayer,
@@ -90,6 +90,10 @@ export default {
       attribution:
         '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
       marker: [],
+      maxBounds: latLngBounds([
+        [-6.30081290280357, 23.16963806152345],
+        [2.82991732677597, 23.58716201782228],
+      ]),
     };
   },
   methods: {
@@ -141,7 +145,7 @@ export default {
           this.Markers = response.data;
 
           this.Markers.forEach((element) => {
-              this.marker.push([element.latitude, element.longitude]);
+            this.marker.push([element.latitude, element.longitude]);
           });
 
           this.createMap();
@@ -158,18 +162,18 @@ export default {
         maxZoom: 18,
       }).addTo(map);
       this.AddMarkers(map);
-
     },
     AddMarkers(map) {
-       var MyMarkers = L.featureGroup();
-       for (var i = 0; i < 13; i++) {
-           console.log(this.marker[i]);
-           var marker = new L.marker([this.marker[i][0], this.marker[i][1]]);
-           MyMarkers.addLayer(marker);
-       }
-      
-       MyMarkers.addTo(map);
-       map.fitBounds(MyMarkers.getBounds());
+      var MyMarkers = L.featureGroup();
+      for (var i = 0; i < 13; i++) {
+        console.log(this.marker[i]);
+        var marker = new L.marker([this.marker[i][0], this.marker[i][1]]);
+        MyMarkers.addLayer(marker);
+      }
+
+      MyMarkers.addTo(map);
+      map.fitBounds(MyMarkers.getBounds());
+      map.setMaxBounds(map.getBounds());
     },
     cancelAutoUpdate() {
       clearInterval(this.timer);

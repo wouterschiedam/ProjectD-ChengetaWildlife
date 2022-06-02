@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import AppHeader from "../components/header";
+
 import AppFooter from "../components/footer";
 import router from "../router";
 import axios from "axios";
@@ -34,7 +34,6 @@ var VueCookie = require('vue-cookie');
 export default {
   name: "Login",
   components: {
-    AppHeader,
     AppFooter,
   },
   data() {

@@ -48,14 +48,12 @@
 </template>
 
 <script>
-import AppHeader from "../components/header";
 import AppFooter from "../components/footer";
 import router from "../router";
 import axios from "axios";
 export default {
   name: "Login",
   components: {
-    AppHeader,
     AppFooter,
   },
   props: ["LoggedIn", "superUser"],
