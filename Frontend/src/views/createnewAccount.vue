@@ -26,7 +26,6 @@
 </template>
 
 <script>
-import AppHeader from '../components/header'
 import AppFooter from '../components/footer'
 import axios from 'axios';
 // import { VueCookieNext } from "vue-cookie-next";
@@ -35,7 +34,6 @@ import router from "../router";
 export default {
   name: 'Login',
   components: {
-    AppHeader,
     AppFooter,
   },
   data(){
