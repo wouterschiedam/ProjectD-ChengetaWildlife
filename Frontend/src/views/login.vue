@@ -76,7 +76,7 @@ export default {
                 if (response.data.success == true) {
                     this.$store.commit('setAuth', true);
                     this.$store.commit('setsuperUser', response.data.superuser);
-                    this.$cookie.set("token", decodeURI(response.data.token), {
+                    localStorage.setItem("token", decodeURI(response.data.token), {
                         expire: "2h",
                     });
                     this.$router.replace({ name: "dashboard" });

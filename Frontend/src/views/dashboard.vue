@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container" >
     <aside>
       <div class="top">
         <div class="logo">
@@ -148,15 +148,15 @@ export default {
     };
   },
   methods: {
-    CheckValidSession() {
-      var oauth = VueCookie.get("token");
+    checkSession() {
+      var oauth = localStorage.getItem("token");
       var bodyFormData = new FormData();
       bodyFormData.append("oauth", oauth);
       axios.post("api/auth/session", bodyFormData).then((response) => {
         if (response.data.success) {
-          this.LoggedIn = true;
+          return true
         } else {
-          this.LoggedIn = false;
+          return false;
         }
       });
     },

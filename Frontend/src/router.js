@@ -43,7 +43,7 @@ export default new Router({
             path: "/newUser",
             component: newUser,
             beforeEnter: (to, from, next) => {
-              if (store.state.authenticated && store.state.superUser) {
+              if (localStorage.getItem('token') != null && store.state.superUser) {
                   next();
               } else {
                   next({name: "Log in"});
