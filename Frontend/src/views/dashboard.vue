@@ -29,7 +29,7 @@
           <span class="material-icons-sharp">work_history</span>
           <h3>Historische data</h3>
         </a>
-        <a v-if="this.superUser" @click="Account()">
+        <a v-if="this.$store.state.superUser" @click="Account()">
           <span class="material-icons-sharp">person_add</span>
           <h3>Nieuw account</h3>
         </a>
@@ -118,7 +118,7 @@ import router from "../router";
 var VueCookie = require("vue-cookie");
 
 export default {
-  name: "Dashboard",
+  name: "dashboard",
   components: {
     AppFooter,
     LMap,
@@ -161,7 +161,7 @@ export default {
       });
     },
     historyData() {
-      this.$router.push("historyData");
+      this.$router.replace({name: "historyData"});
     },
     Account: function () {
       router.push({
@@ -171,8 +171,10 @@ export default {
     },
     Logout() {
       this.$cookie.delete("token");
-      this.$cookie.delete("superUser");
-      router.push({ name: "Log in" });
+      this.$store.commit("setsuperUser", false)
+      this.$store.commit('setAuth', false);
+       this.$router.replace({ name: "Log in" });
+       console.log(this.$store.state.authenticated);
     },
     async isLoggedIn() {
       return this.LoggedIn;
