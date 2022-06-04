@@ -48,14 +48,12 @@
 </template>
 
 <script>
-import AppHeader from "../components/header";
 import AppFooter from "../components/footer";
 import router from "../router";
 import axios from "axios";
 export default {
-  name: "Login",
+  name: "newUser",
   components: {
-    AppHeader,
     AppFooter,
   },
   props: ["LoggedIn", "superUser"],
@@ -118,9 +116,9 @@ export default {
           );
         if (this.created) {
           alert("Account is succesvol aangemaakt!")
-          router.push({
-            name: "test",
-            params: {LoggedIn : true, superUser: this.$cookie.get('superUser')}
+          this.$router.replace({
+            name: "dashboard",
+           
           });
         } 
         else {

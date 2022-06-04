@@ -9,17 +9,17 @@ namespace ProjectD_ChengetaWildlife.controllers
     [ApiController]
     public class Nodedata : Controller
     {
-
         [HttpGet]
-        public IActionResult GetActionResult(int limit = 15, string order = "ORDER BY time DESC")
-        {
-            string query = $"SELECT * FROM mqttdata {order} LIMIT {limit}";
+        public string Get(int limit = 15, string order = "time")
+        {   
 
             Database database = new Database();
-            DataTable data1 = database.BuildQuery(query)
+            DataTable data = database.BuildQuery($"SELECT * FROM mqttdata ORDER BY @order DESC LIMIT @data")
+                .AddParameter("order", order)
+                .AddParameter("data", limit)
                 .Select();
             database.Close();
-            return Ok(JsonConvert.SerializeObject(data1));
+            return JsonConvert.SerializeObject(data);
         }
     }
 }

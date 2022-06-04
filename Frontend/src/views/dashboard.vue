@@ -1,5 +1,5 @@
 <template>
-  <div class="container" v-if="LoggedIn">
+  <div class="container">
     <aside>
       <div class="top">
         <div class="logo">
@@ -29,7 +29,7 @@
           <span class="material-icons-sharp">work_history</span>
           <h3>Historische data</h3>
         </a>
-        <a v-if="this.superUser" @click="Account()">
+        <a v-if="this.$store.state.superUser" @click="Account()">
           <span class="material-icons-sharp">person_add</span>
           <h3>Nieuw account</h3>
         </a>
@@ -41,35 +41,9 @@
     </aside>
     <!-- MAIN - MAP -->
     <main>
-      <div class="dashboard-map" id="map">
-        <l-map
-          style="height: 100%; width: 100%"
-          :zoom="zoom"
-          :center="center"
-          :bounds="bounds"
-          :max-bounds="maxBounds"
-        >
-          <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
-
-          <l-marker
-            v-for="marker in Markers"
-            :key="marker.id"
-            :lat-lng="[marker.latitude, marker.longitude]"
-          >
-            <l-popup>
-              <h3>{{ marker.id }}</h3>
-              <p>{{ marker.latitude }}</p>
-              <p>{{ marker.longitude }}</p>
-              <p>{{ marker.soundtype }}</p>
-              <p>{{ marker.probability }}</p>
-              <p>{{ marker.time }}</p>
-            </l-popup>
-          </l-marker>
-        </l-map>
-      </div>
+      <div class="dashboard-map" id="map"></div>
       <!-- MAIN - DATA -->
       <div class="dashboard-geluidendata">
-        <h2 style="color: black">Livedata</h2>
         <h2 style="color: black">Laatste update: {{ this.timer }}s</h2>
         <table class="flat-table flat-table-1">
           <tr>
@@ -81,20 +55,38 @@
             <th>Probability</th>
             <th>Sound</th>
           </tr>
-          <tbody v-for="sound in sounds">
+          <tbody v-for="sound in sounds" :key="sound.id">
             <tr>
-              <td>{{ new Date(sound.time * 1000).toLocaleDateString('en-NL') }} <br> {{ new Date(sound.time * 1000).toLocaleTimeString('en-NL') }}</td>
-              <td>{{ sound.id }}</td>
+              <td>
+                {{ new Date(sound.time * 1000).toLocaleDateString("en-NL") }}
+                <br />
+                {{ new Date(sound.time * 1000).toLocaleTimeString("en-NL") }}
+              </td>
+              <td>{{ sound.pid }}</td>
               <td>{{ sound.latitude }}</td>
               <td>{{ sound.longitude }}</td>
-              <td v-bind:class="sound.soundtype == 'gunshot' ? 'red' : 
-                    sound.soundtype == 'vehicle' ? 'yellow' : 
-                    sound.soundtype == 'animal' ? 'orange' : 
-                    sound.soundtype == 'unknown' ? 'black' : 'white'">
-                    {{ sound.soundtype }}
+              <td
+                v-bind:class="
+                  sound.soundtype == 'gunshot'
+                    ? 'red'
+                    : sound.soundtype == 'vehicle'
+                    ? 'yellow'
+                    : sound.soundtype == 'animal'
+                    ? 'orange'
+                    : sound.soundtype == 'unknown'
+                    ? 'black'
+                    : 'white'
+                "
+              >
+                {{ sound.soundtype }}
               </td>
-              <td><Progress :transitionDuration="4000" strokeColor="white"
-          v-bind:value="sound.probability"/></td>
+              <td>
+                <Progress
+                  :transitionDuration="4000"
+                  strokeColor="white"
+                  v-bind:value="sound.probability"
+                />
+              </td>
               <td>
                 <audio controls>
                   <source v-bind:src="sound.sound" />
@@ -112,18 +104,13 @@
       </button>
     </div>
   </div>
-  <div v-else style="color: black; text-align: center">
-    <h1>Error</h1>
-    <h2>404 Page not found</h2>
-  </div>
 </template>
 
 <script>
 import Progress from "easy-circular-progress";
-import AppHeader1 from "../components/header1";
 import AppFooter from "../components/footer";
 import { latLngBounds } from "leaflet";
-import { LMap, LTileLayer, LMarker, LPopup } from "vue2-leaflet";
+import { LMap, LTileLayer, LMarker, LPopup, LFeatureGroup } from "vue2-leaflet";
 import html2canvas from "html2canvas";
 import axios from "axios";
 import router from "../router";
@@ -131,9 +118,8 @@ import router from "../router";
 var VueCookie = require("vue-cookie");
 
 export default {
-  name: "Dashboard",
+  name: "dashboard",
   components: {
-    AppHeader1,
     AppFooter,
     LMap,
     LTileLayer,
@@ -147,33 +133,18 @@ export default {
       timer: 0,
       LoggedIn: null,
       sounds: [],
-      id: 0,
-      latitude: "",
-      longitude: "",
-      soundtype: "",
-      probability: 0,
-      sound: "",
-      time: 0,
+      point: null,
       timer: "",
+      zoom: 13,
+      center: L.latLng(47.41322, -1.219482),
       url: "http://{s}.tile.osm.org/{z}/{x}/{y}.png",
       attribution:
-        '&copy; <a target="_blank" href="http://osm.org/copyright%22%3EOpenStreetMap</a> contributors',
-      zoom: 16,
-      center: [51.505, -0.159],
-      bounds: latLngBounds([
-        [-2.30081290280357, 23.16963806152345],
-        [-2.82991732677597, 23.58716201782228],
-      ]),
+        '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
+      marker: [],
       maxBounds: latLngBounds([
-        [-2.30081290280357, 23.16963806152345],
-        [-2.82991732677597, 23.58716201782228],
+        [-6.30081290280357, 23.16963806152345],
+        [2.82991732677597, 23.58716201782228],
       ]),
-      Markers: {
-        id: 13,
-        latitude: "-1.5911952104643539",
-        longitude: "23.40987496105848",
-        soundtype: "gunshot",
-      },
     };
   },
   methods: {
@@ -190,15 +161,19 @@ export default {
       });
     },
     historyData() {
-      this.$router.push("historyData");
+      this.$router.replace({name: "historyData"});
     },
-    Account: function(){
-      router.push({name: "newUser", params: {LoggedIn: this.LoggedIn, superUser: this.superUser}}); 
+    Account: function () {
+      router.push({
+        name: "newUser",
+        params: { LoggedIn: this.LoggedIn, superUser: this.superUser },
+      });
     },
     Logout() {
       this.$cookie.delete("token");
-      this.$cookie.delete("superUser");
-      router.push({ name: "Log in" });
+      this.$store.commit("setsuperUser", false)
+      this.$store.commit('setAuth', false);
+       this.$router.replace({ name: "Log in" });
     },
     async isLoggedIn() {
       return this.LoggedIn;
@@ -213,23 +188,48 @@ export default {
     },
     GetSounds() {
       axios
-          .get("api/auth/mqttdata", {
-              params: {
-                  limit: 15
-              }
-          })
+        .get("api/auth/mqttdata", {
+          params: {
+            limit: 15,
+          },
+        })
         .then((response) => {
           this.sounds = response.data;
           this.Markers = response.data;
-        
+
+          this.Markers.forEach((element) => {
+            this.marker.push([element.latitude, element.longitude]);
+          });
+
+          this.createMap();
         })
         .catch(function (error) {
           console.log(error);
           alert(error);
         });
     },
+    createMap() {
+      var map = L.map("map").setView([47.41322, -1.219482], 13);
+      L.tileLayer(this.url, {
+        attribution: this.attribution,
+        maxZoom: 18,
+      }).addTo(map);
+      this.AddMarkers(map);
+    },
+    AddMarkers(map) {
+      var MyMarkers = L.featureGroup();
+      for (var i = 0; i < 13; i++) {
+        console.log(this.marker[i]);
+        var marker = new L.marker([this.marker[i][0], this.marker[i][1]]);
+        MyMarkers.addLayer(marker);
+      }
+
+      MyMarkers.addTo(map);
+      map.fitBounds(MyMarkers.getBounds());
+      map.setMaxBounds(map.getBounds());
+    },
     cancelAutoUpdate() {
-        clearInterval(this.timer);
+      clearInterval(this.timer);
     },
     fullScreenView() {
       var mapId = document.getElementById("map");
@@ -257,7 +257,6 @@ export default {
       } else {
         this.timer = 0;
         this.countDownTimer();
-
       }
     },
   },
@@ -275,16 +274,16 @@ export default {
   },
   created() {
     this.CheckValidSession();
-    
+
     //reload every 60 seconds
-    const counter = setInterval(() => {
-      this.GetSounds();
-    }, 60000);
-    this.countDownTimer();
+    // const counter = setInterval(() => {
+    //   this.GetSounds();
+    // }, 60000);
+    // this.countDownTimer();
   },
   beforeDestroy() {
     this.cancelAutoUpdate();
-  }
+  },
 };
 </script>
 
@@ -324,13 +323,13 @@ main {
   box-shadow: inset 0 -1px rgba(0, 0, 0, 0.25), inset 0 1px rgba(0, 0, 0, 0.25);
 }
 .flat-table th {
-    text-align: center;
-    font-weight: normal;
-    -webkit-font-smoothing: antialiased;
-    padding: 1em;
-    color: white;
-    text-shadow: 0 0 1px rgba(0,0,0,0.1);
-    font-size: 1.5em;
+  text-align: center;
+  font-weight: normal;
+  -webkit-font-smoothing: antialiased;
+  padding: 1em;
+  color: white;
+  text-shadow: 0 0 1px rgba(0, 0, 0, 0.1);
+  font-size: 1.5em;
 }
 .flat-table td {
   padding: 0.7em 1em 0.7em 1.15em;
@@ -349,12 +348,12 @@ main {
   background: #2a5784;
 }
 .flat-table-1 tbody tr:hover {
-    background: #448dda;
-    filter: drop-shadow(1px 2px 4px #333);
+  background: #448dda;
+  filter: drop-shadow(1px 2px 4px #333);
 }
 audio:hover {
-    transform: scale(1.05);
-    filter: drop-shadow(3px 5px 5px #333);
+  transform: scale(1.05);
+  filter: drop-shadow(3px 5px 5px #333);
 }
 audio {
   filter: drop-shadow(2px 3px 3px #333);
@@ -563,11 +562,10 @@ aside .sidebar a:hover span {
     top: 63%;
   }
 }
-
 </style>
 
 <style scoped>
-    /* custom scrollbar */
+/* custom scrollbar */
 ::-webkit-scrollbar {
   width: 10px;
 }
