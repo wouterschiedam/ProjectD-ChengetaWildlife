@@ -76,7 +76,6 @@ export default {
                 if (response.data.success == true) {
                     this.$store.commit('setAuth', true);
                     this.$store.commit('setsuperUser', response.data.superuser);
-                    console.log(this.$store.state.superUser);
                     this.$cookie.set("token", decodeURI(response.data.token), {
                         expire: "2h",
                     });

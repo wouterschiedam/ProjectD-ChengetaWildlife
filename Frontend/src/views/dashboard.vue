@@ -174,7 +174,6 @@ export default {
       this.$store.commit("setsuperUser", false)
       this.$store.commit('setAuth', false);
        this.$router.replace({ name: "Log in" });
-       console.log(this.$store.state.authenticated);
     },
     async isLoggedIn() {
       return this.LoggedIn;
