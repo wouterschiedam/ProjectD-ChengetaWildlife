@@ -1,109 +1,117 @@
 <template>
-  <div class="container" >
-    <aside>
-      <div class="top">
-        <div class="logo">
-          <img
-            src="../../public/playground_assets/217332412_177488101085809_6155924843160933349_n-1500h.jpg"
-          />
-          <h2>Chengeta</h2>
+    <div class="container">
+        <aside>
+            <div class="top">
+                <div class="logo">
+                    <img
+                        src="../../public/playground_assets/217332412_177488101085809_6155924843160933349_n-1500h.jpg"
+                    />
+                    <h2>Chengeta</h2>
+                </div>
+                <div class="close" id="closee-btn">
+                    <span class="material-icons-sharp">close</span>
+                </div>
+            </div>
+            <div class="sidebar">
+                <a @click="router.push({ name: 'dashboard' })">
+                    <span class="material-icons-sharp">grid_view</span>
+                    <h3>Dashboard</h3>
+                </a>
+                <a @click="fullScreenView()">
+                    <span class="material-icons-sharp">fullscreen</span>
+                    <h3>Fullscreen</h3>
+                </a>
+                <a @click="printMapHtml()">
+                    <span class="material-icons-sharp">print</span>
+                    <h3>Print map</h3>
+                </a>
+                <a @click="historyData()">
+                    <span class="material-icons-sharp">work_history</span>
+                    <h3>Historische data</h3>
+                </a>
+                <a v-if="this.$store.state.superUser" @click="Account()">
+                    <span class="material-icons-sharp">person_add</span>
+                    <h3>Nieuw account</h3>
+                </a>
+                <a @click="Logout()">
+                    <span class="material-icons-sharp">logout</span>
+                    <h3>Uitloggen</h3>
+                </a>
+            </div>
+        </aside>
+        <!-- MAIN - MAP -->
+        <main>
+            <div class="dashboard-map" id="map"></div>
+            <!-- MAIN - DATA -->
+            <div class="dashboard-geluidendata">
+                <h2 style="color: black">Laatste update: {{ this.timer }}s</h2>
+                <table class="flat-table flat-table-1">
+                    <tr>
+                        <th>Time</th>
+                        <th>ID</th>
+                        <th>Latitude</th>
+                        <th>Longitude</th>
+                        <th>Soundtype</th>
+                        <th>Probability</th>
+                        <th>Sound</th>
+                    </tr>
+                    <tbody v-for="sound in sounds" :key="sound.id">
+                        <tr>
+                            <td>
+                                {{
+                                    new Date(
+                                        sound.time * 1000
+                                    ).toLocaleDateString("en-NL")
+                                }}
+                                <br />
+                                {{
+                                    new Date(
+                                        sound.time * 1000
+                                    ).toLocaleTimeString("en-NL")
+                                }}
+                            </td>
+                            <td>{{ sound.pid }}</td>
+                            <td>{{ sound.latitude }}</td>
+                            <td>{{ sound.longitude }}</td>
+                            <td
+                                v-bind:class="
+                                    sound.soundtype == 'gunshot'
+                                        ? 'red'
+                                        : sound.soundtype == 'vehicle'
+                                        ? 'yellow'
+                                        : sound.soundtype == 'animal'
+                                        ? 'orange'
+                                        : sound.soundtype == 'unknown'
+                                        ? 'black'
+                                        : 'white'
+                                "
+                            >
+                                {{ sound.soundtype }}
+                            </td>
+                            <td>
+                                <Progress
+                                    :transitionDuration="4000"
+                                    strokeColor="white"
+                                    v-bind:value="sound.probability"
+                                />
+                            </td>
+                            <td>
+                                <audio controls>
+                                    <source v-bind:src="sound.sound" />
+                                </audio>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+        <!-- TOP -->
+        <div class="top">
+            <button id="menu-btn" @click="Sidebaropen()">
+                <span class="material-icons-sharp">menu</span>
+            </button>
         </div>
-        <div class="close" id="closee-btn">
-          <span class="material-icons-sharp">close</span>
-        </div>
-      </div>
-      <div class="sidebar">
-        <a @click="router.push({ name: 'dashboard' })">
-          <span class="material-icons-sharp">grid_view</span>
-          <h3>Dashboard</h3>
-        </a>
-        <a @click="fullScreenView()">
-          <span class="material-icons-sharp">fullscreen</span>
-          <h3>Fullscreen</h3>
-        </a>
-        <a @click="printMapHtml()">
-          <span class="material-icons-sharp">print</span>
-          <h3>Print map</h3>
-        </a>
-        <a @click="historyData()">
-          <span class="material-icons-sharp">work_history</span>
-          <h3>Historische data</h3>
-        </a>
-        <a v-if="this.$store.state.superUser" @click="Account()">
-          <span class="material-icons-sharp">person_add</span>
-          <h3>Nieuw account</h3>
-        </a>
-        <a @click="Logout()">
-          <span class="material-icons-sharp">logout</span>
-          <h3>Uitloggen</h3>
-        </a>
-      </div>
-    </aside>
-    <!-- MAIN - MAP -->
-    <main>
-      <div class="dashboard-map" id="map"></div>
-      <!-- MAIN - DATA -->
-      <div class="dashboard-geluidendata">
-        <h2 style="color: black">Laatste update: {{ this.timer }}s</h2>
-        <table class="flat-table flat-table-1">
-          <tr>
-            <th>Time</th>
-            <th>ID</th>
-            <th>Latitude</th>
-            <th>Longitude</th>
-            <th>Soundtype</th>
-            <th>Probability</th>
-            <th>Sound</th>
-          </tr>
-          <tbody v-for="sound in sounds" :key="sound.id">
-            <tr>
-              <td>
-                {{ new Date(sound.time * 1000).toLocaleDateString("en-NL") }}
-                <br />
-                {{ new Date(sound.time * 1000).toLocaleTimeString("en-NL") }}
-              </td>
-              <td>{{ sound.pid }}</td>
-              <td>{{ sound.latitude }}</td>
-              <td>{{ sound.longitude }}</td>
-              <td
-                v-bind:class="
-                  sound.soundtype == 'gunshot'
-                    ? 'red'
-                    : sound.soundtype == 'vehicle'
-                    ? 'yellow'
-                    : sound.soundtype == 'animal'
-                    ? 'orange'
-                    : sound.soundtype == 'unknown'
-                    ? 'black'
-                    : 'white'
-                "
-              >
-                {{ sound.soundtype }}
-              </td>
-              <td>
-                <Progress
-                  :transitionDuration="4000"
-                  strokeColor="white"
-                  v-bind:value="sound.probability"
-                />
-              </td>
-              <td>
-                <audio controls>
-                  <source v-bind:src="sound.sound" />
-                </audio>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </main>
-    <!-- TOP -->
-    <div class="top">
-      <button id="menu-btn" @click="Sidebaropen()">
-        <span class="material-icons-sharp">menu</span>
-      </button>
     </div>
-  </div>
 </template>
 
 <script>
@@ -114,7 +122,7 @@ import { LMap, LTileLayer, LMarker, LPopup, LFeatureGroup } from "vue2-leaflet";
 import html2canvas from "html2canvas";
 import axios from "axios";
 import router from "../router";
-
+import IconMaterial from 'leaflet-iconmaterial'
 var VueCookie = require("vue-cookie");
 
 export default {
@@ -148,18 +156,7 @@ export default {
     };
   },
   methods: {
-    checkSession() {
-      var oauth = localStorage.getItem("token");
-      var bodyFormData = new FormData();
-      bodyFormData.append("oauth", oauth);
-      axios.post("api/auth/session", bodyFormData).then((response) => {
-        if (response.data.success) {
-          return true
-        } else {
-          return false;
-        }
-      });
-    },
+
     historyData() {
       this.$router.replace({name: "historyData"});
     },
@@ -215,12 +212,52 @@ export default {
         maxZoom: 18,
       }).addTo(map);
       this.AddMarkers(map);
+      var legend = L.control({position: 'topright'});
+      legend.onAdd = function (map) {
+          var div = L.DomUtil.create('div', 'info legend'),
+              grades = [0, 20, 40, 60, 80],
+              color = ['#ccccff', '#b2b2ff', '#9999ff', '#7f7fff', '#6666ff']
+
+          // Loop for color shades
+          for (var i = 0; i < grades.length; i++) {
+              div.innerHTML +=
+                  '<span style="background: ' + color[i] + '"></span> ';
+          }
+          // a line break
+          div.innerHTML += '<br>';
+          // second loop for text
+          for (var i = 0; i < grades.length; i++) {
+              div.innerHTML +=
+                  '<label>' + grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] : '+') + '</label>';
+          }
+          return div;
+      };
+      legend.addTo(map);
     },
     AddMarkers(map) {
       var MyMarkers = L.featureGroup();
       for (var i = 0; i < 13; i++) {
-        console.log(this.marker[i]);
-        var marker = new L.marker([this.marker[i][0], this.marker[i][1]]);
+        var date = new Date(this.Markers[i].time * 1000).toLocaleTimeString("en-NL").toString()
+        if (this.Markers[i].probability <= 20 && this.Markers[i].probability >= 0){
+          var marker = new L.marker([this.marker[i][0], this.marker[i][1]]).bindPopup("Time: "+ date +"\n, probability: "+(this.Markers[i].probability.toString())+"\n, Soundtype: "+ (this.Markers[i].soundtype.toString()));
+          // add color to markers
+        }
+        if (this.Markers[i].probability <= 40 && this.Markers[i].probability > 20){
+          var marker = new L.marker([this.marker[i][0], this.marker[i][1]]).bindPopup("Time: "+ date +"\n, probability: "+(this.Markers[i].probability.toString())+"\n, Soundtype: "+ (this.Markers[i].soundtype.toString()));
+          // add color to markers
+        }
+        if (this.Markers[i].probability <= 60 && this.Markers[i].probability > 40){
+          var marker = new L.marker([this.marker[i][0], this.marker[i][1]]).bindPopup("Time: "+ date +"\n, probability: "+(this.Markers[i].probability.toString())+"\n, Soundtype: "+ (this.Markers[i].soundtype.toString()));
+          // add color to markers
+        }
+        if (this.Markers[i].probability <= 80 && this.Markers[i].probability > 60){
+          var marker = new L.marker([this.marker[i][0], this.marker[i][1]]).bindPopup("Time: "+ date +"\n, probability: "+(this.Markers[i].probability.toString())+"\n, Soundtype: "+ (this.Markers[i].soundtype.toString()));
+          // add color to markers
+        }
+        if (this.Markers[i].probability <= 100 && this.Markers[i].probability > 80){
+          var marker = new L.marker([this.marker[i][0], this.marker[i][1]]).bindPopup("Time: "+ date +"\n, probability: "+(this.Markers[i].probability.toString())+"\n, Soundtype: "+ (this.Markers[i].soundtype.toString()));
+          // add color to markers
+        }
         MyMarkers.addLayer(marker);
       }
 
@@ -273,7 +310,6 @@ export default {
     this.GetSounds();
   },
   created() {
-    this.CheckValidSession();
 
     //reload every 60 seconds
     // const counter = setInterval(() => {
@@ -288,313 +324,327 @@ export default {
 </script>
 
 <style>
+/* LEGEND */
+.legend span, .legend label {
+  display: block;
+  width: 50px;
+  height: 18px;
+  float: left;
+  background-color: white;
+  padding: 5px;
+  text-align: center;
+  font-size: 100%;
+  color: black;
+
+}
 /* STYLING DATA */
 main {
-  width: 100%;
+    width: 100%;
 }
 .red {
-  color: red;
+    color: red;
 }
 .white {
-  color: white;
+    color: white;
 }
 .yellow {
-  color: yellow;
+    color: yellow;
 }
 .black {
-  color: black;
+    color: black;
 }
 .orange {
-  color: orange;
+    color: orange;
 }
 .flat-table {
-  width: 80%;
-  margin-bottom: 20px;
-  border-collapse: collapse;
-  font-family: bold;
-  color: #f7f7f7;
-  border: none;
-  border-radius: 3px;
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
+    width: 80%;
+    margin-bottom: 20px;
+    border-collapse: collapse;
+    font-family: bold;
+    color: #f7f7f7;
+    border: none;
+    border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
 }
 .flat-table th,
 .flat-table td {
-  box-shadow: inset 0 -1px rgba(0, 0, 0, 0.25), inset 0 1px rgba(0, 0, 0, 0.25);
+    box-shadow: inset 0 -1px rgba(0, 0, 0, 0.25),
+        inset 0 1px rgba(0, 0, 0, 0.25);
 }
 .flat-table th {
-  text-align: center;
-  font-weight: normal;
-  -webkit-font-smoothing: antialiased;
-  padding: 1em;
-  color: white;
-  text-shadow: 0 0 1px rgba(0, 0, 0, 0.1);
-  font-size: 1.5em;
+    text-align: center;
+    font-weight: normal;
+    -webkit-font-smoothing: antialiased;
+    padding: 1em;
+    color: white;
+    text-shadow: 0 0 1px rgba(0, 0, 0, 0.1);
+    font-size: 1.5em;
 }
 .flat-table td {
-  padding: 0.7em 1em 0.7em 1.15em;
-  text-shadow: 0 0 1px rgba(255, 255, 255, 0.1);
-  font-size: 1.4em;
+    padding: 0.7em 1em 0.7em 1.15em;
+    text-shadow: 0 0 1px rgba(255, 255, 255, 0.1);
+    font-size: 1.4em;
 }
 .flat-table tr {
-  -webkit-transition: background 0.3s, box-shadow 0.3s;
-  -moz-transition: background 0.3s, box-shadow 0.3s;
-  transition: background 0.3s, box-shadow 0.3s;
+    -webkit-transition: background 0.3s, box-shadow 0.3s;
+    -moz-transition: background 0.3s, box-shadow 0.3s;
+    transition: background 0.3s, box-shadow 0.3s;
 }
 .flat-table-1 tbody {
-  background: #336ca6;
+    background: #336ca6;
 }
 .flat-table-1 th {
-  background: #2a5784;
+    background: #2a5784;
 }
 .flat-table-1 tbody tr:hover {
-  background: #448dda;
-  filter: drop-shadow(1px 2px 4px #333);
+    background: #448dda;
+    filter: drop-shadow(1px 2px 4px #333);
 }
 audio:hover {
-  transform: scale(1.05);
-  filter: drop-shadow(3px 5px 5px #333);
+    transform: scale(1.05);
+    filter: drop-shadow(3px 5px 5px #333);
 }
 audio {
-  filter: drop-shadow(2px 3px 3px #333);
+    filter: drop-shadow(2px 3px 3px #333);
 }
 .soundInfo {
-  display: flex;
-  color: black;
-  width: 100%;
+    display: flex;
+    color: black;
+    width: 100%;
 }
 .soundInfo div {
-  margin: 2% 8% 0 0;
+    margin: 2% 8% 0 0;
 }
 .soundInfo div p {
-  margin-bottom: 3%;
+    margin-bottom: 3%;
 }
 .dashboard-map {
-  flex: 0 0 auto;
-  width: 100%;
-  height: 517px;
-  display: flex;
-  position: relative;
-  align-items: flex-start;
-  flex-direction: column;
+    flex: 0 0 auto;
+    width: 100%;
+    height: 517px;
+    display: flex;
+    position: relative;
+    align-items: flex-start;
+    flex-direction: column;
 }
 /* STYLING SIDEBAR */
 a {
-  color: var(--color-dark);
+    color: var(--color-dark);
 }
 img {
-  display: block;
-  width: 100%;
+    display: block;
+    width: 100%;
 }
 h1 {
-  font-weight: 800;
-  font-size: 1.8rem;
+    font-weight: 800;
+    font-size: 1.8rem;
 }
 h2 {
-  font-size: 1.4rem;
+    font-size: 1.4rem;
 }
 h3 {
-  font-size: 0.87rem;
+    font-size: 0.87rem;
 }
 h4 {
-  font-size: 0.8rem;
+    font-size: 0.8rem;
 }
 h5 {
-  font-size: 0.77rem;
+    font-size: 0.77rem;
 }
 small {
-  font-size: 0.75rem;
+    font-size: 0.75rem;
 }
 .container {
-  display: grid;
-  width: 98%;
-  margin: 0 auto;
-  gap: 1.8rem;
-  grid-template-columns: 14rem 82% auto;
+    display: grid;
+    width: 98%;
+    margin: 0 auto;
+    gap: 1.8rem;
+    grid-template-columns: 14rem 82% auto;
 }
 aside {
-  height: 100vh;
-  background: var(--color-light);
+    height: 100vh;
+    background: var(--color-light);
 }
 aside .top {
-  background: white;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-top: 1.4rem;
+    background: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 1.4rem;
 }
 aside .logo {
-  display: flex;
-  gap: 0.8rem;
+    display: flex;
+    gap: 0.8rem;
 }
 aside .logo img {
-  width: 2.5rem;
-  height: 2.5rem;
+    width: 2.5rem;
+    height: 2.5rem;
 }
 aside .close {
-  display: none;
+    display: none;
 }
 aside .sidebar {
-  background: white;
-  display: flex;
-  flex-direction: column;
-  position: relative;
-  height: 86vh;
-  top: 3rem;
+    background: white;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    height: 86vh;
+    top: 3rem;
 }
 aside h3 {
-  font-weight: 600;
+    font-weight: 600;
 }
 aside .sidebar a {
-  display: flex;
-  color: var(--color-dark);
-  margin-left: 2rem;
-  gap: 1rem;
-  align-items: center;
-  position: relative;
-  height: 3.7rem;
-  transition: all 300ms ease;
-  cursor: pointer;
+    display: flex;
+    color: var(--color-dark);
+    margin-left: 2rem;
+    gap: 1rem;
+    align-items: center;
+    position: relative;
+    height: 3.7rem;
+    transition: all 300ms ease;
+    cursor: pointer;
 }
 aside .sidebar a span {
-  font-size: 1.6rem;
-  transition: all 300ms ease;
+    font-size: 1.6rem;
+    transition: all 300ms ease;
 }
 aside .sidebar a:last-child {
-  position: absolute;
-  bottom: 2rem;
-  width: 100%;
+    position: absolute;
+    bottom: 2rem;
+    width: 100%;
 }
 aside .sidebar a.active {
-  background: var(--color-light);
-  color: var(--color-primary);
-  margin-left: 0;
+    background: var(--color-light);
+    color: var(--color-primary);
+    margin-left: 0;
 }
 aside .sidebar a.active:before {
-  content: "";
-  width: 6px;
-  height: 100%;
-  background: var(--color-primary);
+    content: "";
+    width: 6px;
+    height: 100%;
+    background: var(--color-primary);
 }
 aside .side a.active span {
-  color: var(--color-primary);
-  margin-left: calc(1rem - 3px);
+    color: var(--color-primary);
+    margin-left: calc(1rem - 3px);
 }
 aside .sidebar a:hover {
-  color: var(--color-primary);
+    color: var(--color-primary);
 }
 aside .sidebar a:hover span {
-  margin-left: 1rem;
+    margin-left: 1rem;
 }
 /* TOP */
 .top {
-  display: none;
+    display: none;
 }
 
 @media screen and (max-width: 820px) {
-  .container {
-    width: 94%;
-    grid-template-columns: 10rem 88% auto;
-    margin-left: 1%;
-  }
-  aside .logo h2 {
-    display: none;
-  }
-  aside .sidebar h3 {
-    display: none;
-  }
-  aside .sidebar h3 {
-    width: 5.6rem;
-  }
-  aside .sidebar h3 {
-    position: relative;
-    margin-top: 1.8rem;
-  }
-  .dashboard-map {
-    width: 95%;
-  }
+    .container {
+        width: 94%;
+        grid-template-columns: 10rem 88% auto;
+        margin-left: 1%;
+    }
+    aside .logo h2 {
+        display: none;
+    }
+    aside .sidebar h3 {
+        display: none;
+    }
+    aside .sidebar h3 {
+        width: 5.6rem;
+    }
+    aside .sidebar h3 {
+        position: relative;
+        margin-top: 1.8rem;
+    }
+    .dashboard-map {
+        width: 95%;
+    }
 }
 @media screen and (max-width: 768px) {
-  .container {
-    width: 98%;
-    grid-template-columns: 95% auto;
-    margin: 0;
-    margin-left: 5px;
-  }
-  aside {
-    position: fixed;
-    left: 0;
-    background: white;
-    width: 18rem;
-    z-index: 3;
-    box-shadow: 1rem 3rem 4rem var(--color-light);
-    height: 100vh;
-    padding-right: 0.2rem;
-    display: none;
-  }
-  aside .logo {
-    margin-left: 1rem;
-  }
-  aside .logo h2 {
-    display: inline;
-  }
-  aside .sidebar h3 {
-    display: inline;
-  }
-  aside .sidebar a {
-    width: 100%;
-    height: 3.4rem;
-  }
-  aside .close {
-    display: inline-block;
-    cursor: pointer;
-  }
-  .top {
-    display: flex;
-  }
-  .top button {
-    background: transparent;
-  }
-  .dashboard-map {
-    width: 95%;
-  }
-  .dashboard-geluidendata {
-    top: 63%;
-  }
+    .container {
+        width: 98%;
+        grid-template-columns: 95% auto;
+        margin: 0;
+        margin-left: 5px;
+    }
+    aside {
+        position: fixed;
+        left: 0;
+        background: white;
+        width: 18rem;
+        z-index: 3;
+        box-shadow: 1rem 3rem 4rem var(--color-light);
+        height: 100vh;
+        padding-right: 0.2rem;
+        display: none;
+    }
+    aside .logo {
+        margin-left: 1rem;
+    }
+    aside .logo h2 {
+        display: inline;
+    }
+    aside .sidebar h3 {
+        display: inline;
+    }
+    aside .sidebar a {
+        width: 100%;
+        height: 3.4rem;
+    }
+    aside .close {
+        display: inline-block;
+        cursor: pointer;
+    }
+    .top {
+        display: flex;
+    }
+    .top button {
+        background: transparent;
+    }
+    .dashboard-map {
+        width: 95%;
+    }
+    .dashboard-geluidendata {
+        top: 63%;
+    }
 }
 </style>
 
 <style scoped>
 /* custom scrollbar */
 ::-webkit-scrollbar {
-  width: 10px;
+    width: 10px;
 }
 
 ::-webkit-scrollbar-track {
-  background-color: transparent;
+    background-color: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: #d6dee1;
-  border-radius: 20px;
-  border: 6px solid transparent;
-  background-clip: content-box;
+    background-color: #d6dee1;
+    border-radius: 20px;
+    border: 6px solid transparent;
+    background-clip: content-box;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background-color: #a8bbbf;
+    background-color: #a8bbbf;
 }
 
 /* STYLING DATA */
 .dashboard-geluidendata {
-  margin-top: 1%;
-  width: 100%;
-  height: 50%;
-  display: flex;
-  position: absolute;
-  overflow-x: hidden;
-  overflow-y: auto;
-  text-align: justify;
-  flex-direction: column;
+    margin-top: 1%;
+    width: 100%;
+    height: 50%;
+    display: flex;
+    position: absolute;
+    overflow-x: hidden;
+    overflow-y: auto;
+    text-align: justify;
+    flex-direction: column;
 }
 </style>
