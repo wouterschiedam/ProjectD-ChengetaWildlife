@@ -38,9 +38,9 @@
                             {{ sound.soundtype }}
                         </td>
                         <td>
-                            <Progress :transitionDuration="1"
-                                      strokeColor="white"
-                                      v-bind:value="sound.probability" />
+                            <Progress :radius="35" strokeColor="white" :strokeWidth="7" v-bind:value="sound.probability">
+                                {{ sound.probability }}%
+                            </Progress>
                         </td>
                         <td>
                             <audio controls>
@@ -107,11 +107,17 @@
 </script>
 
 <style scoped>
+    vue-circular-progress .percent {
+        font-weight: 200;
+    }
+    vue-circular-progress {
+        margin-top: 2%;
+    }
     .dashboard-geluidendata {
         width: 80%;
         height: 95%;
         position: absolute;
-        overflow-x: hidden;
+        overflow-x: auto;
         overflow-y: auto;
     }
 
@@ -155,16 +161,16 @@
         text-align: center;
         font-weight: normal;
         -webkit-font-smoothing: antialiased;
-        padding: 1em;
+        padding: 0.5vw;
         color: white;
         text-shadow: 0 0 1px rgba(0, 0, 0, 0.1);
-        font-size: 1.5em;
+        font-size: 1vw;
     }
 
     .flat-table td {
-        padding: 0.7em 1em 0.7em 1.15em;
+        padding: 0.5vw;
         text-shadow: 0 0 1px rgba(255, 255, 255, 0.1);
-        font-size: 1.4em;
+        font-size: 1vw;
     }
 
     .flat-table tr {
@@ -196,6 +202,8 @@
 
     audio {
         filter: drop-shadow(2px 3px 3px #333);
+        max-width: 270px;
+        max-height: 45px;
     }
 
     ::-webkit-scrollbar {
