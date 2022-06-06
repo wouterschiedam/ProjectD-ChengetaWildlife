@@ -33,25 +33,9 @@ import router from "../router";
 import axios from "axios";
 var VueCookie = require("vue-cookie");
 export default {
-  name: "Login",
-  components: {
-    AppFooter,
-  },
-  data() {
-    return {
-      LoggedIn: false,
-      errormessage: "",
-      message_email: "",
-      message_password: "",
-    };
-  },
-  methods: {
-    validateEmail: function () {
-      const re =
-        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-      return re.test(
-        String(document.getElementById("email").value).toLowerCase()
-      );
+    name: "Login",
+    components: {
+        AppFooter,
     },
     data() {
         return {
@@ -184,7 +168,6 @@ export default {
     transform: scale(1.1);
     cursor: pointer;
 }
-
 @media (max-width: 479px) {
     .login-container1 {
         width: 100%;

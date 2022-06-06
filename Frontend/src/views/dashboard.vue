@@ -51,6 +51,7 @@
         <span class="material-icons-sharp">menu</span>
       </button>
     </div>
+    </div>
 </template>
 
 <script>
@@ -73,7 +74,8 @@ export default {
     LTileLayer,
     LMarker,
     LPopup,
-    DashboardTable
+    DashboardTable,
+    Progress
   },
   props: ["superUser"],
   data() {
@@ -130,12 +132,11 @@ export default {
           },
         })
         .then((response) => {
+          this.sounds = response.data;
           this.Markers = response.data;
-
           this.Markers.forEach((element) => {
             this.marker.push([element.latitude, element.longitude]);
           });
-
           this.createMap();
         })
         .catch(function (error) {
@@ -155,7 +156,6 @@ export default {
           var div = L.DomUtil.create('div', 'info legend'),
               grades = [0, 20, 40, 60, 80],
               color = ['#ccccff', '#b2b2ff', '#9999ff', '#7f7fff', '#6666ff']
-
           // Loop for color shades
           for (var i = 0; i < grades.length; i++) {
               div.innerHTML +=
@@ -198,7 +198,6 @@ export default {
         }
         MyMarkers.addLayer(marker);
       }
-
       MyMarkers.addTo(map);
       map.fitBounds(MyMarkers.getBounds());
       map.setMaxBounds(map.getBounds());
@@ -245,12 +244,14 @@ export default {
     ],
   },
   created() {
-
     //reload every 60 seconds
     // const counter = setInterval(() => {
     //   this.GetSounds();
     // }, 60000);
     // this.countDownTimer();
+  },
+  mounted() {
+    this.GetSounds();
   },
   beforeDestroy() {
     this.cancelAutoUpdate();
@@ -274,7 +275,7 @@ export default {
 }
 /* STYLING DATA */
 main {
-  width: 50%;
+  width: 100%;
 }
 
 
