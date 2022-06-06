@@ -101,7 +101,7 @@
                     this.counter = 0;
                     this.GetSounds();
                 }
-            }, 50);
+            }, 1000);
         }
     }
 </script>

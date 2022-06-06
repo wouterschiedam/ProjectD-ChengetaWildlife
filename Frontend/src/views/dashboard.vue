@@ -222,17 +222,6 @@ export default {
         temp_link.click();
       });
     },
-    countDownTimer() {
-      if (this.timer <= 59) {
-        setTimeout(() => {
-          this.timer += 1;
-          this.countDownTimer();
-        }, 1000);
-      } else {
-        this.timer = 0;
-        this.countDownTimer();
-      }
-    },
   },
   metaInfo: {
     title: "dashboard - Chengeta wildlife",
