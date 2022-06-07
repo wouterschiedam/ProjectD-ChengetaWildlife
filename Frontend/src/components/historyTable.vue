@@ -187,7 +187,6 @@
     }
 
     ::-webkit-scrollbar {
-        width: 30px;
         background-color: #18324b;
     }
 
