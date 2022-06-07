@@ -150,6 +150,7 @@ export default {
         attribution: this.attribution,
         maxZoom: 18,
       }).addTo(map);
+      map.attributionControl.setPrefix('');
       this.AddMarkers(map);
       var legend = L.control({position: 'topright'});
       legend.onAdd = function (map) {
@@ -177,23 +178,31 @@ export default {
       for (var i = 0; i < 13; i++) {
         var date = new Date(this.Markers[i].time * 1000).toLocaleTimeString("en-NL").toString()
         if (this.Markers[i].probability <= 20 && this.Markers[i].probability >= 0){
-          var marker = new L.marker([this.marker[i][0], this.marker[i][1]]).bindPopup("Time: "+ date +"\n, probability: "+(this.Markers[i].probability.toString())+"\n, Soundtype: "+ (this.Markers[i].soundtype.toString()));
-          // add color to markers
+          var zerotwenty = L.icon({iconUrl : require('../markers/marker-svg.png'),
+          iconSize: [25, 45],})
+          var marker = new L.marker([this.marker[i][0], this.marker[i][1]], {icon: zerotwenty}).bindPopup("Time: "+ date +"\n, probability: "+(this.Markers[i].probability.toString())+"\n, Soundtype: "+ (this.Markers[i].soundtype.toString()));
+
         }
         if (this.Markers[i].probability <= 40 && this.Markers[i].probability > 20){
-          var marker = new L.marker([this.marker[i][0], this.marker[i][1]]).bindPopup("Time: "+ date +"\n, probability: "+(this.Markers[i].probability.toString())+"\n, Soundtype: "+ (this.Markers[i].soundtype.toString()));
+          var twentyfourty = L.icon({iconUrl : require('../markers/twentyfourty.png'),
+          iconSize: [25, 45],})
+          var marker = new L.marker([this.marker[i][0], this.marker[i][1]], {icon: twentyfourty}).bindPopup("Time: "+ date +"\n, probability: "+(this.Markers[i].probability.toString())+"\n, Soundtype: "+ (this.Markers[i].soundtype.toString()));
           // add color to markers
         }
         if (this.Markers[i].probability <= 60 && this.Markers[i].probability > 40){
-          var marker = new L.marker([this.marker[i][0], this.marker[i][1]]).bindPopup("Time: "+ date +"\n, probability: "+(this.Markers[i].probability.toString())+"\n, Soundtype: "+ (this.Markers[i].soundtype.toString()));
+          var fourtysixty = L.icon({iconUrl : require('../markers/fourtysixty.png'),
+          iconSize: [25, 45],})
+          var marker = new L.marker([this.marker[i][0], this.marker[i][1]], {icon: fourtysixty}).bindPopup("Time: "+ date +"\n, probability: "+(this.Markers[i].probability.toString())+"\n, Soundtype: "+ (this.Markers[i].soundtype.toString()));
           // add color to markers
         }
         if (this.Markers[i].probability <= 80 && this.Markers[i].probability > 60){
-          var marker = new L.marker([this.marker[i][0], this.marker[i][1]]).bindPopup("Time: "+ date +"\n, probability: "+(this.Markers[i].probability.toString())+"\n, Soundtype: "+ (this.Markers[i].soundtype.toString()));
+          var sixtyeighty = L.icon({iconUrl : require('../markers/sixtyeigthy.png'), iconSize: [25, 45]})
+          var marker = new L.marker([this.marker[i][0], this.marker[i][1]], {icon: sixtyeighty}).bindPopup("Time: "+ date +"\n, probability: "+(this.Markers[i].probability.toString())+"\n, Soundtype: "+ (this.Markers[i].soundtype.toString()));
           // add color to markers
         }
         if (this.Markers[i].probability <= 100 && this.Markers[i].probability > 80){
-          var marker = new L.marker([this.marker[i][0], this.marker[i][1]]).bindPopup("Time: "+ date +"\n, probability: "+(this.Markers[i].probability.toString())+"\n, Soundtype: "+ (this.Markers[i].soundtype.toString()));
+          var eightyplus = L.icon({iconUrl : require('../markers/eightyplus.png'), iconSize: [25, 45]})       
+          var marker = new L.marker([this.marker[i][0], this.marker[i][1]],{icon: eightyplus}).bindPopup("Time: "+ date +"\n, probability: "+(this.Markers[i].probability.toString())+"\n, Soundtype: "+ (this.Markers[i].soundtype.toString()));
           // add color to markers
         }
         MyMarkers.addLayer(marker);
