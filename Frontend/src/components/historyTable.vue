@@ -7,8 +7,7 @@
                     <tr>
                         <th>Time</th>
                         <th>ID</th>
-                        <th>Latitude</th>
-                        <th>Longitude</th>
+                        <th>Latitude;Longitude</th>
                         <th>Soundtype</th>
                         <th>Probability</th>
                         <th>Sound</th>
@@ -22,23 +21,18 @@
                             {{ new Date(sound.time * 1000).toLocaleTimeString("en-NL") }}
                         </td>
                         <td>{{ sound.pid }}</td>
-                        <td>{{ sound.latitude }}</td>
-                        <td>{{ sound.longitude }}</td>
-                        <td v-bind:class="
-                  sound.soundtype == 'gunshot'
-                    ? 'red'
-                    : sound.soundtype == 'vehicle'
-                    ? 'yellow'
-                    : sound.soundtype == 'animal'
-                    ? 'orange'
-                    : sound.soundtype == 'unknown'
-                    ? 'black'
-                    : 'white'
-                ">
-                            {{ sound.soundtype }}
+                        <td>{{ Number(sound.latitude).toFixed(7) }};{{ Number(sound.longitude).toFixed(7) }}</td>
+                        <td class="badgeColumn">
+                            <div class="badge" v-bind:style="{background: sound.soundtype == 'gunshot' ? 'red' :
+                                 sound.soundtype == 'vehicle' ? 'orange' :
+                                 sound.soundtype == 'animal' ? 'green' :
+                                 sound.soundtype == 'unknown' ? 'black' :
+                                 'none'}">
+                                <p> {{ sound.soundtype }} </p>
+                            </div>
                         </td>
                         <td>
-                            <Progress :radius="35" strokeColor="white" :strokeWidth="7" v-bind:value="sound.probability">
+                            <Progress class="progress" :transitionDuration="1" strokeColor="white" v-bind:value="sound.probability">
                                 {{ sound.probability }}%
                             </Progress>
                         </td>
@@ -107,11 +101,17 @@
 </script>
 
 <style scoped>
-    vue-circular-progress .percent {
-        font-weight: 200;
+    .badgeColumn {
+        align-content: center;
     }
-    vue-circular-progress {
-        margin-top: 2%;
+    .badge {
+        height: calc(3.5vw + 5px);
+        line-height: calc(3.5vw + 5px);
+        border-radius: 150px / 160px;
+        font-size: calc(1.2vw + 5px);
+    }
+    .progress{
+        line-height: 0vw;
     }
     .dashboard-geluidendata {
         width: 80%;
@@ -121,30 +121,10 @@
         overflow-y: auto;
     }
 
-    .red {
-        color: red;
-    }
-
-    .white {
-        color: white;
-    }
-
-    .yellow {
-        color: yellow;
-    }
-
-    .black {
-        color: black;
-    }
-
-    .orange {
-        color: orange;
-    }
-
     .flat-table {
         width: 100%;
         border-collapse: collapse;
-        font-family: bold;
+        font-family: Arial;
         color: #f7f7f7;
         border: none;
         border-radius: 3px;
@@ -159,18 +139,18 @@
 
     .flat-table th {
         text-align: center;
-        font-weight: normal;
         -webkit-font-smoothing: antialiased;
-        padding: 0.5vw;
+        padding: calc(0.5vw + 5px);
         color: white;
         text-shadow: 0 0 1px rgba(0, 0, 0, 0.1);
-        font-size: 1vw;
+        font-size: calc(1.1vw + 5px);
     }
 
     .flat-table td {
-        padding: 0.5vw;
+        text-align: center;
+        padding: calc(0.5vw + 5px);
         text-shadow: 0 0 1px rgba(255, 255, 255, 0.1);
-        font-size: 1vw;
+        font-size: calc(1vw + 5px);
     }
 
     .flat-table tr {
@@ -202,8 +182,8 @@
 
     audio {
         filter: drop-shadow(2px 3px 3px #333);
-        max-width: 270px;
-        max-height: 45px;
+        max-width: 55vw;
+        max-height: 10vw;
     }
 
     ::-webkit-scrollbar {
@@ -224,5 +204,14 @@
 
     ::-webkit-scrollbar-thumb:active {
         background-color: #b1b1b1;
+    }
+    @media screen and (max-width: 768px) {
+        .dashboard-geluidendata {
+            width: 100%;
+            height: 95%;
+            position: absolute;
+            overflow-x: auto;
+            overflow-y: auto;
+        }
     }
 </style>
