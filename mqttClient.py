@@ -56,7 +56,6 @@ def subscribe(client: mqtt, db_conn, cursor) -> None:
             
             Currentdate = int(datetime.datetime.now().timestamp() - 86400 )
             if dates[0][0] < Currentdate:
-                print("hallo")
                 cursor.execute("DELETE FROM  mqttdata WHERE time < %s", (Currentdate,))
                 db_conn.commit()
         except Exception as e:
