@@ -53,7 +53,7 @@
         <!-- MAIN - MAP -->
         <main>
             <div class="dashboard-map" id="map" style="z-index: 0"></div>
-            <div class="dashboard-heatmap" id="heatmap" style="z-index: 0"></div>
+            <div class="dashboard-heatmap" id="heatmap" style="z-index: 0;"></div>
             <!-- MAIN - DATA -->
             <DashboardTable />
         </main>
@@ -68,7 +68,7 @@ import DashboardTable from "../components/dashboardTable";
 import { latLngBounds } from "leaflet";
 import { LMap, LTileLayer, LMarker, LPopup, LFeatureGroup } from "vue2-leaflet";
 import "leaflet.heat";
-import html2canvas from "html2canvas";
+import html2canvas from "html2canvas";  
 import axios from "axios";
 import router from "../router";
 import IconMaterial from "leaflet-iconmaterial";
@@ -158,23 +158,23 @@ export default {
                         this.marker.push([element.latitude, element.longitude]);
                     });
                     this.createMap();
-
+            
                 })
                 .catch(function (error) {
                     console.log(error);
                     alert(error);
                 });
         },
-        createHeatMap() {
-            var map = L.map("heatmap").setView([47.41322, -1.219482], 13);
-            map.options.minZoom = 6;
-            map.options.maxZoom = 50;
+        createHeatMap(MyMarkers) {
+            var heatmap = L.map("heatmap").setView([47.41322, -1.219482], 13);
+            heatmap.options.minZoom = 6;
+            heatmap.options.maxZoom = 50;
             L.tileLayer(this.url, {
-                //attribution: this.attribution,
-            }).addTo(map);
-            map.attributionControl.setPrefix("");
+                attribution: this.attribution,
+            }).addTo(heatmap);
+            heatmap.attributionControl.setPrefix("");
             var newAddressPoints = this.marker.map(function (p) { return [p[0], p[1]]; });
-            L.heatLayer(newAddressPoints, {
+            var heatmapLayer = L.heatLayer(newAddressPoints, {
                 radius: 60,
                 blur: 10,
                 gradient: {
@@ -185,9 +185,14 @@ export default {
                     0.55: "red",
                     1.0: "red",
                 },
-            }).addTo(map);
-            map.fitBounds(this.MyMarkers.getBounds());
-            map.setMaxBounds(map.getBounds());
+            })
+            setTimeout(function(){
+                heatmap.addLayer(heatmapLayer)
+                heatmap.fitBounds(MyMarkers.getBounds());
+                heatmap.setMaxBoundsh(map.getBounds());
+            },500)
+
+
         },
         createMap() {
             var map = L.map("map").setView([47.41322, -1.219482], 13);
@@ -227,9 +232,8 @@ export default {
                 return div;
             };
             legend.addTo(map);
-            map.whenReady(() => {
-              this.createHeatMap();
-            })
+
+
         },
         AddMarkers(map) {
             var MyMarkers = L.featureGroup();
@@ -346,6 +350,7 @@ export default {
             MyMarkers.addTo(map);
             map.fitBounds(MyMarkers.getBounds());
             map.setMaxBounds(map.getBounds());
+            this.createHeatMap(MyMarkers)
         },
         cancelAutoUpdate() {
             clearInterval(this.timer);
@@ -420,16 +425,18 @@ main {
     position: relative;
     align-items: flex-start;
     flex-direction: column;
+
     
 }
 .dashboard-heatmap {
     flex: 0 0 auto;
     width: 100%;
-    height: 517px;
+    height: 516px;
     position: relative;
     align-items: flex-start;
     flex-direction: column;
     display: none;
+
 }
 /* STYLING SIDEBAR */
 a {
