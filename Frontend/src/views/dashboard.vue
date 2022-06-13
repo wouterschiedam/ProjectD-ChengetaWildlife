@@ -146,9 +146,12 @@ export default {
     },
     createMap() {
       var map = L.map("map").setView([47.41322, -1.219482], 13);
+      map.options.minZoom = 6;
+      map.options.maxZoom = 50;
       L.tileLayer(this.url, {
         attribution: this.attribution,
-        maxZoom: 18,
+        
+
       }).addTo(map);
       map.attributionControl.setPrefix('');
       this.AddMarkers(map);
