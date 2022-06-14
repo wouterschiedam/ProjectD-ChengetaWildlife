@@ -57,6 +57,15 @@ export default {
   components: {
       HistoryTable
   },
+  metaInfo: {
+    title: "Historische data - Chengeta wildlife",
+    meta: [
+        {
+            property: "og:title",
+            content: "Historische data - Chengeta wildlife",
+        },
+    ],
+  },
   data() {
     return {
       sounds: [],

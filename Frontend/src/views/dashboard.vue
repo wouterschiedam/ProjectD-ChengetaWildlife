@@ -156,7 +156,6 @@ export default {
                         this.marker.push([element.latitude, element.longitude, element.probability]);
                     });
                     this.createMap();
-            
                 })
                 .catch(function (error) {
                     console.log(error);
@@ -200,24 +199,19 @@ export default {
             //     return div;
             // };
             // legend.addTo(heatmap);
-
-
-
-
             var newAddressPoints = this.marker.map(function (p) { return [p[0], p[1], (p[2])/100]; });
             var heatmapLayer = L.heatLayer(newAddressPoints, {
             radius: 25,
             maxZoom: 12,
             minOpacity: 0.5,
             max: 1,
-            blur: 10,
+            blur: 15,
             gradient: {
                 0: "#000000",
                 0.2: "#570000",
                 0.4: "#ff0000",
                 0.6: "#ffc800",
                 0.8: "#ffff00",
-                "1.0": "#FFFFFF" , // note the string of the key
             }
             })
             setTimeout(function(){
@@ -418,11 +412,11 @@ export default {
         },
     },
     metaInfo: {
-        title: "dashboard - Chengeta wildlife",
+        title: "Dashboard - Chengeta wildlife",
         meta: [
             {
                 property: "og:title",
-                content: "dashboard - Chengeta wildlife",
+                content: "Dashboard - Chengeta wildlife",
             },
         ],
     },
