@@ -131,18 +131,23 @@ export default {
             }
         },     
         fullScreenView() {
-            if(this.current == "Map"){
+            if(this.current){
                 var mapId = document.getElementById("map");
                 mapId.requestFullscreen();
             }
-            if(this.current == "Heatmap"){
+            if(!this.current){
                 var heatmapId = document.getElementById("heatmap");
                 heatmapId.requestFullscreen();
             }
 
         },
         printMapHtml() {
-            const screenshotTarget = document.getElementById("map");
+            if(this.current){
+                var screenshotTarget = document.getElementById("map");
+            }
+            if(!this.current){
+                var screenshotTarget = document.getElementById("heatmap");
+            }
             html2canvas(screenshotTarget, {
                 useCORS: true,
                 allowTaint: true,
