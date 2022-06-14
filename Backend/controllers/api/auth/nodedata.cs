@@ -10,12 +10,10 @@ namespace ProjectD_ChengetaWildlife.controllers
     public class Nodedata : Controller
     {
         [HttpGet]
-        public string Get(int limit = 15, string order = "time")
+        public string Get(int limit = 15, string order = "time", string where = "")
         {   
             Database database = new Database();
-            DataTable data = database.BuildQuery($"SELECT time, pid, latitude, longitude, probability, soundtype, sound FROM mqttdata ORDER BY @order DESC LIMIT @data")
-                .AddParameter("order", order)
-                .AddParameter("data", limit)
+            DataTable data = database.BuildQuery($"SELECT time, pid, latitude, longitude, probability, soundtype, sound FROM mqttdata {where} ORDER BY {order} DESC LIMIT {limit}")
                 .Select();
             database.Close();
             return JsonConvert.SerializeObject(data);

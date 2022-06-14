@@ -31,7 +31,10 @@
                             <p> {{ sound.soundtype }} </p> </div>
                         </td>
                         <td>
-                            <Progress class="progress" :transitionDuration="1" strokeColor="white" v-bind:value="sound.probability">
+                            <Progress class="progress" id="bigScreen" :transitionDuration="1" strokeColor="white" v-bind:value="sound.probability">
+                                {{ sound.probability }}%
+                            </Progress>
+                            <Progress class="progress" id="smallScreen" :radius="20" :transitionDuration="1" strokeColor="white" v-bind:value="sound.probability">
                                 {{ sound.probability }}%
                             </Progress>
                         </td>
@@ -110,7 +113,6 @@
         border-radius: 150px / 160px;
         font-size: calc(1.2vw + 5px);
     }
-
     .progress {
         line-height: 0vw;
     }
@@ -134,32 +136,32 @@
         -moz-border-radius: 3px;
     }
 
-        .flat-table th,
-        .flat-table td {
-            box-shadow: inset 0 -1px rgba(0, 0, 0, 0.25), inset 0 1px rgba(0, 0, 0, 0.25);
-        }
+    .flat-table th,
+    .flat-table td {
+        box-shadow: inset 0 -1px rgba(0, 0, 0, 0.25), inset 0 1px rgba(0, 0, 0, 0.25);
+    }
 
-        .flat-table th {
-            text-align: center;
-            -webkit-font-smoothing: antialiased;
-            padding: calc(0.5vw + 5px);
-            color: white;
-            text-shadow: 0 0 1px rgba(0, 0, 0, 0.1);
-            font-size: calc(1.1vw + 5px);
-        }
+    .flat-table th {
+        text-align: center;
+        -webkit-font-smoothing: antialiased;
+        padding: calc(0.5vw + 5px);
+        color: white;
+        text-shadow: 0 0 1px rgba(0, 0, 0, 0.1);
+        font-size: calc(1.1vw + 5px);
+    }
 
-        .flat-table td {
-            text-align: center;
-            padding: calc(0.5vw + 5px);
-            text-shadow: 0 0 1px rgba(255, 255, 255, 0.1);
-            font-size: calc(1vw + 5px);
-        }
+    .flat-table td {
+        text-align: center;
+        padding: calc(0.5vw + 5px);
+        text-shadow: 0 0 1px rgba(255, 255, 255, 0.1);
+        font-size: calc(1vw + 5px);
+    }
 
-        .flat-table tr {
-            -webkit-transition: background 0.3s, box-shadow 0.3s;
-            -moz-transition: background 0.3s, box-shadow 0.3s;
-            transition: background 0.3s, box-shadow 0.3s;
-        }
+    .flat-table tr {
+        -webkit-transition: background 0.3s, box-shadow 0.3s;
+        -moz-transition: background 0.3s, box-shadow 0.3s;
+        transition: background 0.3s, box-shadow 0.3s;
+    }
 
     .flat-table-1 tbody {
         background: #336ca6;
@@ -189,7 +191,6 @@
     }
 
     ::-webkit-scrollbar {
-        width: 30px;
         background-color: #18324b;
     }
 
@@ -211,10 +212,18 @@
     @media screen and (max-width: 768px) {
         .dashboard-geluidendata {
             width: 100%;
-            height: 95%;
+            height: 50%;
             position: absolute;
             overflow-x: auto;
             overflow-y: auto;
+        }
+        #bigScreen {
+            display: none;
+        }
+    }
+    @media only screen and (min-width: 768px) {
+        #smallScreen {
+            display: none;
         }
     }
 </style>
