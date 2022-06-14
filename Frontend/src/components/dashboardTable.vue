@@ -103,7 +103,7 @@
         this.timer = setInterval(() => {
             if (this.$router.currentRoute.path != '/dashboard')
                 clearInterval(this.timer);
-                if (this.counter < 60) {
+                if (this.counter < 59) {
                     this.counter += 1;
                 } else {
                     this.GetSounds();
