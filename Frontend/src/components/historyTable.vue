@@ -1,6 +1,14 @@
 <template>
     <div>
         <h2 style=" color: black">Laatste update: {{ this.counter }}s</h2>
+        <label>Filter</label>
+        <div class="select">
+            <select v-model:where="filter" @change="GetSounds">
+                <option value="">time</option>
+                <option value="gunshot">gunshot</option>
+                <option value="probability">probability</option>
+            </select>
+        </div>
         <div class="dashboard-geluidendata">
             <table class="flat-table flat-table-1">
                 <thead>
@@ -32,7 +40,10 @@
                             </div>
                         </td>
                         <td>
-                            <Progress class="progress" :transitionDuration="1" strokeColor="white" v-bind:value="sound.probability">
+                            <Progress class="progress" id="bigScreen" :radius="30" :transitionDuration="1" strokeColor="white" v-bind:value="sound.probability">
+                                {{ sound.probability }}%
+                            </Progress>
+                            <Progress class="progress" id="smallScreen" :radius="20" :transitionDuration="1" strokeColor="white" v-bind:value="sound.probability">
                                 {{ sound.probability }}%
                             </Progress>
                         </td>
@@ -61,14 +72,21 @@
             return {
                 sounds: [],
                 timer: 0,
-                counter: 0
+                counter: 0,
+                filter: ''
             }
         },
         methods: {
             GetSounds() {
+                var whereFilter = this.filter == 'gunshot' ? "WHERE soundtype='gunshot'" : ""
+                var orderFilter = this.filter == 'probability' ? "probability DESC, time" : "time"
+
+                this.counter = 0;
                 axios.get("api/auth/mqttdata", {
                     params: {
-                        limit: 150,
+                        limit: 300,
+                        order: orderFilter,
+                        where: whereFilter
                     },
                 })
                     .then((response) => {
@@ -92,7 +110,6 @@
                 if (this.counter < 60) {
                     this.counter += 1;
                 } else {
-                    this.counter = 0;
                     this.GetSounds();
                 }
             }, 1000);
@@ -101,14 +118,30 @@
 </script>
 
 <style scoped>
+    label {
+        font-size: calc(1vw + 10px);
+        color: black;
+    }
+    div {
+        font-family: Arial;
+        font-size: calc(0.5vw + 10px);
+    }
+    .select select {
+        background-color: #336ca6;
+        color: white;
+        box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
+        -webkit-appearance: button;
+        cursor: pointer;
+        margin-bottom: 1%;
+        padding: 5px;
+    }
     .badgeColumn {
         align-content: center;
     }
     .badge {
-        height: calc(3.5vw + 5px);
-        line-height: calc(3.5vw + 5px);
+        height: calc(2vw + 18px);
+        line-height: calc(2vw + 18px);
         border-radius: 150px / 160px;
-        font-size: calc(1.2vw + 5px);
     }
     .progress{
         line-height: 0vw;
@@ -124,7 +157,6 @@
     .flat-table {
         width: 100%;
         border-collapse: collapse;
-        font-family: Arial;
         color: #f7f7f7;
         border: none;
         border-radius: 3px;
@@ -143,14 +175,12 @@
         padding: calc(0.5vw + 5px);
         color: white;
         text-shadow: 0 0 1px rgba(0, 0, 0, 0.1);
-        font-size: calc(1.1vw + 5px);
     }
 
     .flat-table td {
         text-align: center;
         padding: calc(0.5vw + 5px);
         text-shadow: 0 0 1px rgba(255, 255, 255, 0.1);
-        font-size: calc(1vw + 5px);
     }
 
     .flat-table tr {
@@ -182,7 +212,7 @@
 
     audio {
         filter: drop-shadow(2px 3px 3px #333);
-        max-width: 55vw;
+        max-width: calc(130px + 12vw);
         max-height: 10vw;
     }
 
@@ -207,10 +237,20 @@
     @media screen and (max-width: 768px) {
         .dashboard-geluidendata {
             width: 100%;
-            height: 95%;
+            height: 94%;
             position: absolute;
             overflow-x: auto;
             overflow-y: auto;
+        }
+
+        #bigScreen {
+            display: none;
+        }
+    }
+
+    @media only screen and (min-width: 768px) {
+        #smallScreen {
+            display: none;
         }
     }
 </style>
