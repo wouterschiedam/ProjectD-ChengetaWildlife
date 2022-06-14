@@ -50,8 +50,12 @@
         </aside>
         <!-- MAIN - MAP -->
         <main>
-            <div class="dashboard-map" id="map" style="z-index: 0"></div>
-            <div class="dashboard-heatmap" id="heatmap" style="z-index: 0;"></div>
+            <div v-if="current" >
+                <Markermap/>
+            </div>
+            <div v-if="!current">
+                <heatmap/>
+            </div>
             <!-- MAIN - DATA -->
             <DashboardTable />
         </main>
@@ -63,25 +67,22 @@
 import Progress from "easy-circular-progress";
 import AppFooter from "../components/footer";
 import DashboardTable from "../components/dashboardTable";
-import { latLngBounds } from "leaflet";
-import { LMap, LTileLayer, LMarker, LPopup, LFeatureGroup } from "vue2-leaflet";
-import "leaflet.heat";
+import Markermap from "../components/Markermap";
+import heatmap from "../components/heatmap";
 import html2canvas from "html2canvas";  
 import axios from "axios";
 import router from "../router";
-import IconMaterial from "leaflet-iconmaterial";
 var VueCookie = require("vue-cookie");
 
 export default {
     name: "dashboard",
     components: {
         AppFooter,
-        LMap,
-        LTileLayer,
-        LMarker,
-        LPopup,
         DashboardTable,
         Progress,
+        Markermap,
+        heatmap
+
 
     },
     props: ["superUser"],
@@ -90,31 +91,18 @@ export default {
             LoggedIn: null,
             sounds: [],
             point: null,
-            current: "Map",
+            current: true,
             timer: "",
-            zoom: 13,
-            center: L.latLng(47.41322, -1.219482),
-            url: 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-            attribution:
-                '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
-            marker: [],
-            maxBounds: latLngBounds([
-                [-6.30081290280357, 23.16963806152345],
-                [2.82991732677597, 23.58716201782228],
-            ]),
         };
     },
     methods: {
         Togglemap() {
-            if (document.getElementById("map").style.display == "flex") {
-                document.getElementById("heatmap").style.display = "flex";
-                document.getElementById("map").style.display = "none";
-                this.current = "Heatmap";
+            if (this.current) {
+                this.current = false;
             } else{
-                document.getElementById("map").style.display = "flex";
-                document.getElementById("heatmap").style.display = "none";
-                this.current = "Map";
+                this.current = true;
             }
+            console.log(this.current);
         },
         historyData() {
             this.$router.replace({ name: "historyData" });
@@ -141,251 +129,7 @@ export default {
                 var sideMenu = document.getElementById("sidebar");
                 sideMenu.style.display = "none";
             }
-        },
-        GetSounds() {
-            axios
-                .get("api/auth/mqttdata", {
-                    params: {
-                        limit: 50,
-                    },
-                })
-                .then((response) => {
-                    this.sounds = response.data;
-                    this.Markers = response.data;
-                    this.Markers.forEach((element) => {
-                        this.marker.push([element.latitude, element.longitude, element.probability]);
-                    });
-                    this.createMap();
-                })
-                .catch(function (error) {
-                    console.log(error);
-                    alert(error);
-                });
-        },
-        createHeatMap(MyMarkers) {
-            var heatmap = L.map("heatmap").setView([47.41322, -1.219482], 13);
-            heatmap.options.minZoom = 6;
-            heatmap.options.maxZoom = 50;
-            L.tileLayer(this.url, {
-                attribution: this.attribution,
-            }).addTo(heatmap);
-            heatmap.attributionControl.setPrefix("");
-            // var legend = L.control({ position: "topright" });
-            // legend.onAdd = function (heatmap) {
-            //     var div = L.DomUtil.create("div", "info legend"),
-            //         grades = [20, 40, 60, 80],
-            //         color = [
-            //             "#570000",
-            //             "#ff0000",
-            //             "#ffc800",
-            //             "#ffff00",
-              
-            //         ];
-            //     // Loop for color shades
-            //     for (var i = 0; i < grades.length; i++) {
-            //         div.innerHTML +=
-            //             '<span style="background: ' + color[i] + '"></span> ';
-            //     }
-            //     // a line break
-            //     div.innerHTML += "<br>";
-            //     // second loop for text
-            //     for (var i = 0; i < grades.length; i++) {
-            //         div.innerHTML +=
-            //             "<label>" +
-            //             grades[i] +
-            //             (grades[i + 1] ? "&ndash;" + grades[i + 1] : "+") +
-            //             "</label>";
-            //     }
-            //     return div;
-            // };
-            // legend.addTo(heatmap);
-            var newAddressPoints = this.marker.map(function (p) { return [p[0], p[1], (p[2])/100]; });
-            var heatmapLayer = L.heatLayer(newAddressPoints, {
-            radius: 25,
-            maxZoom: 12,
-            minOpacity: 0.5,
-            max: 1,
-            blur: 15,
-            gradient: {
-                0: "#000000",
-                0.2: "#570000",
-                0.4: "#ff0000",
-                0.6: "#ffc800",
-                0.8: "#ffff00",
-            }
-            })
-            setTimeout(function(){
-                heatmap.addLayer(heatmapLayer)
-
-            },500)
-            heatmap.fitBounds(MyMarkers.getBounds());
-            heatmap.setMaxBounds(heatmap.getBounds());
-            
-            document.getElementById("heatmap").style.display = "none";
-
-            
-        },
-        createMap() {
-            var map = L.map("map").setView([47.41322, -1.219482], 13);
-            map.options.minZoom = 6;
-            map.options.maxZoom = 50;
-            L.tileLayer(this.url, {
-                attribution: this.attribution,
-            }).addTo(map);
-            map.attributionControl.setPrefix("");
-            this.AddMarkers(map);
-            var legend = L.control({ position: "topright" });
-            legend.onAdd = function (map) {
-                var div = L.DomUtil.create("div", "info legend"),
-                    grades = [0, 20, 40, 60, 80],
-                    color = [
-                        "#ccccff",
-                        "#b2b2ff",
-                        "#9999ff",
-                        "#7f7fff",
-                        "#6666ff",
-                    ];
-                // Loop for color shades
-                for (var i = 0; i < grades.length; i++) {
-                    div.innerHTML +=
-                        '<span style="background: ' + color[i] + '"></span> ';
-                }
-                // a line break
-                div.innerHTML += "<br>";
-                // second loop for text
-                for (var i = 0; i < grades.length; i++) {
-                    div.innerHTML +=
-                        "<label>" +
-                        grades[i] +
-                        (grades[i + 1] ? "&ndash;" + grades[i + 1] : "+") +
-                        "</label>";
-                }
-                return div;
-            };
-            legend.addTo(map);
-
-
-        },
-        AddMarkers(map) {
-            var MyMarkers = L.featureGroup();
-            for (var i = 0; i < 13; i++) {
-                var date = new Date(this.Markers[i].time * 1000)
-                    .toLocaleTimeString("en-NL")
-                    .toString();
-                if (
-                    this.Markers[i].probability <= 20 &&
-                    this.Markers[i].probability >= 0
-                ) {
-                    var zerotwenty = L.icon({
-                        iconUrl: require("../markers/marker-svg.png"),
-                        iconSize: [25, 45],
-                    });
-                    var marker = new L.marker(
-                        [this.marker[i][0], this.marker[i][1]],
-                        { icon: zerotwenty }
-                    ).bindPopup(
-                        "Time: " +
-                            date +
-                            "\n, probability: " +
-                            this.Markers[i].probability.toString() +
-                            "\n, Soundtype: " +
-                            this.Markers[i].soundtype.toString()
-                    );
-                }
-                if (
-                    this.Markers[i].probability <= 40 &&
-                    this.Markers[i].probability > 20
-                ) {
-                    var twentyfourty = L.icon({
-                        iconUrl: require("../markers/twentyfourty.png"),
-                        iconSize: [25, 45],
-                    });
-                    var marker = new L.marker(
-                        [this.marker[i][0], this.marker[i][1]],
-                        { icon: twentyfourty }
-                    ).bindPopup(
-                        "Time: " +
-                            date +
-                            "\n, probability: " +
-                            this.Markers[i].probability.toString() +
-                            "\n, Soundtype: " +
-                            this.Markers[i].soundtype.toString()
-                    );
-                    // add color to markers
-                }
-                if (
-                    this.Markers[i].probability <= 60 &&
-                    this.Markers[i].probability > 40
-                ) {
-                    var fourtysixty = L.icon({
-                        iconUrl: require("../markers/fourtysixty.png"),
-                        iconSize: [25, 45],
-                    });
-                    var marker = new L.marker(
-                        [this.marker[i][0], this.marker[i][1]],
-                        { icon: fourtysixty }
-                    ).bindPopup(
-                        "Time: " +
-                            date +
-                            "\n, probability: " +
-                            this.Markers[i].probability.toString() +
-                            "\n, Soundtype: " +
-                            this.Markers[i].soundtype.toString()
-                    );
-                    // add color to markers
-                }
-                if (
-                    this.Markers[i].probability <= 80 &&
-                    this.Markers[i].probability > 60
-                ) {
-                    var sixtyeighty = L.icon({
-                        iconUrl: require("../markers/sixtyeigthy.png"),
-                        iconSize: [25, 45],
-                    });
-                    var marker = new L.marker(
-                        [this.marker[i][0], this.marker[i][1]],
-                        { icon: sixtyeighty }
-                    ).bindPopup(
-                        "Time: " +
-                            date +
-                            "\n, probability: " +
-                            this.Markers[i].probability.toString() +
-                            "\n, Soundtype: " +
-                            this.Markers[i].soundtype.toString()
-                    );
-                    // add color to markers
-                }
-                if (
-                    this.Markers[i].probability <= 100 &&
-                    this.Markers[i].probability > 80
-                ) {
-                    var eightyplus = L.icon({
-                        iconUrl: require("../markers/eightyplus.png"),
-                        iconSize: [25, 45],
-                    });
-                    var marker = new L.marker(
-                        [this.marker[i][0], this.marker[i][1]],
-                        { icon: eightyplus }
-                    ).bindPopup(
-                        "Time: " +
-                            date +
-                            "\n, probability: " +
-                            this.Markers[i].probability.toString() +
-                            "\n, Soundtype: " +
-                            this.Markers[i].soundtype.toString()
-                    );
-                    // add color to markers
-                }
-                MyMarkers.addLayer(marker);
-            }
-            MyMarkers.addTo(map);
-            map.fitBounds(MyMarkers.getBounds());
-            map.setMaxBounds(map.getBounds());
-            this.createHeatMap(MyMarkers)
-        },
-        cancelAutoUpdate() {
-            clearInterval(this.timer);
-        },
+        },     
         fullScreenView() {
             if(this.current == "Map"){
                 var mapId = document.getElementById("map");
@@ -429,19 +173,33 @@ export default {
         // this.countDownTimer();
     },
     mounted() {
-        this.GetSounds();
-
-
-     
-
+        //this.GetSounds();
     },
     beforeDestroy() {
-        this.cancelAutoUpdate();
+        //this.cancelAutoUpdate();
     },
 };
 </script>
 
 <style>
+.dashboard-heatmap {
+    flex: 0 0 auto;
+    width: 100%;
+    height: 516px;
+    position: relative;
+    align-items: flex-start;
+    flex-direction: column;
+    display: flex;
+}
+.dashboard-map {
+    flex: 0 0 auto;
+    width: 100%;
+    height: 517px;
+    display: flex;
+    position: relative;
+    align-items: flex-start;
+    flex-direction: column;
+}
 /* LEGEND */
 .legend span,
 .legend label {
@@ -461,24 +219,6 @@ main {
 }
 
 
-.dashboard-map {
-    flex: 0 0 auto;
-    width: 100%;
-    height: 517px;
-    display: flex;
-    position: relative;
-    align-items: flex-start;
-    flex-direction: column;
-}
-.dashboard-heatmap {
-    flex: 0 0 auto;
-    width: 100%;
-    height: 516px;
-    position: relative;
-    align-items: flex-start;
-    flex-direction: column;
-    display: flex;
-}
 /* STYLING SIDEBAR */
 a {
     color: var(--color-dark);

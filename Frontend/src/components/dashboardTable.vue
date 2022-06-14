@@ -82,9 +82,6 @@
                     alert(error);
                 });
         },
-        cancelAutoUpdate() {
-            clearInterval(this.timer);
-        }
     },
     mounted() {
         this.GetSounds();
