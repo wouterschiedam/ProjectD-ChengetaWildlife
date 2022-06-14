@@ -14,13 +14,11 @@
                     <h2>Chengeta</h2>
                 </div>
                 <div class="close" id="closee-btn">
-                    <span class="material-icons-sharp" @click="Sidebarclose()"
-                        >close</span
-                    >
+                    <span class="material-icons-sharp" @click="Sidebarclose()">close</span>
                 </div>
             </div>
             <div class="sidebar">
-                <a @click="router.push({ name: 'dashboard' })">
+                <a >
                     <span class="material-icons-sharp">grid_view</span>
                     <h3>Dashboard</h3>
                 </a>
@@ -41,7 +39,7 @@
                     <h3>Nieuw account</h3>
                 </a>
                 <a @click="Togglemap()">
-                    <span class="material-icons-sharp">person_add</span>
+                    <span class="material-symbols-outlined">map</span>
                     <h3>Toggle map</h3>
                 </a>
                 <a @click="Logout()">
@@ -92,10 +90,11 @@ export default {
             LoggedIn: null,
             sounds: [],
             point: null,
+            current: "Map",
             timer: "",
             zoom: 13,
             center: L.latLng(47.41322, -1.219482),
-            url: "http://{s}.tile.osm.org/{z}/{x}/{y}.png",
+            url: 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
             attribution:
                 '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
             marker: [],
@@ -108,11 +107,13 @@ export default {
     methods: {
         Togglemap() {
             if (document.getElementById("map").style.display == "flex") {
-                document.getElementById("map").style.display = "none";
                 document.getElementById("heatmap").style.display = "flex";
+                document.getElementById("map").style.display = "none";
+                this.current = "Heatmap";
             } else{
                 document.getElementById("map").style.display = "flex";
                 document.getElementById("heatmap").style.display = "none";
+                this.current = "Map";
             }
         },
         historyData() {
@@ -130,9 +131,6 @@ export default {
             this.$store.commit("setAuth", false);
             this.$router.replace({ name: "Log in" });
         },
-        async isLoggedIn() {
-            return this.LoggedIn;
-        },
         Sidebaropen() {
             var sideMenu = document.getElementById("sidebar");
             sideMenu.style.display = "block";
@@ -148,14 +146,14 @@ export default {
             axios
                 .get("api/auth/mqttdata", {
                     params: {
-                        limit: 500,
+                        limit: 50,
                     },
                 })
                 .then((response) => {
                     this.sounds = response.data;
                     this.Markers = response.data;
                     this.Markers.forEach((element) => {
-                        this.marker.push([element.latitude, element.longitude]);
+                        this.marker.push([element.latitude, element.longitude, element.probability]);
                     });
                     this.createMap();
             
@@ -173,26 +171,65 @@ export default {
                 attribution: this.attribution,
             }).addTo(heatmap);
             heatmap.attributionControl.setPrefix("");
-            var newAddressPoints = this.marker.map(function (p) { return [p[0], p[1]]; });
+            // var legend = L.control({ position: "topright" });
+            // legend.onAdd = function (heatmap) {
+            //     var div = L.DomUtil.create("div", "info legend"),
+            //         grades = [20, 40, 60, 80],
+            //         color = [
+            //             "#570000",
+            //             "#ff0000",
+            //             "#ffc800",
+            //             "#ffff00",
+              
+            //         ];
+            //     // Loop for color shades
+            //     for (var i = 0; i < grades.length; i++) {
+            //         div.innerHTML +=
+            //             '<span style="background: ' + color[i] + '"></span> ';
+            //     }
+            //     // a line break
+            //     div.innerHTML += "<br>";
+            //     // second loop for text
+            //     for (var i = 0; i < grades.length; i++) {
+            //         div.innerHTML +=
+            //             "<label>" +
+            //             grades[i] +
+            //             (grades[i + 1] ? "&ndash;" + grades[i + 1] : "+") +
+            //             "</label>";
+            //     }
+            //     return div;
+            // };
+            // legend.addTo(heatmap);
+
+
+
+
+            var newAddressPoints = this.marker.map(function (p) { return [p[0], p[1], (p[2])/100]; });
             var heatmapLayer = L.heatLayer(newAddressPoints, {
-                radius: 60,
-                blur: 10,
-                gradient: {
-                    0.15: "blue",
-                    0.25: "cyan",
-                    0.35: "lime",
-                    0.45: "yellow",
-                    0.55: "red",
-                    1.0: "red",
-                },
+            radius: 25,
+            maxZoom: 12,
+            minOpacity: 0.5,
+            max: 1,
+            blur: 10,
+            gradient: {
+                0: "#000000",
+                0.2: "#570000",
+                0.4: "#ff0000",
+                0.6: "#ffc800",
+                0.8: "#ffff00",
+                "1.0": "#FFFFFF" , // note the string of the key
+            }
             })
             setTimeout(function(){
                 heatmap.addLayer(heatmapLayer)
-                heatmap.fitBounds(MyMarkers.getBounds());
-                heatmap.setMaxBoundsh(map.getBounds());
+
             },500)
+            heatmap.fitBounds(MyMarkers.getBounds());
+            heatmap.setMaxBounds(heatmap.getBounds());
+            
+            document.getElementById("heatmap").style.display = "none";
 
-
+            
         },
         createMap() {
             var map = L.map("map").setView([47.41322, -1.219482], 13);
@@ -356,8 +393,15 @@ export default {
             clearInterval(this.timer);
         },
         fullScreenView() {
-            var mapId = document.getElementById("map");
-            mapId.requestFullscreen();
+            if(this.current == "Map"){
+                var mapId = document.getElementById("map");
+                mapId.requestFullscreen();
+            }
+            if(this.current == "Heatmap"){
+                var heatmapId = document.getElementById("heatmap");
+                heatmapId.requestFullscreen();
+            }
+
         },
         printMapHtml() {
             const screenshotTarget = document.getElementById("map");
@@ -383,6 +427,7 @@ export default {
         ],
     },
     created() {
+
         //reload every 60 seconds
         // const counter = setInterval(() => {
         //   this.GetSounds();
@@ -391,6 +436,10 @@ export default {
     },
     mounted() {
         this.GetSounds();
+
+
+     
+
     },
     beforeDestroy() {
         this.cancelAutoUpdate();
@@ -417,6 +466,7 @@ main {
     width: 100%;
 }
 
+
 .dashboard-map {
     flex: 0 0 auto;
     width: 100%;
@@ -425,8 +475,6 @@ main {
     position: relative;
     align-items: flex-start;
     flex-direction: column;
-
-    
 }
 .dashboard-heatmap {
     flex: 0 0 auto;
@@ -435,8 +483,7 @@ main {
     position: relative;
     align-items: flex-start;
     flex-direction: column;
-    display: none;
-
+    display: flex;
 }
 /* STYLING SIDEBAR */
 a {
