@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using ProjectD_ChengetaWildlife.controllers;
+using ProjectD_ChengetaWildlife.controllers.api;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -68,6 +69,11 @@ namespace ProjectD_ChengetaWildlife
 					pattern: "session",
 					defaults: new CheckSession()
 				);
+				endpoints.MapControllerRoute(
+					name: "/api",
+					pattern: "controller",
+					defaults: new ApiController()
+					);
 			});
 		}
 	}
