@@ -1,6 +1,11 @@
 <template>
   <div class="container" v-if="isLoggedIn()">
-    <aside>
+  <div class="burger-menu">
+        <button id="menubtn" @click="Sidebaropen()">
+        <span class="material-icons-sharp">menu</span>
+      </button>
+    </div>
+    <aside id="sidebar">
       <div class="top">
         <div class="logo">
           <img
@@ -9,7 +14,7 @@
           <h2>Chengeta</h2>
         </div>
         <div class="close" id="closee-btn">
-          <span class="material-icons-sharp">close</span>
+          <span class="material-icons-sharp" @click="Sidebarclose()">close</span>
         </div>
       </div>
       <div class="sidebar">
@@ -52,6 +57,15 @@ export default {
   components: {
       HistoryTable
   },
+  metaInfo: {
+    title: "Historische data - Chengeta wildlife",
+    meta: [
+        {
+            property: "og:title",
+            content: "Historische data - Chengeta wildlife",
+        },
+    ],
+  },
   data() {
     return {
       sounds: [],
@@ -77,6 +91,18 @@ export default {
     async isLoggedIn() {
       return this.LoggedIn;
     },
+    Sidebaropen() {
+      var sideMenu = document.getElementById("sidebar");
+      sideMenu.style.display = "block";
+    },
+    Sidebarclose() {
+      const mediaQuery = window.matchMedia('(max-width: 768px)')
+      if(mediaQuery){
+        var sideMenu = document.getElementById("sidebar");
+        sideMenu.style.display = "none";
+
+      }
+    },
   }
 };
 </script>
@@ -84,5 +110,86 @@ export default {
 <style scoped>
 .container {
     height: 100%;
+}
+/* TOP */
+.burger-menu {
+    display: none;
+}
+@media screen and (max-width: 820px) {
+    .container {
+        width: 94%;
+        grid-template-columns: 10rem 88% auto;
+        margin-left: 1%;
+    }
+    aside .logo h2 {
+        display: none;
+    }
+    aside .sidebar h3 {
+        display: none;
+    }
+    aside .sidebar h3 {
+        width: 5.6rem;
+    }
+    aside .sidebar h3 {
+        position: relative;
+        margin-top: 1.8rem;
+    }
+    .dashboard-map {
+        width: 95%;
+    }
+}
+@media screen and (max-width: 768px) {
+  .container {
+    height: 0;
+    width: 98%;
+    grid-template-columns: 100%;
+    margin: 0;
+    margin-left: 5px;
+  }
+  aside {
+    position: fixed;
+    left: 0;
+    background: white;
+    width: 18rem;
+    z-index: 3;
+    box-shadow: 1rem 3rem 4rem var(--color-light);
+    height: 100vh;
+    padding-right: 0.2rem;
+    display: none;
+  }
+  aside .logo {
+    margin-left: 1rem;
+  }
+  aside .logo h2 {
+    display: inline;
+  }
+  aside .sidebar h3 {
+    display: inline;
+    margin-top: 0;
+    width: 100px;
+  }
+  aside .sidebar a {
+    width: 100%;
+    height: 3.4rem;
+  }
+  aside .close {
+    display: inline-block;
+    cursor: pointer;
+  }
+  .top {
+    display: flex;
+  }
+  .top button {
+    background: transparent;
+  }
+  .dashboard-map {
+    width: 95%;
+  }
+  .burger-menu{
+    margin-top: 5px;
+    left: 0;
+    padding: 5px;
+    display: block; 
+  }
 }
 </style>

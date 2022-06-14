@@ -3,13 +3,15 @@
     <div class="login-container1">
       <h1 class="login-text">Nieuw account aanmaken</h1>
       <div class="login-container2">
-                <input
+          <h2>Voornaam</h2>
+          <input
           style="width: 40%"
           type="text"
           id="name"
           placeholder="Voornaam"
           class="login-textinput input"
         />
+        <h2>Email</h2>
         <input
           style="width: 40%"
           type="text"
@@ -17,6 +19,7 @@
           placeholder="Email"
           class="login-textinput input"
         />
+        <h2>Wachtwoord</h2>
         <input
           style="width: 40%"
           id="password"
@@ -24,6 +27,7 @@
           placeholder="Wachtwoord"
           class="login-textinput1 input"
         />
+        <h2>Wachtwoord herhalen</h2>
         <input
           style="width: 40%"
           id="password1"
@@ -31,6 +35,7 @@
           placeholder="Wachtwoord"
           class="login-textinput1 input"
         />
+        <h2>Superuser</h2>
         <select
           v-model="issuperUser"
           class="login-textinput1 input"
@@ -39,7 +44,7 @@
           <option value="false" @click="issuperUser = 'false'">Nee</option>
           <option value="true" @click="issuperUser = 'true'">Ja</option>
         </select>
-        <a style="margin-bottom: 5%">{{ errormessage }}</a>
+        <a id="error" style="margin-bottom: 1%; display: none;">{{ errormessage }}</a>
         <button class="login-button button" @click="sendToServer()">Account aanmaken</button>
       </div>
     </div>
@@ -70,6 +75,7 @@ export default {
   methods: {
     passwordCheck() {
       if (document.getElementById("password").value != document.getElementById("password1").value) {
+        document.getElementById("error").style.display = "block";
         this.errormessage = "De ingevoerde wachtwoorden komen niet overeen";
         return false;
       } else {
@@ -80,12 +86,15 @@ export default {
       if (document.getElementById("name").value != "") {
         return true;
       } else {
+        document.getElementById("error").style.display = "block";
         this.errormessage = "U heeft geen naam ingevuld";
         return false;
       }
     },
     isSuperUser() {
       if (this.issuperUser == "") {
+        document.getElementById("error").style.display = "block";
+        this.errormessage = "U heeft geen superuser geselecteerd";
         return false;
       }
       return true;
@@ -94,6 +103,7 @@ export default {
       const re =
         /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
       if (!re.test(String(document.getElementById("email").value).toLowerCase())) {
+        document.getElementById("error").style.display = "block";
         this.errormessage = "Het ingevoerde email adress is niet geldig";
         return false;
       } else {
@@ -122,6 +132,7 @@ export default {
           });
         } 
         else {
+          document.getElementById("error").style.display = "flex";
           this.errormessage = "U heeft geen rechten om een nieuw account aan te maken.";
         }
       }
@@ -129,11 +140,11 @@ export default {
   },
   
   metaInfo: {
-    title: "Log in - Chengeta wildlife",
+    title: "New user - Chengeta wildlife",
     meta: [
       {
         property: "og:title",
-        content: "Log in - Chengeta wildlife",
+        content: "New user - Chengeta wildlife",
       },
     ],
   },
@@ -182,17 +193,22 @@ export default {
   height: 30%;
   display: flex;
   align-self: center;
-  margin-top: 10%;
+  margin-top: 2%;
   align-items: center;
   margin-left: auto;
   margin-right: auto;
   margin-bottom: auto;
   flex-direction: column;
 }
+.login-container2 h2{
+  color: #000000;
+  font-size: 1.2em;
+}
 .login-textinput {
   margin-bottom: var(--dl-space-space-unit);
   padding-bottom: var(--dl-space-space-halfunit);
   color: black;
+  margin-bottom: 0px;
 }
 .login-textinput1 {
   margin-bottom: var(--dl-space-space-unit);
