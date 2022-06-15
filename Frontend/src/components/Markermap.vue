@@ -222,10 +222,8 @@ export default {
             map.setMaxBounds(map.getBounds());   
         },
         updateMarkers(map, MyMarkers) {  
-            console.log("updateMarkers") 
-            for (var i = 0; i < 15; i++) {
-                MyMarkers.removeLayer(this.markers[i]);
-            }
+            MyMarkers.removeLayer(this.markers[0]);
+            MyMarkers.removeLayer(this.markers[1]);
             newMyMarkers = new L.featureGroup()
             for (var i = 0; i < 15; i++) {
                
@@ -241,7 +239,7 @@ export default {
                         iconSize: [25, 45],
                     });
                     this.markers.push(new L.marker(
-                        [store.state.sounds[i][0], store.state.sounds[i][1]],
+                        [store.state.sounds[i].longitude, store.state.sounds[i].latitude],
                         { icon: zerotwenty }
                     ).bindPopup(
                         "Time: " +
@@ -260,8 +258,8 @@ export default {
                         iconUrl: require("../markers/twentyfourty.png"),
                         iconSize: [25, 45],
                     });
-                    this.markers(new L.marker(
-                        [store.state.sounds[i][0], store.state.sounds[i][1]],
+                    this.markers.push(new L.marker(
+                        [store.state.sounds[i].longitude, store.state.sounds[i].latitude],
                         { icon: twentyfourty }
                     ).bindPopup(
                         "Time: " +
@@ -281,8 +279,8 @@ export default {
                         iconUrl: require("../markers/fourtysixty.png"),
                         iconSize: [25, 45],
                     });
-                    this.markers(new L.marker(
-                        [store.state.sounds[i][0], store.state.sounds[i][1]],
+                    this.markers.push(new L.marker(
+                        [store.state.sounds[i].longitude, store.state.sounds[i].latitude],
                         { icon: fourtysixty }
                     ).bindPopup(
                         "Time: " +
@@ -302,8 +300,8 @@ export default {
                         iconUrl: require("../markers/sixtyeigthy.png"),
                         iconSize: [25, 45],
                     });
-                    this.markers(new L.marker(
-                        [this.marker[i][0], this.marker[i][1]],
+                    this.markers.push(new L.marker(
+                        [store.state.sounds[i].longitude, store.state.sounds[i].latitude],
                         { icon: sixtyeighty }
                     ).bindPopup(
                         "Time: " +
@@ -323,8 +321,8 @@ export default {
                         iconUrl: require("../markers/eightyplus.png"),
                         iconSize: [25, 45],
                     });
-                    this.markers(new L.marker(
-                        [this.marker[i][0], this.marker[i][1]],
+                    this.markers.push(new L.marker(
+                        [store.state.sounds[i].longitude, store.state.sounds[i].latitude],
                         { icon: eightyplus }
                     ).bindPopup(
                         "Time: " +
@@ -336,7 +334,7 @@ export default {
                     ));
                     // add color to markers
                 }
-                MyMarkers.addLayer(marker);
+                MyMarkers.addLayer(this.markers[i]);
           
             }
             newMyMarkers.addTo(map);
