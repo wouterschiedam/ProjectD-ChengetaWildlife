@@ -26,7 +26,6 @@ export default {
             counter: 0,
             sounds: store.state.sounds,
             markers: [],
-            
             point: null,
             timer: "",
             zoom: 13,
@@ -109,6 +108,10 @@ export default {
                 var date = new Date(this.Markers[i].time * 1000)
                     .toLocaleTimeString("en-NL")
                     .toString();
+                var template =
+                "<div>Time: "+date+"</div>" +
+                "<div>Probability: "+store.state.sounds[i].probability.toString()+"</div>" +
+                "<div>Soundtype: "+store.state.sounds[i].soundtype.toString()+"</div>";
                 if (
                     this.Markers[i].probability <= 20 &&
                     this.Markers[i].probability >= 0
@@ -120,13 +123,6 @@ export default {
                     this.markers.push(new L.marker(
                         [this.marker[i][0], this.marker[i][1]],
                         { icon: zerotwenty }
-                    ).bindPopup(
-                        "Time: " +
-                            date +
-                            "\n, probability: " +
-                            this.Markers[i].probability.toString() +
-                            "\n, Soundtype: " +
-                            this.Markers[i].soundtype.toString()
                     ));
                 }
                 if (
@@ -140,13 +136,6 @@ export default {
                     this.markers.push(new L.marker(
                         [this.marker[i][0], this.marker[i][1]],
                         { icon: twentyfourty }
-                    ).bindPopup(
-                        "Time: " +
-                            date +
-                            "\n, probability: " +
-                            this.Markers[i].probability.toString() +
-                            "\n, Soundtype: " +
-                            this.Markers[i].soundtype.toString()
                     ));
                     // add color to markers
                 }
@@ -161,13 +150,6 @@ export default {
                     this.markers.push(new L.marker(
                         [this.marker[i][0], this.marker[i][1]],
                         { icon: fourtysixty }
-                    ).bindPopup(
-                        "Time: " +
-                            date +
-                            "\n, probability: " +
-                            this.Markers[i].probability.toString() +
-                            "\n, Soundtype: " +
-                            this.Markers[i].soundtype.toString()
                     ));
                     // add color to markers
                 }
@@ -182,13 +164,6 @@ export default {
                     this.markers.push(new L.marker(
                         [this.marker[i][0], this.marker[i][1]],
                         { icon: sixtyeighty }
-                    ).bindPopup(
-                        "Time: " +
-                            date +
-                            "\n, probability: " +
-                            this.Markers[i].probability.toString() +
-                            "\n, Soundtype: " +
-                            this.Markers[i].soundtype.toString()
                     ));
                     // add color to markers
                 }
@@ -203,17 +178,10 @@ export default {
                     this.markers.push(new L.marker(
                         [this.marker[i][0], this.marker[i][1]],
                         { icon: eightyplus }
-                    ).bindPopup(
-                        "Time: " +
-                            date +
-                            "\n, probability: " +
-                            this.Markers[i].probability.toString() +
-                            "\n, Soundtype: " +
-                            this.Markers[i].soundtype.toString()
                     ));
                     // add color to markers
                 }
-                MyMarkers.addLayer(this.markers[i]);
+                MyMarkers.addLayer(this.markers[i].bindPopup(template));
                 
             }
             
@@ -222,11 +190,16 @@ export default {
             map.setMaxBounds(map.getBounds());   
         },
         updateMarkers(map, MyMarkers) {  
-            MyMarkers.removeLayer(this.markers[0]);
-            MyMarkers.removeLayer(this.markers[1]);
+            for (var i = 0; i < 15; i++) {
+                MyMarkers.removeLayer(this.markers[i]);
+                newMyMarkers.removeLayer(this.markers[i]);
+            }
             newMyMarkers = new L.featureGroup()
             for (var i = 0; i < 15; i++) {
-               
+               var template =
+                "<div>Time: "+date+"</div>" +
+                "<div>Probability: "+store.state.sounds[i].probability.toString()+"</div>" +
+                "<div>Soundtype: "+store.state.sounds[i].soundtype.toString()+"</div>";
                 var date = new Date(store.state.sounds[i].time * 1000)
                     .toLocaleTimeString("en-NL")
                     .toString();
@@ -241,13 +214,6 @@ export default {
                     this.markers.push(new L.marker(
                         [store.state.sounds[i].longitude, store.state.sounds[i].latitude],
                         { icon: zerotwenty }
-                    ).bindPopup(
-                        "Time: " +
-                            date +
-                            "\n, probability: " +
-                            store.state.sounds[i].probability.toString() +
-                            "\n, Soundtype: " +
-                            store.state.sounds[i].soundtype.toString()
                     ));
                 }
                 if (
@@ -261,13 +227,6 @@ export default {
                     this.markers.push(new L.marker(
                         [store.state.sounds[i].longitude, store.state.sounds[i].latitude],
                         { icon: twentyfourty }
-                    ).bindPopup(
-                        "Time: " +
-                            date +
-                            "\n, probability: " +
-                            this.Markers[i].probability.toString() +
-                            "\n, Soundtype: " +
-                            this.Markers[i].soundtype.toString()
                     ));
                     // add color to markers
                 }
@@ -282,13 +241,6 @@ export default {
                     this.markers.push(new L.marker(
                         [store.state.sounds[i].longitude, store.state.sounds[i].latitude],
                         { icon: fourtysixty }
-                    ).bindPopup(
-                        "Time: " +
-                            date +
-                            "\n, probability: " +
-                            store.state.sounds[i].probability.toString() +
-                            "\n, Soundtype: " +
-                            store.state.sounds[i].soundtype.toString()
                     ));
                     // add color to markers
                 }
@@ -303,13 +255,6 @@ export default {
                     this.markers.push(new L.marker(
                         [store.state.sounds[i].longitude, store.state.sounds[i].latitude],
                         { icon: sixtyeighty }
-                    ).bindPopup(
-                        "Time: " +
-                            date +
-                            "\n, probability: " +
-                            store.state.sounds[i].probability.toString() +
-                            "\n, Soundtype: " +
-                            store.state.sounds[i].soundtype.toString()
                     ));
                     // add color to markers
                 }
@@ -324,17 +269,10 @@ export default {
                     this.markers.push(new L.marker(
                         [store.state.sounds[i].longitude, store.state.sounds[i].latitude],
                         { icon: eightyplus }
-                    ).bindPopup(
-                        "Time: " +
-                            date +
-                            "\n, probability: " +
-                            store.state.sounds[i].probability.toString() +
-                            "\n, Soundtype: " +
-                            store.state.sounds[i].soundtype.toString()
                     ));
                     // add color to markers
                 }
-                MyMarkers.addLayer(this.markers[i]);
+                MyMarkers.addLayer(this.markers[i].bindPopup(template));
           
             }
             newMyMarkers.addTo(map);
@@ -346,7 +284,6 @@ export default {
     mounted() {
         this.GetSounds();
         setInterval(() => {
-            MyMarkers.removeLayer(this.markers[0])
             this.updateMarkers(map, MyMarkers);   
         }, 60000);
     },

@@ -51,7 +51,7 @@ Vue.use(Dropdown);
 <script>
 import axios from "axios";
 import HistoryTable from "../components/historyTable";
-
+import router from "../router";
 export default {
   name: "HistoryData",
   components: {
@@ -80,6 +80,12 @@ export default {
     };
   },
   methods: {
+        Account: function () {
+            router.push({
+                name: "newUser",
+                params: { LoggedIn: this.LoggedIn, superUser: this.superUser },
+            });
+        },
     dashboard() {
       this.$router.push('/dashboard');
     },
