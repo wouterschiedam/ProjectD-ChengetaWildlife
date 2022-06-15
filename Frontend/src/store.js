@@ -6,6 +6,7 @@ export default new Vuex.Store({
     state: {
         authenticated: false,
         superUser: false,
+        sounds: []
     },
     mutations: {
         setAuth(state, status) {
@@ -13,6 +14,9 @@ export default new Vuex.Store({
         },
         setsuperUser(state, status){
             state.superUser = status
+        },
+        Updatedata(state, data){
+            state.sounds = data
         }
     },
 })

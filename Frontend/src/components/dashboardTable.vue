@@ -62,12 +62,14 @@
 <script>
     import axios from "axios";
     import Progress from "easy-circular-progress";
-
+import store from "../store";
+import Vuex from "vuex";
     export default {
     name: 'dashboardTable',
     components: {
         Progress
     },
+   
     data() {
         return {
             sounds: [],
@@ -90,6 +92,7 @@
                 })
                 .then((response) => {
                     this.sounds = response.data;
+                    this.$store.commit('Updatedata', this.sounds);
                     console.log("Updated table");
                 })
                 .catch(function (error) {

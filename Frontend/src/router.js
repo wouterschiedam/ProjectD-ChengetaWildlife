@@ -29,6 +29,7 @@ export default new Router({
             name: "dashboard",
             path: "/dashboard",
             component: Dashboard,
+            props: true,
             beforeEnter: (to, from, next) => {
               console.log(store.state.authenticated)
                 if (store.state.authenticated) {
