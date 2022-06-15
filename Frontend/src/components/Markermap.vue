@@ -10,6 +10,8 @@ import axios from "axios";
 import store from "../store";
 import Vuex from "vuex";
 var map;
+var MyMarkers;
+var newMyMarkers;
 export default {
     components: {
         LMap,
@@ -23,6 +25,8 @@ export default {
             LoggedIn: null,
             counter: 0,
             sounds: store.state.sounds,
+            markers: [],
+            
             point: null,
             timer: "",
             zoom: 13,
@@ -100,7 +104,7 @@ export default {
             this.AddMarkers(map);
         },
         AddMarkers(map) {
-            var MyMarkers = new L.featureGroup()
+            MyMarkers = new L.featureGroup()
             for (var i = 0; i < 15; i++) {
                 var date = new Date(this.Markers[i].time * 1000)
                     .toLocaleTimeString("en-NL")
@@ -113,7 +117,7 @@ export default {
                         iconUrl: require("../markers/marker-svg.png"),
                         iconSize: [25, 45],
                     });
-                    var marker = new L.marker(
+                    this.markers.push(new L.marker(
                         [this.marker[i][0], this.marker[i][1]],
                         { icon: zerotwenty }
                     ).bindPopup(
@@ -123,7 +127,7 @@ export default {
                             this.Markers[i].probability.toString() +
                             "\n, Soundtype: " +
                             this.Markers[i].soundtype.toString()
-                    );
+                    ));
                 }
                 if (
                     this.Markers[i].probability <= 40 &&
@@ -133,7 +137,7 @@ export default {
                         iconUrl: require("../markers/twentyfourty.png"),
                         iconSize: [25, 45],
                     });
-                    var marker = new L.marker(
+                    this.markers.push(new L.marker(
                         [this.marker[i][0], this.marker[i][1]],
                         { icon: twentyfourty }
                     ).bindPopup(
@@ -143,7 +147,7 @@ export default {
                             this.Markers[i].probability.toString() +
                             "\n, Soundtype: " +
                             this.Markers[i].soundtype.toString()
-                    );
+                    ));
                     // add color to markers
                 }
                 if (
@@ -154,7 +158,7 @@ export default {
                         iconUrl: require("../markers/fourtysixty.png"),
                         iconSize: [25, 45],
                     });
-                    var marker = new L.marker(
+                    this.markers.push(new L.marker(
                         [this.marker[i][0], this.marker[i][1]],
                         { icon: fourtysixty }
                     ).bindPopup(
@@ -164,7 +168,7 @@ export default {
                             this.Markers[i].probability.toString() +
                             "\n, Soundtype: " +
                             this.Markers[i].soundtype.toString()
-                    );
+                    ));
                     // add color to markers
                 }
                 if (
@@ -175,7 +179,7 @@ export default {
                         iconUrl: require("../markers/sixtyeigthy.png"),
                         iconSize: [25, 45],
                     });
-                    var marker = new L.marker(
+                    this.markers.push(new L.marker(
                         [this.marker[i][0], this.marker[i][1]],
                         { icon: sixtyeighty }
                     ).bindPopup(
@@ -185,7 +189,7 @@ export default {
                             this.Markers[i].probability.toString() +
                             "\n, Soundtype: " +
                             this.Markers[i].soundtype.toString()
-                    );
+                    ));
                     // add color to markers
                 }
                 if (
@@ -196,7 +200,7 @@ export default {
                         iconUrl: require("../markers/eightyplus.png"),
                         iconSize: [25, 45],
                     });
-                    var marker = new L.marker(
+                    this.markers.push(new L.marker(
                         [this.marker[i][0], this.marker[i][1]],
                         { icon: eightyplus }
                     ).bindPopup(
@@ -206,20 +210,25 @@ export default {
                             this.Markers[i].probability.toString() +
                             "\n, Soundtype: " +
                             this.Markers[i].soundtype.toString()
-                    );
+                    ));
                     // add color to markers
                 }
-                MyMarkers.addLayer(marker);
+                MyMarkers.addLayer(this.markers[i]);
+                
             }
+            
             MyMarkers.addTo(map);
             map.fitBounds(MyMarkers.getBounds());
-            map.setMaxBounds(map.getBounds());
-            
+            map.setMaxBounds(map.getBounds());   
         },
-        updateMarkers(map) {
-            map.removeLayer(MyMarkers);
-            var MyMarkers = new L.featureGroup()
+        updateMarkers(map, MyMarkers) {  
+            console.log("updateMarkers") 
             for (var i = 0; i < 15; i++) {
+                MyMarkers.removeLayer(this.markers[i]);
+            }
+            newMyMarkers = new L.featureGroup()
+            for (var i = 0; i < 15; i++) {
+               
                 var date = new Date(store.state.sounds[i].time * 1000)
                     .toLocaleTimeString("en-NL")
                     .toString();
@@ -231,7 +240,7 @@ export default {
                         iconUrl: require("../markers/marker-svg.png"),
                         iconSize: [25, 45],
                     });
-                    var marker = new L.marker(
+                    this.markers.push(new L.marker(
                         [store.state.sounds[i][0], store.state.sounds[i][1]],
                         { icon: zerotwenty }
                     ).bindPopup(
@@ -241,7 +250,7 @@ export default {
                             store.state.sounds[i].probability.toString() +
                             "\n, Soundtype: " +
                             store.state.sounds[i].soundtype.toString()
-                    );
+                    ));
                 }
                 if (
                     store.state.sounds[i].probability <= 40 &&
@@ -251,7 +260,7 @@ export default {
                         iconUrl: require("../markers/twentyfourty.png"),
                         iconSize: [25, 45],
                     });
-                    var marker = new L.marker(
+                    this.markers(new L.marker(
                         [store.state.sounds[i][0], store.state.sounds[i][1]],
                         { icon: twentyfourty }
                     ).bindPopup(
@@ -261,7 +270,7 @@ export default {
                             this.Markers[i].probability.toString() +
                             "\n, Soundtype: " +
                             this.Markers[i].soundtype.toString()
-                    );
+                    ));
                     // add color to markers
                 }
                 if (
@@ -272,7 +281,7 @@ export default {
                         iconUrl: require("../markers/fourtysixty.png"),
                         iconSize: [25, 45],
                     });
-                    var marker = new L.marker(
+                    this.markers(new L.marker(
                         [store.state.sounds[i][0], store.state.sounds[i][1]],
                         { icon: fourtysixty }
                     ).bindPopup(
@@ -282,7 +291,7 @@ export default {
                             store.state.sounds[i].probability.toString() +
                             "\n, Soundtype: " +
                             store.state.sounds[i].soundtype.toString()
-                    );
+                    ));
                     // add color to markers
                 }
                 if (
@@ -293,7 +302,7 @@ export default {
                         iconUrl: require("../markers/sixtyeigthy.png"),
                         iconSize: [25, 45],
                     });
-                    var marker = new L.marker(
+                    this.markers(new L.marker(
                         [this.marker[i][0], this.marker[i][1]],
                         { icon: sixtyeighty }
                     ).bindPopup(
@@ -303,7 +312,7 @@ export default {
                             store.state.sounds[i].probability.toString() +
                             "\n, Soundtype: " +
                             store.state.sounds[i].soundtype.toString()
-                    );
+                    ));
                     // add color to markers
                 }
                 if (
@@ -314,7 +323,7 @@ export default {
                         iconUrl: require("../markers/eightyplus.png"),
                         iconSize: [25, 45],
                     });
-                    var marker = new L.marker(
+                    this.markers(new L.marker(
                         [this.marker[i][0], this.marker[i][1]],
                         { icon: eightyplus }
                     ).bindPopup(
@@ -324,23 +333,24 @@ export default {
                             store.state.sounds[i].probability.toString() +
                             "\n, Soundtype: " +
                             store.state.sounds[i].soundtype.toString()
-                    );
+                    ));
                     // add color to markers
                 }
                 MyMarkers.addLayer(marker);
+          
             }
-            MyMarkers.addTo(map);
-            map.fitBounds(MyMarkers.getBounds());
+            newMyMarkers.addTo(map);
+            map.fitBounds(newMyMarkers.getBounds());
             map.setMaxBounds(map.getBounds());
+
         },
     },
     mounted() {
         this.GetSounds();
         setInterval(() => {
-            console.log("updated");
-            this.updateMarkers(map);   
+            MyMarkers.removeLayer(this.markers[0])
+            this.updateMarkers(map, MyMarkers);   
         }, 60000);
-
     },
 
 
