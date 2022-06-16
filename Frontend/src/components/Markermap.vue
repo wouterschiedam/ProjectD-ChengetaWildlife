@@ -26,6 +26,7 @@ export default {
             counter: 0,
             sounds: store.state.sounds,
             markers: [],
+            sounds: [],
             point: null,
             timer: "",
             zoom: 13,
@@ -189,104 +190,111 @@ export default {
             map.fitBounds(MyMarkers.getBounds());
             map.setMaxBounds(map.getBounds());   
         },
-        updateMarkers(map, MyMarkers) {  
-            for (var i = 0; i < 15; i++) {
-                MyMarkers.removeLayer(this.markers[i]);
-                newMyMarkers.removeLayer(this.markers[i]);
-            }
-            newMyMarkers = new L.featureGroup()
-            for (var i = 0; i < 15; i++) {
-               var template =
-                "<div>Time: "+date+"</div>" +
-                "<div>Probability: "+store.state.sounds[i].probability.toString()+"</div>" +
-                "<div>Soundtype: "+store.state.sounds[i].soundtype.toString()+"</div>";
-                var date = new Date(store.state.sounds[i].time * 1000)
-                    .toLocaleTimeString("en-NL")
-                    .toString();
-                if (
-                    store.state.sounds[i].probability <= 20 &&
-                    store.state.sounds[i].probability >= 0
-                ) {
-                    var zerotwenty = L.icon({
-                        iconUrl: require("../markers/marker-svg.png"),
-                        iconSize: [25, 45],
-                    });
-                    this.markers.push(new L.marker(
-                        [store.state.sounds[i].longitude, store.state.sounds[i].latitude],
-                        { icon: zerotwenty }
-                    ));
-                }
-                if (
-                    store.state.sounds[i].probability <= 40 &&
-                    store.state.sounds[i].probability > 20
-                ) {
-                    var twentyfourty = L.icon({
-                        iconUrl: require("../markers/twentyfourty.png"),
-                        iconSize: [25, 45],
-                    });
-                    this.markers.push(new L.marker(
-                        [store.state.sounds[i].longitude, store.state.sounds[i].latitude],
-                        { icon: twentyfourty }
-                    ));
-                    // add color to markers
-                }
-                if (
-                    store.state.sounds[i].probability <= 60 &&
-                    store.state.sounds[i].probability > 40
-                ) {
-                    var fourtysixty = L.icon({
-                        iconUrl: require("../markers/fourtysixty.png"),
-                        iconSize: [25, 45],
-                    });
-                    this.markers.push(new L.marker(
-                        [store.state.sounds[i].longitude, store.state.sounds[i].latitude],
-                        { icon: fourtysixty }
-                    ));
-                    // add color to markers
-                }
-                if (
-                    store.state.sounds[i].probability <= 80 &&
-                    store.state.sounds[i].probability > 60
-                ) {
-                    var sixtyeighty = L.icon({
-                        iconUrl: require("../markers/sixtyeigthy.png"),
-                        iconSize: [25, 45],
-                    });
-                    this.markers.push(new L.marker(
-                        [store.state.sounds[i].longitude, store.state.sounds[i].latitude],
-                        { icon: sixtyeighty }
-                    ));
-                    // add color to markers
-                }
-                if (
-                    store.state.sounds[i].probability <= 100 &&
-                    store.state.sounds[i].probability > 80
-                ) {
-                    var eightyplus = L.icon({
-                        iconUrl: require("../markers/eightyplus.png"),
-                        iconSize: [25, 45],
-                    });
-                    this.markers.push(new L.marker(
-                        [store.state.sounds[i].longitude, store.state.sounds[i].latitude],
-                        { icon: eightyplus }
-                    ));
-                    // add color to markers
-                }
-                MyMarkers.addLayer(this.markers[i].bindPopup(template));
+        removeLayer(MyMarkers){
+            for(var i=0; i<15; i++){
+                MyMarkers.removeLayer(this.markers[i])
+            } 
+        },
+        updateMarkers(map) {  
+            MyMarkers = new  L.featureGroup()
+            //this.markers = []
+            // for (var i = 0; i < 15; i++) {
+            //    var template =
+            //     "<div>Time: "+date+"</div>" +
+            //     "<div>Probability: "+this.sounds[i].probability.toString()+"</div>" +
+            //     "<div>Soundtype: "+this.sounds[i].soundtype.toString()+"</div>";
+            //     var date = new Date(this.sounds[i].time * 1000)
+            //         .toLocaleTimeString("en-NL")
+            //         .toString();
+            //     if (
+            //         this.sounds[i].probability <= 20 &&
+            //         this.sounds[i].probability >= 0
+            //     ) {
+            //         var zerotwenty = L.icon({
+            //             iconUrl: require("../markers/marker-svg.png"),
+            //             iconSize: [25, 45],
+            //         });
+            //         this.markers.push(new L.marker(
+            //             [this.sounds[i].longitude, this.sounds[i].latitude],
+            //             { icon: zerotwenty }
+            //         ));
+            //     }
+            //     if (
+            //         this.sounds[i].probability <= 40 &&
+            //         this.sounds[i].probability > 20
+            //     ) {
+            //         var twentyfourty = L.icon({
+            //             iconUrl: require("../markers/twentyfourty.png"),
+            //             iconSize: [25, 45],
+            //         });
+            //         this.markers.push(new L.marker(
+            //             [this.sounds[i].longitude, this.sounds[i].latitude],
+            //             { icon: twentyfourty }
+            //         ));
+            //         // add color to markers
+            //     }
+            //     if (
+            //         this.sounds[i].probability <= 60 &&
+            //         this.sounds[i].probability > 40
+            //     ) {
+            //         var fourtysixty = L.icon({
+            //             iconUrl: require("../markers/fourtysixty.png"),
+            //             iconSize: [25, 45],
+            //         });
+            //         this.markers.push(new L.marker(
+            //             [this.sounds[i].longitude, this.sounds[i].latitude],
+            //             { icon: fourtysixty }
+            //         ));
+            //         // add color to markers
+            //     }
+            //     if (
+            //         this.sounds[i].probability <= 80 &&
+            //         this.sounds[i].probability > 60
+            //     ) {
+            //         var sixtyeighty = L.icon({
+            //             iconUrl: require("../markers/sixtyeigthy.png"),
+            //             iconSize: [25, 45],
+            //         });
+            //         this.markers.push(new L.marker(
+            //             [this.sounds[i].longitude, this.sounds[i].latitude],
+            //             { icon: sixtyeighty }
+            //         ));
+            //         // add color to markers
+            //     }
+            //     if (
+            //         this.sounds[i].probability <= 100 &&
+            //         this.sounds[i].probability > 80
+            //     ) {
+            //         var eightyplus = L.icon({
+            //             iconUrl: require("../markers/eightyplus.png"),
+            //             iconSize: [25, 45],
+            //         });
+            //         this.markers.push(new L.marker(
+            //             [this.sounds[i].longitude, this.sounds[i].latitude],
+            //             { icon: eightyplus }
+            //         ));
+            //         // add color to markers
+            //     }
+            //     MyMarkers.addLayer(this.markers[i].bindPopup(template));
           
-            }
-            newMyMarkers.addTo(map);
-            map.fitBounds(newMyMarkers.getBounds());
-            map.setMaxBounds(map.getBounds());
+            // }
+            // MyMarkers.addTo(map);
+            // map.fitBounds(MyMarkers.getBounds());
+            // map.setMaxBounds(map.getBounds());
 
         },
     },
     mounted() {
         this.GetSounds();
-        setInterval(() => {
-            this.updateMarkers(map, MyMarkers);   
-        }, 60000);
     },
+    watch:{
+        '$store.state.sounds' : function(){
+            this.sounds = store.state.sounds;
+            this.removeLayer(MyMarkers)
+            this.updateMarkers(map)
+            //console.log(this.sounds)
+        }
+    }
 
 
 };
