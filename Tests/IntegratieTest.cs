@@ -25,7 +25,7 @@ namespace Tests
             foreach (DataRow row in data.Rows)
             {
                 bool check = controller.isValidOauth(row["oauth_token"].ToString());
-                Debug.WriteLine(check);
+                
                 if (check)
                 {
                     success++;
