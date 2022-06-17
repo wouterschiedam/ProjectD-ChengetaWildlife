@@ -14,7 +14,7 @@ namespace ProjectD_ChengetaWildlife.controllers.api
 
 		public bool isValidOauth(string token)
 		{
-			if (token == null) return false;
+			
 
 			Database database = new Database();
 			DataTable data = database.BuildQuery("SELECT * FROM admins WHERE oauth_token=@token")

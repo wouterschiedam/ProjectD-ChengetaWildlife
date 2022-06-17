@@ -3,29 +3,36 @@ using Xunit;
 using System.Data;
 using ProjectD_ChengetaWildlife;
 using System;
+using System.Diagnostics;
 
 namespace Tests
 {
     public class IntegratieTest
     {
+
         [Fact]
         public void isOauthValid_With_Valid_Token_Returns_True()
         {
+
             var controller = new ApiController();
 
             Database database = new Database();
-            DataTable data = database.BuildQuery("SELECT oauth_token FROM admins").Select();
+            DataTable data = database.BuildQuery("SELECT * FROM admins").Select();
             database.Close();
-            var result = true;
-            
-            foreach (var aouth_token in data.Rows)
-            {
-                Console.WriteLine(aouth_token.ToString());
-                if (!controller.isValidOauth(aouth_token.ToString()))
-                    result = false;
-            }
+            int rows = data.Rows.Count;
+            int success = 0;
 
-            Assert.True(result);
+            foreach (DataRow row in data.Rows)
+            {
+                bool check = controller.isValidOauth(row["oauth_token"].ToString());
+                Debug.WriteLine(check);
+                if (check)
+                {
+                    success++;
+                }     
+            }
+            Assert.True(rows == success);
+
         }
     }
 }

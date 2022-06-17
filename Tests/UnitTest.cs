@@ -11,7 +11,7 @@ namespace Tests
         {
             var controller = new ApiController();
 
-            var result = controller.isValidOauth("Z4qGt8PiAZJAoqFnRqSto1PYIJmQ5QQGQkVV48ztQHo=");
+            var result = controller.isValidOauth("oY8ow49sM7LMq70sWY2qk+vSf04xVXrfNUT7yVKe1RM=");
 
             Assert.True(result);
         }
@@ -45,7 +45,7 @@ namespace Tests
         public void CheckValidResponse_CreateUser()
         {
             var controller = new ApiController();
-            var result = controller.CreateUser("Arian", "0992392@hr.nl", "test", "Z4qGt8PiAZJAoqFnRqSto1PYIJmQ5QQGQkVV48ztQHo=", false, true);
+            var result = controller.CreateUser("Arian", "0992392@hr.nl", "test", "/MY/omr+b6xGuEN/6MLsfhzw0AjNVC7+4XtXXIBfgCs=", false, true);
             Assert.True(result);
         }
         [Fact]
