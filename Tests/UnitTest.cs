@@ -1,11 +1,10 @@
-using System;
 using ProjectD_ChengetaWildlife.controllers;
 using ProjectD_ChengetaWildlife.controllers.api;
 using Xunit;
 
 namespace Tests
 {
-    public class UnitTest1
+    public class UnitTest
     {
         [Fact]
         public void isOauthValid_With_Valid_Token_Returns_True()
@@ -15,7 +14,6 @@ namespace Tests
             var result = controller.isValidOauth("Z4qGt8PiAZJAoqFnRqSto1PYIJmQ5QQGQkVV48ztQHo=");
 
             Assert.True(result);
-
         }
         
         [Fact]
@@ -29,7 +27,7 @@ namespace Tests
         }
 
         [Fact]
-        public void CheckValidResponse_WithParameters()
+        public void CheckValidResponse_WithParameters_Database_Sounds()
         {
             var controller = new Nodedata();
 
@@ -37,15 +35,32 @@ namespace Tests
             Assert.NotNull(result);
         }
         [Fact]
-        public void CheckValidResponse_WithoutParameters()
+        public void CheckValidResponse_WithoutParameters_Database_Sounds()
         {
             var controller = new Nodedata();
-
             var result = controller.Get();
             Assert.NotNull(result);
         }
-
-
-
+        [Fact]
+        public void CheckValidResponse_CreateUser()
+        {
+            var controller = new ApiController();
+            var result = controller.CreateUser("Arian", "0992392@hr.nl", "test", "Z4qGt8PiAZJAoqFnRqSto1PYIJmQ5QQGQkVV48ztQHo=", false, true);
+            Assert.True(result);
+        }
+        [Fact]
+        public void CheckValidResponse_With_inValid_Params_CreateUser()
+        {
+            var controller = new ApiController();
+            var result = controller.CreateUser("Arian", "0992392@hr.nl", "ariansjonnie", "", false, false);
+            Assert.False(result);
+        }
+        [Fact]
+        public void CheckValidResponse_Without_Params_CreateUser()
+        {
+            var controller = new ApiController();
+            var result = controller.CreateUser();
+            Assert.False(result);
+        }
     }
 }
