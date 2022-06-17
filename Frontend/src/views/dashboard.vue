@@ -57,7 +57,7 @@
                 <heatmap/>
             </div>
             <!-- MAIN - DATA -->
-            <DashboardTable />
+            <DashboardTable :sounds="sounds"/>
         </main>
         <!-- TOP -->
     </div>
