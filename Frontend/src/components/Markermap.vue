@@ -35,6 +35,7 @@ export default {
             attribution:
                 '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
             marker: [],
+            watcher: 0
         };
     },
     methods: {
@@ -217,7 +218,7 @@ export default {
                         iconSize: [25, 45],
                     });
                     this.markers.push(new L.marker(
-                        [this.sounds[i].longitude, this.sounds[i].latitude],
+                        [this.sounds[i].latitude, this.sounds[i].longitude],
                         { icon: zerotwenty }
                     ));
                 }
@@ -230,7 +231,7 @@ export default {
                         iconSize: [25, 45],
                     });
                     this.markers.push(new L.marker(
-                        [this.sounds[i].longitude, this.sounds[i].latitude],
+                        [this.sounds[i].latitude, this.sounds[i].longitude],
                         { icon: twentyfourty }
                     ));
                     // add color to markers
@@ -244,7 +245,7 @@ export default {
                         iconSize: [25, 45],
                     });
                     this.markers.push(new L.marker(
-                        [this.sounds[i].longitude, this.sounds[i].latitude],
+                        [this.sounds[i].latitude, this.sounds[i].longitude],
                         { icon: fourtysixty }
                     ));
                     // add color to markers
@@ -258,7 +259,7 @@ export default {
                         iconSize: [25, 45],
                     });
                     this.markers.push(new L.marker(
-                        [this.sounds[i].longitude, this.sounds[i].latitude],
+                        [this.sounds[i].latitude, this.sounds[i].longitude],
                         { icon: sixtyeighty }
                     ));
                     // add color to markers
@@ -272,7 +273,7 @@ export default {
                         iconSize: [25, 45],
                     });
                     this.markers.push(new L.marker(
-                        [this.sounds[i].longitude, this.sounds[i].latitude],
+                        [this.sounds[i].latitude, this.sounds[i].longitude],
                         { icon: eightyplus }
                     ));
                     // add color to markers
@@ -280,7 +281,6 @@ export default {
                 MyMarkers.addLayer(this.markers[i].bindPopup(template));
           
             }
-            console.log(this.markers)
             MyMarkers.addTo(map);
             map.fitBounds(MyMarkers.getBounds());
             map.setMaxBounds(map.getBounds());
@@ -292,13 +292,13 @@ export default {
     },
     watch:{
         '$store.state.sounds'(){
-            this.sounds = store.state.sounds;
-            this.removeLayer(MyMarkers)
-            this.updateMarkers(map)
-            console.log(this.sounds)
+                this.sounds = store.state.sounds;
+                this.removeLayer(MyMarkers)
+                this.updateMarkers(map)
+            },
+           
+            
         }
     }
 
-
-};
 </script>
