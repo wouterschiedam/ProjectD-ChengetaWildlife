@@ -155,10 +155,9 @@ namespace ProjectD_ChengetaWildlife.controllers {
 				rng.GetBytes(tokenData);
 				oauth_token = Convert.ToBase64String(tokenData);
 			}
-			database.BuildQuery($"UPDATE admins SET oauth_token = @oauth_token WHERE email=@email")
+			database.BuildQuery($"UPDATE admins SET oauth_token=@oauth_token WHERE email=@email")
 			.AddParameter("oauth_token", oauth_token)
 			.AddParameter("email", email_input)
-			.AddParameter("password", password_input)
 			.Query();
 			database.Close();
 			return oauth_token;

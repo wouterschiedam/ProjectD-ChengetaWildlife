@@ -115,9 +115,9 @@ export default {
         var bodyFormData = new FormData();
         bodyFormData.append("Name", document.getElementById("name").value);
         bodyFormData.append("Email", document.getElementById("email").value);
-        bodyFormData.append("Superuser", this.superUser);
+        bodyFormData.append("Superuser", this.issuperUser);
         bodyFormData.append("Password", document.getElementById("password").value);
-        bodyFormData.append("oauth", this.$cookie.get("token"));
+        bodyFormData.append("oauth", localStorage.getItem("token"));
         await axios
           .post("/api/auth/createNewUser", bodyFormData)
           .then(
