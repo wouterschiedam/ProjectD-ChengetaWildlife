@@ -59,35 +59,35 @@ export default {
                     attribution: this.attribution,
                 }).addTo(heatmap);
                 heatmap.attributionControl.setPrefix("");
-                // var legend = L.control({ position: "topright" });
-                // legend.onAdd = function (heatmap) {
-                //     var div = L.DomUtil.create("div", "info legend"),
-                //         grades = [20, 40, 60, 80],
-                //         color = [
-                //             "#570000",
-                //             "#ff0000",
-                //             "#ffc800",
-                //             "#ffff00",
+                var legend = L.control({ position: "topright" });
+                legend.onAdd = function (heatmap) {
+                    var div = L.DomUtil.create("div", "info legend"),
+                        grades = [20, 40, 60, 80],
+                        color = [
+                            "#570000",
+                            "#ff0000",
+                            "#ffc800",
+                            "#ffff00",
 
-                //         ];
-                //     // Loop for color shades
-                //     for (var i = 0; i < grades.length; i++) {
-                //         div.innerHTML +=
-                //             '<span style="background: ' + color[i] + '"></span> ';
-                //     }
-                //     // a line break
-                //     div.innerHTML += "<br>";
-                //     // second loop for text
-                //     for (var i = 0; i < grades.length; i++) {
-                //         div.innerHTML +=
-                //             "<label>" +
-                //             grades[i] +
-                //             (grades[i + 1] ? "&ndash;" + grades[i + 1] : "+") +
-                //             "</label>";
-                //     }
-                //     return div;
-                // };
-                // legend.addTo(heatmap);
+                        ];
+                    // Loop for color shades
+                    for (var i = 0; i < grades.length; i++) {
+                        div.innerHTML +=
+                            '<span style="background: ' + color[i] + '"></span> ';
+                    }
+                    // a line break
+                    div.innerHTML += "<br>";
+                    // second loop for text
+                    for (var i = 0; i < grades.length; i++) {
+                        div.innerHTML +=
+                            "<label>" +
+                            grades[i] +
+                            (grades[i + 1] ? "&ndash;" + grades[i + 1] : "+") +
+                            "</label>";
+                    }
+                    return div;
+                };
+                legend.addTo(heatmap);
                 var newAddressPoints = this.marker.map(function (p) {
                     return [p[0], p[1]];
                 });
