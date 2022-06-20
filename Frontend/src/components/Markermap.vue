@@ -111,10 +111,13 @@ export default {
                 var date = new Date(this.Markers[i].time * 1000)
                     .toLocaleTimeString("en-NL")
                     .toString();
+                
+                
                 var template =
                 "<div>Time: "+date+"</div>" +
                 "<div>Probability: "+this.Markers[i].probability.toString()+"</div>" +
-                "<div>Soundtype: "+this.Markers[i].soundtype.toString()+"</div>";
+                "<div>Soundtype: "+this.Markers[i].soundtype.toString()+"</div>" +
+                "<audio controls><source src='"+this.Markers[i].sound+"'</audio>";
                 if (
                     this.Markers[i].probability <= 20 &&
                     this.Markers[i].probability >= 0
@@ -154,7 +157,7 @@ export default {
                         [this.marker[i][0], this.marker[i][1]],
                         { icon: fourtysixty }
                     ));
-                    // add color to markers
+                    // add color to marker
                 }
                 if (
                     this.Markers[i].probability <= 80 &&
@@ -168,7 +171,7 @@ export default {
                         [this.marker[i][0], this.marker[i][1]],
                         { icon: sixtyeighty }
                     ));
-                    // add color to markers
+                    
                 }
                 if (
                     this.Markers[i].probability <= 100 &&
