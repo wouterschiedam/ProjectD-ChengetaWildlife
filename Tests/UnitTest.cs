@@ -11,7 +11,7 @@ namespace Tests
         {
             var controller = new ApiController();
 
-            var result = controller.isValidOauth("oY8ow49sM7LMq70sWY2qk+vSf04xVXrfNUT7yVKe1RM=");
+            var result = controller.isValidOauth("JkF0fVEzmPomXPLFcTg3ngpTMEzGAwSNxMiRQ5s+RAo=");
 
             Assert.True(result);
         }
@@ -24,22 +24,6 @@ namespace Tests
             var result = controller.isValidOauth("564fd5f64dfdf456dwe8wew4e6w4e8w561d4s");
 
             Assert.False(result);
-        }
-
-        [Fact]
-        public void CheckValidResponse_WithParameters_Database_Sounds()
-        {
-            var controller = new Nodedata();
-
-            var result = controller.Get(5,"time", "");
-            Assert.NotNull(result);
-        }
-        [Fact]
-        public void CheckValidResponse_WithoutParameters_Database_Sounds()
-        {
-            var controller = new Nodedata();
-            var result = controller.Get();
-            Assert.NotNull(result);
         }
         [Fact]
         public void CheckValidResponse_CreateUser()

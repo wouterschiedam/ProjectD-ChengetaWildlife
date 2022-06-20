@@ -208,7 +208,8 @@ export default {
                var template =
                 "<div>Time: "+date+"</div>" +
                 "<div>Probability: "+this.sounds[i].probability.toString()+"</div>" +
-                "<div>Soundtype: "+this.sounds[i].soundtype.toString()+"</div>";
+                "<div>Soundtype: "+this.sounds[i].soundtype.toString()+"</div>"+
+                "<audio controls><source src='"+this.sounds[i].sound+"'</audio>";
                 var date = new Date(this.sounds[i].time * 1000)
                     .toLocaleTimeString("en-NL")
                     .toString();

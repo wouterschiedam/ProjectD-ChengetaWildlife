@@ -3,6 +3,7 @@ using Xunit;
 using System.Data;
 using ProjectD_ChengetaWildlife;
 using System;
+using ProjectD_ChengetaWildlife.controllers;
 using System.Diagnostics;
 
 namespace Tests
@@ -33,6 +34,21 @@ namespace Tests
             }
             Assert.True(rows == success);
 
+        }
+        [Fact]
+        public void CheckValidResponse_WithParameters_Database_Sounds()
+        {
+            var controller = new Nodedata();
+
+            var result = controller.Get(5, "time", "");
+            Assert.NotNull(result);
+        }
+        [Fact]
+        public void CheckValidResponse_WithoutParameters_Database_Sounds()
+        {
+            var controller = new Nodedata();
+            var result = controller.Get();
+            Assert.NotNull(result);
         }
     }
 }
