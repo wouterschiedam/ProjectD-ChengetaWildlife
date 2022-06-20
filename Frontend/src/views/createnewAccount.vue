@@ -16,7 +16,6 @@
         <input type="text" placeholder="Email" id="Email" class="login-textinput input" />
         <input type="text" placeholder="Wachtwoord" id="wachtwoord" class="login-textinput input" />
         <input type="text" placeholder="Wachtwoord herhalen" id="wachtwoord2" class="login-textinput input" />
-
         <a class="h3-error">{{ errormessage }}</a>
         <button class="login-button button" @click="login()">Account aanmaken</button>
       </div>
@@ -84,7 +83,8 @@ export default {
         bodyFormData.append("Name", document.getElementById("Naam").value);
         bodyFormData.append("Email", document.getElementById("Email").value);
         bodyFormData.append("Password", document.getElementById("wachtwoord").value);
-      //bodyFormData.append("oauth", VueCookieNext.getCookie("token"));
+        bodyFormData.append("Superuser", this.isSuperUser);
+        bodyFormData.append("oauth", VueCookieNext.getCookie("token"));
         axios.post("api/auth/createnewUser", bodyFormData).then(Response)
       }
     }

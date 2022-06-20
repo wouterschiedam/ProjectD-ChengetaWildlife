@@ -113,8 +113,8 @@ export default {
                     .toString();
                 var template =
                 "<div>Time: "+date+"</div>" +
-                "<div>Probability: "+store.state.sounds[i].probability.toString()+"</div>" +
-                "<div>Soundtype: "+store.state.sounds[i].soundtype.toString()+"</div>";
+                "<div>Probability: "+this.Markers[i].probability.toString()+"</div>" +
+                "<div>Soundtype: "+this.Markers[i].soundtype.toString()+"</div>";
                 if (
                     this.Markers[i].probability <= 20 &&
                     this.Markers[i].probability >= 0
