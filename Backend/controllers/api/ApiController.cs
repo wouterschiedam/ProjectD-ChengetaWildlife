@@ -67,7 +67,7 @@ namespace ProjectD_ChengetaWildlife.controllers.api
 			if (superUser)
 			{
 				DataTable data = database.BuildQuery($"SELECT (id) FROM admins").Select();
-				database.BuildQuery($"INSERT INTO admins (id name, email, password, twofa, salt, superuser) VALUES (@id, @name, @email, @password, @twofa, @salt, @superuser)")
+				database.BuildQuery($"INSERT INTO admins (id name, email, password, twofa, salt, superuser, loggedIn) VALUES (@id, @name, @email, @password, @twofa, @salt, @superuser)")
 					.AddParameter("id", (data.Rows.Count + 1))
 					.AddParameter("name", Name)
 					.AddParameter("email", Email)
@@ -75,6 +75,7 @@ namespace ProjectD_ChengetaWildlife.controllers.api
 					.AddParameter("superuser", newsuperUser)
 					.AddParameter("password", hash)
 					.AddParameter("salt", newSalt)
+					.AddParameter("loggedIn", false)
 					.Query();
 
 

@@ -26,11 +26,9 @@ namespace ProjectD_ChengetaWildlife.controllers {
 		public string Post() {
 			// Get a values from the Request 
 			string email_input = HttpContext.Request.Form["email"];
-			string password_input = HttpContext.Request.Form["password"];
-			int loginAttempt = 0;
+			string password_input = HttpContext.Request.Form["password"];	
 			string ClientIP = Request.HttpContext.Connection.RemoteIpAddress.ToString();
-			bool contains = false;
-			string timeout = "99999999";
+
 			if(email_input == null && password_input == null){
 				return JsonSerializer.Serialize(new{
 					success = false,
@@ -117,6 +115,7 @@ namespace ProjectD_ChengetaWildlife.controllers {
 						id = Int32.Parse(row["id"].ToString()),
 						success = true,
 						token = oauth_token,
+						loggedIn = true, /////////////////////////////////////////////////nog een aanpassing.
 						superuser = bool.Parse(row["superuser"].ToString())
 					});
 				}
