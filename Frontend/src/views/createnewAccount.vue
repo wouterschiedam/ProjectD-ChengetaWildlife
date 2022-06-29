@@ -85,7 +85,6 @@ export default {
         bodyFormData.append("Password", document.getElementById("wachtwoord").value);
         bodyFormData.append("Superuser", this.isSuperUser);
         bodyFormData.append("oauth", VueCookieNext.getCookie("token"));
-        bodyFormData.append("loggedIn", false);
         axios.post("api/auth/createnewUser", bodyFormData).then(Response)
       }
     }

@@ -29,7 +29,6 @@ namespace ProjectD_ChengetaWildlife.controllers {
             string Password = HttpContext.Request.Form["Password"];
 			string oauth = HttpContext.Request.Form["oauth"].ToString();
 			bool newsuperUser = bool.Parse(HttpContext.Request.Form["Superuser"].ToString());
-			 bool loggedIn = bool.Parse(HttpContext.Request.Form["loggedIn"].ToString());
 			bool superUser = false;		
 			
 			if (Name == null || Email == null || Password == null){
@@ -77,7 +76,7 @@ namespace ProjectD_ChengetaWildlife.controllers {
 					.AddParameter("superuser", newsuperUser)
 					.AddParameter("password", hash)
 					.AddParameter("salt", newSalt)
-					.AddParameter("loggedIn", loggedIn)
+					.AddParameter("loggedIn", false)
 					.Query(); ///aanpassing //////////////////////////////////////////////////////
 			
 
