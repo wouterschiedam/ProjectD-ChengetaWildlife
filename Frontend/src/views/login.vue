@@ -39,7 +39,7 @@ export default {
     },
     data() {
         return {
-            LoggedIn: false,
+            Loggedin: false,
             errormessage: "",
             message_email: "",
             message_password: "",
@@ -83,7 +83,7 @@ export default {
                     this.$router.replace({ name: "dashboard" });
                     // router.push({
                     //   name: "dashboard",
-                    //   params: {LoggedIn : true, superUser: this.$cookie.get('superUser')},
+                    //   params: {Loggedin : true, superUser: this.$cookie.get('superUser')},
                     // });
                 }
             });

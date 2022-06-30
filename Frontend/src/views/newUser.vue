@@ -61,12 +61,12 @@ export default {
   components: {
     AppFooter,
   },
-  props: ["LoggedIn", "superUser"],
+  props: ["Loggedin", "superUser"],
   data() {
     return {
       created: false,
       issuperUser: "",
-      isLoggedIn: false,
+      isLoggedin: false,
       errormessage: "",
       message_email: "",
       message_password: "",

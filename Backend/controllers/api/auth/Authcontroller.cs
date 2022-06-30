@@ -115,7 +115,7 @@ namespace ProjectD_ChengetaWildlife.controllers {
 						id = Int32.Parse(row["id"].ToString()),
 						success = true,
 						token = oauth_token,
-						loggedIn = true, /////////////////////////////////////////////////nog een aanpassing.
+						loggedin = true, /////////////////////////////////////////////////nog een aanpassing.
 						superuser = bool.Parse(row["superuser"].ToString())
 					});
 				}

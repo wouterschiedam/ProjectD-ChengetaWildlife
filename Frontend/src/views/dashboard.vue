@@ -88,7 +88,7 @@ export default {
     props: ["superUser"],
     data() {
         return {
-            LoggedIn: null,
+            Loggedin: null,
             sounds: [],
             point: null,
             current: true,
@@ -110,7 +110,7 @@ export default {
         Account: function () {
             router.push({
                 name: "newUser",
-                params: { LoggedIn: this.LoggedIn, superUser: this.superUser },
+                params: { Loggedin: this.Loggedin, superUser: this.superUser },
             });
         },
         Logout() {

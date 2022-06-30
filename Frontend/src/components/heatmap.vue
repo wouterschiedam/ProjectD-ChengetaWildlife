@@ -17,7 +17,7 @@ export default {
         },
         data() {
             return {
-                LoggedIn: null,
+                Loggedin: null,
                 sounds: [],
                 point: null,
                 timer: "",

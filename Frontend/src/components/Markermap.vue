@@ -22,7 +22,7 @@ export default {
     },
     data() {
         return {
-            LoggedIn: null,
+            Loggedin: null,
             counter: 0,
             sounds: store.state.sounds,
             markers: [],
