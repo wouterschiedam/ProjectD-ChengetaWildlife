@@ -9,10 +9,10 @@
             <option value="false" @click="receive_mail = 'false'"  >Nee</option>
             <option value="true" @click="issuperUser = 'true'" >Ja</option>
             </select>              
-                <button class="login-button button" @click="BackToMain(receive_mail)">
+                <button class="login-button button" @click="BackToMain(receive_mail, store.state.email)">
                      Klaar!
                 </button>
-            </div>
+            </div>  
         </div>
         <app-footer rootClassName="footer-root-class-name1"></app-footer>
     </div>
@@ -22,6 +22,7 @@
 import AppFooter from "../components/footer";
 import router from "../router";
 import axios from "axios";
+import store from "C:\Users\esat6\Documents\GitHub\ProjectD-ChengetaWildlife\Frontend\src\store.js";
 var VueCookie = require("vue-cookie");
 export default {
     name: "emailConfig",
@@ -34,12 +35,12 @@ export default {
         };
     },
     methods: {                    
-        BackToMain: function (receive_mail) {
+        BackToMain: function (receive_mail, mailadress) {
             if (receive_mail){
-                console.log("ddddddada");
+                console.log(mailadress);
             }
             if (!receive_mail){
-                console.log("aaaaaaaaa");
+                console.log(mailadress);
             }
             this.$router.replace({ name: "dashboard" });
         },

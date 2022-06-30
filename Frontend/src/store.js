@@ -6,11 +6,15 @@ export default new Vuex.Store({
     state: {
         authenticated: false,
         superUser: false,
+        email: "",
         sounds: []
     },
     mutations: {
         setAuth(state, status) {
             state.authenticated = status;
+        },
+        setEmail(state, status) {
+            state.email = status;
         },
         setsuperUser(state, status){
             state.superUser = status
