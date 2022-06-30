@@ -75,7 +75,6 @@ export default {
                 this.errormessage = response.data.message;
                 if (response.data.success == true) {
                     this.$store.commit('setAuth', true);
-                    this.$store.commit('loggedIn', true)
                     this.$store.commit('setsuperUser', response.data.superuser);
                     localStorage.setItem("token", decodeURI(response.data.token), {
                         expire: "2h",
