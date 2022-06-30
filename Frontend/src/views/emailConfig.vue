@@ -11,15 +11,14 @@
                     value="receive_mail"
                     checked="true:null"                   
                 /> -->
-        
-            
-                <input type="checkbox" id="checkbox" v-model="receive_mail" @onclick="EmailChoice()">
-                <label for="checkbox">{{ checked }}</label>
 
+            <select v-model="issuperUser" class="login-textinput1 input" style="width: 40%">
+            <option value="false" @click="receive_mail = false"  >Nee</option>
+            <option value="true" @click="issuperUser = true" >Ja</option>
+            </select>
 
-
-                <a style="margin-bottom: 5%">{{ errormessage }}</a>
-                <button class="login-button button" @click="KeerTerug()">
+                
+                <button class="login-button button" @click="BackToMain()">
                      Klaar!
                 </button>
             </div>
@@ -43,18 +42,14 @@ export default {
             receive_mail: false
         };
     },
-    methods: {
-        EmailChoice: function () {
+    methods: {                    
+        BackToMain: function () {
             if (receive_mail){
-                receive_mail = false;
-                console.log(receive_mail.toString());
+                
             }
-            else{
-                receive_mail = true;
-                console.log(receive_mail.toString());
+            if (!receive_mail){
+
             }
-        },
-        KeerTerug: function () {
             this.$router.replace({ name: "dashboard" });
         },
     },
