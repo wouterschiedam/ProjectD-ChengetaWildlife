@@ -8,6 +8,7 @@ import Login from "./views/login";
 import Dashboard from "./views/dashboard";
 import HistoryData from "./views/historyData";
 import newUser from "./views/newUser";
+import emailConfig from "./views/emailConfig";
 import "./style.css";
 
 Vue.use(Router);
@@ -63,5 +64,18 @@ export default new Router({
               }
           },
         },
+        {
+            name: "emailConfig",
+            path: "/emailConfig",
+            component: HistoryData,
+            beforeEnter: (to, from, next) => {
+              if (store.state.authenticated) {
+                  next();
+              } else {
+                  next({name: "Log in"});
+              }
+          },
+        },
+        
     ],
 });

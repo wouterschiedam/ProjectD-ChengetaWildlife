@@ -109,7 +109,7 @@ export default {
             console.log(this.current);
         },
         ConfigEmail(){
-            this.$router.replace({ name: "PLaceHolder" });
+            this.$router.replace({ name: "emailConfig" });
         },
         historyData() {
             this.$router.replace({ name: "historyData" });

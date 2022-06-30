@@ -19,8 +19,8 @@
 
 
                 <a style="margin-bottom: 5%">{{ errormessage }}</a>
-                <button class="login-button button" @click="login()">
-                    Inloggen
+                <button class="login-button button" @click="KeerTerug()">
+                     Klaar!
                 </button>
             </div>
         </div>
@@ -34,68 +34,36 @@ import router from "../router";
 import axios from "axios";
 var VueCookie = require("vue-cookie");
 export default {
-    name: "Login",
+    name: "emailConfig",
     components: {
         AppFooter,
     },
     data() {
         return {
-            Loggedin: false,
-            errormessage: "",
-            message_email: "",
-            message_password: "",
             receive_mail: false
         };
     },
     methods: {
-        validateEmail: function () {
-            const re =
-                /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-            return re.test(
-                String(document.getElementById("email").value).toLowerCase()
-            );
+        EmailChoice: function () {
+            if (receive_mail){
+                receive_mail = false;
+                console.log(receive_mail.toString());
+            }
+            else{
+                receive_mail = true;
+                console.log(receive_mail.toString());
+            }
         },
-        login: function () {
-            if (!this.validateEmail()) {
-                this.errormessage = "Voer een geldig e-mail adres in";
-                return;
-            }
-            if (document.getElementById("password").value == "") {
-                this.errormessage = "Voer een wachtwoord in";
-                return;
-            }
-            var bodyFormData = new FormData();
-            bodyFormData.append(
-                "email",
-                document.getElementById("email").value
-            );
-            bodyFormData.append(
-                "password",
-                document.getElementById("password").value
-            );
-            axios.post("/api/auth/login", bodyFormData).then((response) => {
-                this.errormessage = response.data.message;
-                if (response.data.success == true) {
-                    this.$store.commit('setAuth', true);
-                    this.$store.commit('setsuperUser', response.data.superuser);
-                    localStorage.setItem("token", decodeURI(response.data.token), {
-                        expire: "2h",
-                    });
-                    this.$router.replace({ name: "dashboard" });
-                    // router.push({
-                    //   name: "dashboard",
-                    //   params: {Loggedin : true, superUser: this.$cookie.get('superUser')},
-                    // });
-                }
-            });
+        KeerTerug: function () {
+            this.$router.replace({ name: "dashboard" });
         },
     },
     metaInfo: {
-        title: "Log in - Chengeta wildlife",
+        title: "Email Config - Chengeta wildlife",
         meta: [
             {
                 property: "og:title",
-                content: "Log in - Chengeta wildlife",
+                content: "Email Config - Chengeta wildlife",
             },
         ],
     },
