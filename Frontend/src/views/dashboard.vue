@@ -42,6 +42,10 @@
                     <span class="material-symbols-outlined">map</span>
                     <h3>Toggle map</h3>
                 </a>
+                 <a @click="ConfigEmail()">
+                    <span class="material-icons-sharp">conf email notificatie</span>
+                    <h3>Uitloggen</h3>
+                </a>
                 <a @click="Logout()">
                     <span class="material-icons-sharp">logout</span>
                     <h3>Uitloggen</h3>
@@ -103,6 +107,9 @@ export default {
                 this.current = true;
             }
             console.log(this.current);
+        },
+        ConfigEmail(){
+            this.$router.replace({ name: "PLaceHolder" });
         },
         historyData() {
             this.$router.replace({ name: "historyData" });
