@@ -1,24 +1,15 @@
 <template>
     <div class="login-container">
-        <div class="login-container1">
-            <h1 class="login-text">Email notificatie instellingen</h1>
+        <div class="login-container1">             
+            <h1 class="login-text">Instellingen wijzigen</h1>
             <div class="login-container2">
-               
-
-                <!-- <input
-                    style="width: 40%"               
-                    type="checkbox"
-                    value="receive_mail"
-                    checked="true:null"                   
-                /> -->
+               <h2 class="login-text">Wilt u nieuwe data binnen krijgen via uw e-mail?</h2>
 
             <select v-model="issuperUser" class="login-textinput1 input" style="width: 40%">
-            <option value="false" @click="receive_mail = false"  >Nee</option>
-            <option value="true" @click="issuperUser = true" >Ja</option>
-            </select>
-
-                
-                <button class="login-button button" @click="BackToMain()">
+            <option value="false" @click="receive_mail = 'false'"  >Nee</option>
+            <option value="true" @click="issuperUser = 'true'" >Ja</option>
+            </select>              
+                <button class="login-button button" @click="BackToMain(receive_mail)">
                      Klaar!
                 </button>
             </div>
@@ -39,16 +30,16 @@ export default {
     },
     data() {
         return {
-            receive_mail: false
+            receive_mail: ''
         };
     },
     methods: {                    
-        BackToMain: function () {
+        BackToMain: function (receive_mail) {
             if (receive_mail){
-                
+                console.log("ddddddada");
             }
             if (!receive_mail){
-
+                console.log("aaaaaaaaa");
             }
             this.$router.replace({ name: "dashboard" });
         },
