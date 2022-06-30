@@ -22,7 +22,7 @@
 import AppFooter from "../components/footer";
 import router from "../router";
 import axios from "axios";
-import store from "C:\Users\esat6\Documents\GitHub\ProjectD-ChengetaWildlife\Frontend\src\store.js";
+// import store from "C:\Users\esat6\Documents\GitHub\ProjectD-ChengetaWildlife\Frontend\src\store.js";
 var VueCookie = require("vue-cookie");
 export default {
     name: "emailConfig",
