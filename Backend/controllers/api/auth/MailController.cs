@@ -17,10 +17,13 @@ using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 
 namespace ProjectD_ChengetaWildlife.controllers {
 
+    [Route("api/mail/send")]
+    [ApiController]
     public class MailService : ControllerBase
     {
 
-         public void SendEmail()
+        [HttpPost]
+         public void SendEmail(string message)
         {
             string email = "go73191@outlook.com";
             string password = "welkom123!?";
@@ -31,7 +34,7 @@ namespace ProjectD_ChengetaWildlife.controllers {
             msg.Subject = "New event occured";
             msg.Body = new TextPart("plain")
             {
-                Text = @" tester voor trb!"
+                Text = $"{message}"
             };
 
             SmtpClient smtp = new SmtpClient();
