@@ -43,8 +43,8 @@
                     <h3>Toggle map</h3>
                 </a>
                  <a @click="ConfigEmail()">
-                    <span class="material-icons-sharp">conf email notificatie</span>
-                    <h3>Uitloggen</h3>
+                    <span class="material-icons-sharp">mail</span>
+                    <h3>EmailConfig</h3>
                 </a>
                 <a @click="Logout()">
                     <span class="material-icons-sharp">logout</span>
