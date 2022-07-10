@@ -13,7 +13,7 @@
                                 <tr>
                                     <li >
                                         {{ mail.message }}
-                                    </li>
+                                    </li><button onclick="remove(mail.message)"> remove </button>
                                 </tr>
                             </tbody>
                     </table>
@@ -36,6 +36,8 @@
 
 <script>
 import AppFooter from "../components/footer";
+
+
 import router from "../router";
 import axios from "axios";
 //import store from "C:\Users\esat6\Documents\GitHub\ProjectD-ChengetaWildlife\Frontend\src\store.js";
@@ -47,9 +49,7 @@ export default {
     },
     data() {
         return {
-            receive_mail: '',
-            config_mail: '',
-            listMail: [{ message: 'wouter@chengeta.nl' }],
+            listMail: [{ message: 'wouter@chengeta.nl' },{ message: 'foo' }],
         };
     },
     methods: {                    
@@ -62,6 +62,14 @@ export default {
             }
             this.$router.replace({ name: "dashboard" });
         },
+        remove: function(adr){
+        var arrayLength = listMail.length;
+        for (var i = 0; i < arrayLength; i++) {
+            if(listMail[i] === adr){
+                 this.listMail.splice(this.listMail.message.indexOf(i), 1);
+            }
+        }
+    }
     },
     metaInfo: {
         title: "Email Config - Chengeta wildlife",
