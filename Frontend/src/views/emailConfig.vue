@@ -7,7 +7,7 @@
 
             <select v-model="issuperUser" class="login-textinput1 input" style="width: 40%">
             <option value="false" @click="receive_mail = 'false'"  >Nee</option>
-            <option value="true" @click="issuperUser = 'true'" >Ja</option>
+            <option value="true" @click="receive_mail = 'true'" >Ja</option>
             </select>              
                 <button class="login-button button" @click="BackToMain(receive_mail, store.state.email)">
                      Klaar!
