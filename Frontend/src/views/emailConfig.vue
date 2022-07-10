@@ -1,26 +1,34 @@
 <template>
     <div class="login-container">
         <div class="login-container1">             
-            <h1 class="login-text">Instellingen wijzigen</h1>
-            <div class="login-container2">
-               <h2 class="login-text">Wilt u nieuwe data binnen krijgen via uw e-mail?</h2>
+            <h1 class="login-text">Emails die notificaties ontvangen</h1>
+            <div class="login-text">
+                    <table>
+                            <thead>
+                                <tr>
+                                    <th>Email adres:</th>
+                                </tr>
+                            </thead>
+                            <tbody v-for="mail in listMail" :key="mail.id">
+                                <tr>
+                                    <li >
+                                        {{ mail.message }}
+                                    </li>
+                                </tr>
+                            </tbody>
+                    </table>
+    
+                </div>
+                <div class = "enter_email">
+                    <input
+                        style="width: 40%"
+                        type="text"
+                        id="email"
+                        placeholder="Email"
+                        class="login-textinput input"
+                    />
 
-            <select v-model="issuperUser" class="login-textinput1 input" style="width: 40%">
-            <option value="false" @click="receive_mail = 'false'"  >Nee</option>
-            <option value="true" @click="receive_mail = 'true'" >Ja</option>
-            </select>              
-                <button class="login-button button" @click="BackToMain(receive_mail, )">
-                     Klaar!
-                </button>
-                <h2>Email</h2>
-                <input
-                style="width: 40%"
-                type="text"
-                id="email"
-                placeholder="Email"
-                class="login-textinput input"
-                />
-            </div>  
+                </div>
         </div>
         <app-footer rootClassName="footer-root-class-name1"></app-footer>
     </div>
@@ -40,7 +48,8 @@ export default {
     data() {
         return {
             receive_mail: '',
-            config_mail: ''
+            config_mail: '',
+            listMail: [{ message: 'wouter@chengeta.nl' }],
         };
     },
     methods: {                    
@@ -53,14 +62,6 @@ export default {
             }
             this.$router.replace({ name: "dashboard" });
         },
-        isSuperUser() {
-            if (this.issuperUser == "") {
-                document.getElementById("error").style.display = "block";
-                this.errormessage = "U heeft geen superuser geselecteerd";
-                return false;
-      }
-      return true;
-    },
     },
     metaInfo: {
         title: "Email Config - Chengeta wildlife",
@@ -74,6 +75,15 @@ export default {
 };
 </script>
 <style scoped>
+.enter_email {
+    width: 100%;
+    height: auto;
+    display: flex;
+    min-height: 100vh;
+    align-items: center;
+    flex-direction: column;
+    justify-content: flex-start;
+}
 .login-container {
     width: 100%;
     height: auto;
