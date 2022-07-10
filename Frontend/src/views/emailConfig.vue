@@ -9,11 +9,11 @@
                                     <th>Email adres:</th>
                                 </tr>
                             </thead>
-                            <tbody v-for="mail in listMail" :key="mail.id">
+                            <tbody v-for="mail in listMail" :key="mail">
                                 <tr>
-                                    <li >
-                                        {{ mail.message }}
-                                    </li><button onclick="remove(mail.message)"> remove </button>
+                                    <td >
+                                        {{ mail }}
+                                    </td><button onclick="remove(mail)"> del </button>
                                 </tr>
                             </tbody>
                     </table>
@@ -40,6 +40,7 @@ import AppFooter from "../components/footer";
 
 import router from "../router";
 import axios from "axios";
+import store from "../store";
 //import store from "C:\Users\esat6\Documents\GitHub\ProjectD-ChengetaWildlife\Frontend\src\store.js";
 var VueCookie = require("vue-cookie");
 export default {
@@ -49,7 +50,7 @@ export default {
     },
     data() {
         return {
-            listMail: [{ message: 'wouter@chengeta.nl' },{ message: 'foo' }],
+            listMail: [],
         };
     },
     methods: {                    
@@ -62,14 +63,20 @@ export default {
             }
             this.$router.replace({ name: "dashboard" });
         },
-        remove: function(adr){
-        var arrayLength = listMail.length;
-        for (var i = 0; i < arrayLength; i++) {
-            if(listMail[i] === adr){
-                 this.listMail.splice(this.listMail.message.indexOf(i), 1);
-            }
-        }
+        ShowNotif: function(){
+            axios.get("api/mail/return")
+                .then((response) => {
+                    this.listMail = response.data;
+                    this.$store.commit('UpdateMail', this.listMail);
+                    console.log("Updated mails");
+                })
+                .catch(function (error) {
+                    console.log(error);
+                    alert(error);
+                });
     }
+    },
+    mounted() {
     },
     metaInfo: {
         title: "Email Config - Chengeta wildlife",
