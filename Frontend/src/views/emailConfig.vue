@@ -9,9 +9,17 @@
             <option value="false" @click="receive_mail = 'false'"  >Nee</option>
             <option value="true" @click="receive_mail = 'true'" >Ja</option>
             </select>              
-                <button class="login-button button" @click="BackToMain(receive_mail, store.state.email)">
+                <button class="login-button button" @click="BackToMain(receive_mail, )">
                      Klaar!
                 </button>
+                <h2>Email</h2>
+                <input
+                style="width: 40%"
+                type="text"
+                id="email"
+                placeholder="Email"
+                class="login-textinput input"
+                />
             </div>  
         </div>
         <app-footer rootClassName="footer-root-class-name1"></app-footer>
@@ -32,6 +40,7 @@ export default {
     data() {
         return {
             receive_mail: '',
+            config_mail: ''
         };
     },
     methods: {                    
@@ -44,6 +53,14 @@ export default {
             }
             this.$router.replace({ name: "dashboard" });
         },
+        isSuperUser() {
+            if (this.issuperUser == "") {
+                document.getElementById("error").style.display = "block";
+                this.errormessage = "U heeft geen superuser geselecteerd";
+                return false;
+      }
+      return true;
+    },
     },
     metaInfo: {
         title: "Email Config - Chengeta wildlife",

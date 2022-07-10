@@ -42,10 +42,12 @@
                     <span class="material-symbols-outlined">map</span>
                     <h3>Toggle map</h3>
                 </a>
-                 <a @click="ConfigEmail()">
+                <li>
+                <a @click="ConfigEmail()">
                     <span class="material-icons-sharp">mail</span>
                     <h3>EmailConfig</h3>
                 </a>
+                </li>
                 <a @click="Logout()">
                     <span class="material-icons-sharp">logout</span>
                     <h3>Uitloggen</h3>
@@ -113,6 +115,14 @@ export default {
         },
         historyData() {
             this.$router.replace({ name: "historyData" });
+        },
+        isSuperUser() {
+        if (this.issuperUser == "") {
+            document.getElementById("error").style.display = "block";
+            this.errormessage = "U heeft geen superuser geselecteerd";
+            return false;
+        }
+        return true;
         },
         Account: function () {
             router.push({
