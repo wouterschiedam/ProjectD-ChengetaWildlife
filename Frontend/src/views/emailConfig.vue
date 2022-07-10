@@ -11,9 +11,9 @@
                             </thead>
                             <tbody v-for="mail in listMail" :key="mail">
                                 <tr>
-                                    <td >
+                                    <td>
                                         {{ mail }}
-                                    </td><button onclick="remove(mail)"> del </button>
+                                    </td>
                                 </tr>
                             </tbody>
                     </table>
@@ -26,9 +26,8 @@
                         id="email"
                         placeholder="Email"
                         class="login-textinput input"
-                    />
-
-                </div>
+                    /> <button class="login-button button" @click="AddMail()">add</button>
+                </div>               
         </div>
         <app-footer rootClassName="footer-root-class-name1"></app-footer>
     </div>
@@ -41,6 +40,7 @@ import AppFooter from "../components/footer";
 import router from "../router";
 import axios from "axios";
 import store from "../store";
+import { stringifyStyle } from "@vue/shared";
 //import store from "C:\Users\esat6\Documents\GitHub\ProjectD-ChengetaWildlife\Frontend\src\store.js";
 var VueCookie = require("vue-cookie");
 export default {
@@ -74,9 +74,33 @@ export default {
                     console.log(error);
                     alert(error);
                 });
-    }
-    },
-    mounted() {
+        },
+        Remove: function(){
+            let adr = document.getElementById("remov");
+            axios.put("api/mail/del", adr)
+                .then((response) => {
+                    this.listMail = response.data;
+                    this.$store.commit('UpdateMail', this.listMail);
+                    console.log("Updated mails");
+                })
+                .catch(function (error) {
+                    console.log(error);
+                    alert(error);
+                });
+        },
+        AddMail: function(){
+            let param = String(document.getElementById("email").value).toLowerCase();
+            axios.put("api/mail/add", param)
+                .then((response) => {
+                    this.listMail = response.data;
+                    this.$store.commit('UpdateMail', this.listMail);
+                    console.log("Updated mails");
+                })
+                .catch(function (error) {
+                    console.log(error);
+                    alert(error);
+                });
+        }
     },
     metaInfo: {
         title: "Email Config - Chengeta wildlife",

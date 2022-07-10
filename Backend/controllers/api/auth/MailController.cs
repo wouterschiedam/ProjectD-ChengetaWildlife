@@ -2,25 +2,18 @@ using Microsoft.AspNetCore.Mvc;
 using MailKit.Net.Smtp;
 using MimeKit;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text.Json;
-using System.Threading.Tasks;
-using ProjectD_ChengetaWildlife.controllers;
-using Microsoft.Extensions.Configuration;
-using System.IO;
-using System.Text;
 using System.Data;
-using System.Security.Cryptography;
-using Microsoft.AspNetCore.Cryptography.KeyDerivation;
+using Newtonsoft.Json;
 
 namespace ProjectD_ChengetaWildlife.controllers {
 
-    [Route("api/mail/send")]
+    
     [ApiController]
     public class MailService : ControllerBase
     {
 
+        
+        [Route("api/mail/send")]
         [HttpPost]
          public void SendEmail(string message)
         {
@@ -29,11 +22,7 @@ namespace ProjectD_ChengetaWildlife.controllers {
             string password = "welkom123!?";
 
             var msg = new MimeMessage();
-            msg.From.Add(new MailboxAddress("noreply", email));
-
-
-
-            
+            msg.From.Add(new MailboxAddress("noreply", email));        
             msg.Subject = "New event occured";
             msg.Body = new TextPart("plain")
             {
@@ -67,12 +56,11 @@ namespace ProjectD_ChengetaWildlife.controllers {
             }
         }
 
-        [Route("api/mail/add/{mail}")]
-		public int Add(string mail) {
-			// Get a value called email & password from the Request 
+        [Route("api/mail/add")]
+		public string Add(string mail) {
 
             Database db = new Database();
-			//Query to check if the logged in user is authorithized to create new accounts			
+					
 			if(mail != null)
 			{
 				DataTable data1 = db.BuildQuery("select * from admins WHERE email = @mail").Select();
@@ -82,15 +70,16 @@ namespace ProjectD_ChengetaWildlife.controllers {
 			}
 				
 			db.Close();
-            return 1;
+            DataTable data = db.BuildQuery($"SELECT email FROM admins WHERE notif = true").Select();
+            return JsonConvert.SerializeObject(data);
+
 		}
 
-		[Route("api/mail/del/{mail}")]
-		public int Del(string mail) {
-			// Get a value called email & password from the Request 
-
+		[Route("api/mail/del")]
+		public string Del(string mail) { //void maken na test
+			
             Database db = new Database();
-			//Query to check if the logged in user is authorithized to create new accounts			
+				
 			if(mail != null)
 			{
 				DataTable data1 = db.BuildQuery("select * from admins WHERE email = @mail").Select();
@@ -99,7 +88,19 @@ namespace ProjectD_ChengetaWildlife.controllers {
 				}					
 			}				
 			db.Close();
-            return 1;
+            DataTable data = db.BuildQuery($"SELECT email FROM admins WHERE notif = true").Select();
+            return JsonConvert.SerializeObject(data);         
 		}
+
+         
+         [Route("api/mail/return")]
+         [HttpGet]
+        public string Get()
+        {   
+            Database database = new Database();
+            DataTable data = database.BuildQuery($"SELECT email FROM admins WHERE notif = true").Select();              
+            database.Close();
+            return JsonConvert.SerializeObject(data);
+        }
     }
 }
