@@ -42,12 +42,12 @@
                     <span class="material-symbols-outlined">map</span>
                     <h3>Toggle map</h3>
                 </a>
-                <li>
-                <a @click="ConfigEmail()">
+                
+                <a v-if="this.$store.state.superUser" @click="ConfigEmail()">
                     <span class="material-icons-sharp">mail</span>
                     <h3>EmailConfig</h3>
                 </a>
-                </li>
+        
                 <a @click="Logout()">
                     <span class="material-icons-sharp">logout</span>
                     <h3>Uitloggen</h3>
