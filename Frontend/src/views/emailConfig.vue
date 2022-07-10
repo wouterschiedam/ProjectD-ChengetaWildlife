@@ -89,7 +89,7 @@ export default {
                 });
         },
         AddMail: function(){
-            let param = String(document.getElementById("email").value).toLowerCase();
+            let param = String(document.getElementById("email").value);
             axios.put("api/mail/add", param)
                 .then((response) => {
                     this.listMail = response.data;
@@ -101,6 +101,9 @@ export default {
                     alert(error);
                 });
         }
+    },
+    mounted() {
+        this.ShowNotif();
     },
     metaInfo: {
         title: "Email Config - Chengeta wildlife",

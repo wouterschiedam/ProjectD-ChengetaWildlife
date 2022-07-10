@@ -57,6 +57,7 @@ namespace ProjectD_ChengetaWildlife.controllers {
         }
 
         [Route("api/mail/add")]
+        [HttpPut]
 		public string Add(string mail) {
 
             Database db = new Database();
@@ -76,6 +77,7 @@ namespace ProjectD_ChengetaWildlife.controllers {
 		}
 
 		[Route("api/mail/del")]
+        [HttpPut]
 		public string Del(string mail) { //void maken na test
 			
             Database db = new Database();
