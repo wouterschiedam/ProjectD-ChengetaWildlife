@@ -4,7 +4,6 @@ using MimeKit;
 using System;
 using System.Data;
 using Newtonsoft.Json;
-
 namespace ProjectD_ChengetaWildlife.controllers {
 
     
@@ -58,22 +57,20 @@ namespace ProjectD_ChengetaWildlife.controllers {
 
         [Route("api/mail/add")]
         [HttpPut]
-		public string Add(string mail) {
-
+		public string Add(string mail) { //void maken na test
+			
             Database db = new Database();
-					
+				
 			if(mail != null)
 			{
-				DataTable data1 = db.BuildQuery("select * from admins WHERE email = @mail").Select();
+				DataTable data1 = db.BuildQuery("select * FROM admins WHERE email = @email").Select();
 				foreach (DataRow row in data1.Rows){
 					row["notif"] = true;
 				}					
 			}
-				
+            DataTable data = db.BuildQuery($"SELECT email FROM admins WHERE notif = true").Select();		
 			db.Close();
-            DataTable data = db.BuildQuery($"SELECT email FROM admins WHERE notif = true").Select();
-            return JsonConvert.SerializeObject(data);
-
+            return JsonConvert.SerializeObject(data);         
 		}
 
 		[Route("api/mail/del")]
@@ -84,13 +81,13 @@ namespace ProjectD_ChengetaWildlife.controllers {
 				
 			if(mail != null)
 			{
-				DataTable data1 = db.BuildQuery("select * from admins WHERE email = @mail").Select();
+				DataTable data1 = db.BuildQuery("select * FROM admins WHERE email = @mail").Select();
 				foreach (DataRow row in data1.Rows){
 					row["notif"] = false;
 				}					
 			}				
 			db.Close();
-            DataTable data = db.BuildQuery($"SELECT email FROM admins WHERE notif = true").Select();
+            DataTable data = db.BuildQuery($"SELECT email FROM admins WHERE notif = false").Select();
             return JsonConvert.SerializeObject(data);         
 		}
 

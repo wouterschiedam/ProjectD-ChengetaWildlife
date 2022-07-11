@@ -76,12 +76,12 @@ export default {
                 });
         },
         Remove: function(){
-            let adr = document.getElementById("remov");
+            let adr = document.getElementById("remove");
             axios.put("api/mail/del", adr)
                 .then((response) => {
                     this.listMail = response.data;
                     this.$store.commit('UpdateMail', this.listMail);
-                    console.log("Updated mails");
+
                 })
                 .catch(function (error) {
                     console.log(error);
@@ -94,7 +94,6 @@ export default {
                 .then((response) => {
                     this.listMail = response.data;
                     this.$store.commit('UpdateMail', this.listMail);
-                    console.log("Updated mails");
                 })
                 .catch(function (error) {
                     console.log(error);
