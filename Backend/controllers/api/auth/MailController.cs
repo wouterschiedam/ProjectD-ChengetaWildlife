@@ -54,25 +54,19 @@ namespace ProjectD_ChengetaWildlife.controllers {
                 smtp.Dispose();
             }
         }
-
-        [Route("api/mail/add")]
-        [HttpPut]
-		public string Add(string mail) { //void maken na test
+/////////////////////////////////////////////////////////////////////////////////////////////
+        [Route("api/mail/update")]
+        [HttpPost]
+		public void Update(bool Notif) { //void maken na test
 			
             Database db = new Database();
-				
-			if(mail != null)
-			{
-				DataTable data1 = db.BuildQuery("select * FROM admins WHERE email = @email").Select();
-				foreach (DataRow row in data1.Rows){
-					row["notif"] = true;
-				}					
-			}
-            DataTable data = db.BuildQuery($"SELECT email FROM admins WHERE notif = true").Select();		
-			db.Close();
-            return JsonConvert.SerializeObject(data);         
-		}
 
+            db.BuildQuery("UPDATE admins SET notif = @Notif WHERE email = 'trb@trb.nl'").Select();
+
+	
+			db.Close();        
+		}
+/////////////////////////////////////////////////////////////////////////////////////////////
 		[Route("api/mail/del")]
         [HttpPut]
 		public string Del(string mail) { //void maken na test

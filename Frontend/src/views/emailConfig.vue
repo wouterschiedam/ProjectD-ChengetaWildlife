@@ -12,7 +12,7 @@
                             <tbody v-for="mail in listMail" :key="mail">
                                 <tr>
                                     <td>
-                                        {{ mail }}
+                                        {{ mail.email }}
                                     </td>
                                 </tr>
                             </tbody>
@@ -88,18 +88,29 @@ export default {
                     alert(error);
                 });
         },
-        AddMail: function(){
+        // AddMail: function(){
+        //     let param = String(document.getElementById("email").value);
+        //     axios.put("api/mail/add", param)
+        //         .then((response) => {
+        //             this.listMail = response.data;
+        //             this.$store.commit('UpdateMail', this.listMail);
+        //         })
+        //         .catch(function (error) {
+        //             console.log(error);
+        //             alert(error);
+        //         });
+        // }
+        AddMail: function() {
             let param = String(document.getElementById("email").value);
-            axios.put("api/mail/add", param)
-                .then((response) => {
-                    this.listMail = response.data;
-                    this.$store.commit('UpdateMail', this.listMail);
-                })
-                .catch(function (error) {
-                    console.log(error);
-                    alert(error);
-                });
-        }
+            let Notif = true;
+                    axios.post("api/mail/update", Notif)
+                        .then(response => {
+                            console.log(response);
+                        })
+                        .catch(error => {
+                            console.error(error);
+                        });
+            },
     },
     mounted() {
         this.ShowNotif();
