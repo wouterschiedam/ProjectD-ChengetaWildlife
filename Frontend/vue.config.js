@@ -6,5 +6,7 @@ module.exports = {
         changeOrigin: true
       },
     }
-  }
+  },
+
+  transpileDependencies: ['true']
 }
