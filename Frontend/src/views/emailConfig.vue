@@ -1,12 +1,12 @@
 <template>
     <div class="login-container">
         <div class="login-container1">             
-            <h1 class="login-text">Emails die notificaties ontvangen</h1>
+            <h1 class="login-text">Email lijst die notificaties ontvangen</h1>
             <div class="login-text">
                     <table>
                             <thead>
                                 <tr>
-                                    <th>Email adres:</th>
+                                    <th>Email adressen:</th>
                                 </tr>
                             </thead>
                             <tbody v-for="mail in listMail" :key="mail">
@@ -26,8 +26,9 @@
                         id="email"
                         placeholder="Email"
                         class="login-textinput input"
-                    /> <button class="login-button button" @click="AddMail()">add</button>
-                    <button class="login-button button" @click="Remove()">delete</button>
+                    /> 
+                    <button class="add-button button4" @click="AddMail()">Toevoegen</button>
+                    <button class="del-button button4" @click="Remove()">Verwijderen</button>
                 </div>               
         </div>
         <app-footer rootClassName="footer-root-class-name1"></app-footer>
@@ -36,13 +37,10 @@
 
 <script>
 import AppFooter from "../components/footer";
-
-
 import router from "../router";
 import axios from "axios";
 import store from "../store";
 import { stringifyStyle } from "@vue/shared";
-//import store from "C:\Users\esat6\Documents\GitHub\ProjectD-ChengetaWildlife\Frontend\src\store.js";
 var VueCookie = require("vue-cookie");
 export default {
     name: "emailConfig",
@@ -82,6 +80,7 @@ export default {
                     axios.post("api/mail/del", bodyFormData)
                         .then(response => {
                             console.log(response);
+                            alert("Email notificaties uitgezet!");
                             this.$router.replace({ name: "dashboard" });
                         })
                         .catch(error => {
@@ -94,6 +93,7 @@ export default {
                     axios.post("api/mail/update", bodyFormData)
                         .then(response => {
                             console.log(response);
+                            alert("Email notificaties aangezet!");
                             this.$router.replace({ name: "dashboard" });
                         })
                         .catch(error => {
@@ -124,6 +124,18 @@ export default {
     align-items: center;
     flex-direction: column;
     justify-content: flex-start;
+}
+.button4 {
+    background-color: #00bcd4;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px;
+    font-size: 16px;
+    font-family: sans-serif;
+    cursor: pointer;
+    margin: 5px;
+    size: 100px;
 }
 .login-container {
     width: 100%;
@@ -189,7 +201,27 @@ export default {
     border-color: #dadada;
     background-color: #3a65ff;
 }
+.del-button{
+    color: #ffffff;
+    transition: 0.3s;
+    border-color: #dadada;
+    background-color: #ff683a;
+}
+.add-button{
+    color: #ffffff;
+    transition: 0.3s;
+    border-color: #dadada;
+    background-color: #62cc1b;
+}
 .login-button:hover {
+    transform: scale(1.1);
+    cursor: pointer;
+}
+.del-button:hover {
+    transform: scale(1.1);
+    cursor: pointer;
+}
+.add-button:hover {
     transform: scale(1.1);
     cursor: pointer;
 }
