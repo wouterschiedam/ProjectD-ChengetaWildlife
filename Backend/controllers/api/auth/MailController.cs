@@ -57,32 +57,29 @@ namespace ProjectD_ChengetaWildlife.controllers {
 /////////////////////////////////////////////////////////////////////////////////////////////
         [Route("api/mail/update")]
         [HttpPost]
-		public void Update(bool Notif) { //void maken na test
-			
+		public void Update() { //void maken na test
+			string Email = HttpContext.Request.Form["Email"];
+
             Database db = new Database();
 
-            db.BuildQuery("UPDATE admins SET notif = @Notif WHERE email = 'trb@trb.nl'").Select();
+            db.BuildQuery("UPDATE admins SET notif = true WHERE email = @Email").AddParameter("email", Email).Select();
 
 	
 			db.Close();        
 		}
 /////////////////////////////////////////////////////////////////////////////////////////////
 		[Route("api/mail/del")]
-        [HttpPut]
-		public string Del(string mail) { //void maken na test
+        [HttpPost]
+		public void Del() { //void maken na test
 			
+			string Email = HttpContext.Request.Form["Email"];
+
             Database db = new Database();
-				
-			if(mail != null)
-			{
-				DataTable data1 = db.BuildQuery("select * FROM admins WHERE email = @mail").Select();
-				foreach (DataRow row in data1.Rows){
-					row["notif"] = false;
-				}					
-			}				
-			db.Close();
-            DataTable data = db.BuildQuery($"SELECT email FROM admins WHERE notif = false").Select();
-            return JsonConvert.SerializeObject(data);         
+
+            db.BuildQuery("UPDATE admins SET notif = false WHERE email = @Email").AddParameter("email", Email).Select();
+
+	
+			db.Close();        
 		}
 
          

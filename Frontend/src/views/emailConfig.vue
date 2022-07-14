@@ -27,6 +27,7 @@
                         placeholder="Email"
                         class="login-textinput input"
                     /> <button class="login-button button" @click="AddMail()">add</button>
+                    <button class="login-button button" @click="Remove()">delete</button>
                 </div>               
         </div>
         <app-footer rootClassName="footer-root-class-name1"></app-footer>
@@ -76,41 +77,29 @@ export default {
                 });
         },
         Remove: function(){
-            let adr = document.getElementById("remove");
-            axios.put("api/mail/del", adr)
-                .then((response) => {
-                    this.listMail = response.data;
-                    this.$store.commit('UpdateMail', this.listMail);
-
-                })
-                .catch(function (error) {
-                    console.log(error);
-                    alert(error);
-                });
-        },
-        // AddMail: function(){
-        //     let param = String(document.getElementById("email").value);
-        //     axios.put("api/mail/add", param)
-        //         .then((response) => {
-        //             this.listMail = response.data;
-        //             this.$store.commit('UpdateMail', this.listMail);
-        //         })
-        //         .catch(function (error) {
-        //             console.log(error);
-        //             alert(error);
-        //         });
-        // }
-        AddMail: function() {
-            let param = String(document.getElementById("email").value);
-            let Notif = true;
-                    axios.post("api/mail/update", Notif)
+            var bodyFormData = new FormData();
+            bodyFormData.append('Email', document.getElementById("email").value);
+                    axios.post("api/mail/del", bodyFormData)
                         .then(response => {
                             console.log(response);
+                            this.$router.replace({ name: "dashboard" });
                         })
                         .catch(error => {
                             console.error(error);
                         });
-            },
+        },
+        AddMail: function() {
+            var bodyFormData = new FormData();
+            bodyFormData.append('Email', document.getElementById("email").value);
+                    axios.post("api/mail/update", bodyFormData)
+                        .then(response => {
+                            console.log(response);
+                            this.$router.replace({ name: "dashboard" });
+                        })
+                        .catch(error => {
+                            console.error(error);
+                        });
+        },
     },
     mounted() {
         this.ShowNotif();
