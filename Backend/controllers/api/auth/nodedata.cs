@@ -24,7 +24,7 @@ namespace ProjectD_ChengetaWildlife.controllers
         public string GetPid()
         {   
             Database database = new Database();
-            DataTable data = database.BuildQuery($"SELECT TOP 1 pid FROM mqttdata ORDER BY pid DESC;")
+            DataTable data = database.BuildQuery($"SELECT pid FROM mqttdata ORDER BY pid DESC LIMIT 1")
                 .Select();
             database.Close();
             return JsonConvert.SerializeObject(data);
@@ -35,7 +35,7 @@ namespace ProjectD_ChengetaWildlife.controllers
         public string Getlast()
         {   
             Database database = new Database();
-            DataTable data = database.BuildQuery($"SELECT TOP 1 time, pid, latitude, longitude, probability, soundtype, sound  FROM mqttdata ORDER BY pid DESC;")
+            DataTable data = database.BuildQuery($"SELECT time, pid, latitude, longitude, probability, soundtype, sound  FROM mqttdata ORDER BY pid DESC LIMIT 1;")
                 .Select();
             database.Close();
             return JsonConvert.SerializeObject(data);

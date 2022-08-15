@@ -16,6 +16,7 @@ namespace ProjectD_ChengetaWildlife.controllers {
         [HttpPost]
          public void SendEmail(string message)
         {
+            Console.WriteLine("Sending email");
             Database db = new();
             string email = "go73191@outlook.com";
             string password = "welkom123!?";

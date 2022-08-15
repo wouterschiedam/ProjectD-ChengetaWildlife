@@ -76,7 +76,7 @@
             timer: 0,
             counter: 0,
             filter: '',
-            pid: ""
+            pid: ''
         }
     },
     methods: {
@@ -108,6 +108,7 @@
                 this.$store.commit('OldData',this.pid);
             })
             .catch(function (error) {
+                    console.log("settopid");
                     console.log(error);
                     alert(error);
                 });          
@@ -116,11 +117,17 @@
             axios.get("api/auth/mqttdata/pid")
             .then((response) => {
                 this.pid = response.data;
-                if (this.pid != this.$store.pid){
+                console.log("checknewdata");
+                if (true){
+                    console.log("no new data");
                     var message = axios.get("api/auth/mqttdata/last");
                     axios.post("api/mail/send", message);                   
                 }
-            }); 
+            }).catch(function (error) {
+                    console.log("settopnewid");
+                    console.log(error);
+                    alert(error);
+                });  
         }
     },
     mounted() {
@@ -129,7 +136,7 @@
         this.timer = setInterval(() => {
             if (this.$router.currentRoute.path != '/dashboard')
                 clearInterval(this.timer);
-                if (this.counter < 59) {
+                if (this.counter < 15) {
                     this.counter += 1;
                 } else {
                     this.GetSounds();
