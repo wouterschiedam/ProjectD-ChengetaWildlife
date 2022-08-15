@@ -19,7 +19,7 @@
                 />
                 <a style="margin-bottom: 5%">{{ errormessage }}</a>
                 <button class="login-button button" @click="login()">
-                    Inloggen
+                    Inloggen 
                 </button>
             </div>
         </div>
