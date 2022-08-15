@@ -8,7 +8,8 @@ export default new Vuex.Store({
         superUser: false,
         email: "",
         sounds: [],
-        listMail: []
+        listMail: [],
+        pid: ""
     },
     mutations: {
         setAuth(state, status) {
@@ -25,6 +26,9 @@ export default new Vuex.Store({
         },
         UpdateMail(state, data){
             state.listMail = data
+        },
+        OldData(state, data){
+            state.pid = data
         }
     },
 })

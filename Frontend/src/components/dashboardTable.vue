@@ -62,8 +62,8 @@
 <script>
     import axios from "axios";
     import Progress from "easy-circular-progress";
-import store from "../store";
-import Vuex from "vuex";
+    import store from "../store";
+    import Vuex from "vuex";
     export default {
     name: 'dashboardTable',
     components: {
@@ -75,7 +75,8 @@ import Vuex from "vuex";
             sounds: [],
             timer: 0,
             counter: 0,
-            filter: ''
+            filter: '',
+            pid: ""
         }
     },
     methods: {
@@ -100,9 +101,31 @@ import Vuex from "vuex";
                     alert(error);
                 });
         },
+        SetTopPid() {
+            axios.get("api/auth/mqttdata/pid")
+            .then((response) => {
+                this.pid = response.data;
+                this.$store.commit('OldData',this.pid);
+            })
+            .catch(function (error) {
+                    console.log(error);
+                    alert(error);
+                });          
+        },
+        CheckNewData() {
+            axios.get("api/auth/mqttdata/pid")
+            .then((response) => {
+                this.pid = response.data;
+                if (this.pid != this.$store.pid){
+                    var message = axios.get("api/auth/mqttdata/last");
+                    axios.post("api/mail/send", message);                   
+                }
+            }); 
+        }
     },
     mounted() {
         this.GetSounds();
+        this.SetTopPid();
         this.timer = setInterval(() => {
             if (this.$router.currentRoute.path != '/dashboard')
                 clearInterval(this.timer);
@@ -110,6 +133,8 @@ import Vuex from "vuex";
                     this.counter += 1;
                 } else {
                     this.GetSounds();
+                    this.CheckNewData();
+
                 }
             }, 1000);
     }
