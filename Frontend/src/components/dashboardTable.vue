@@ -94,7 +94,6 @@
                 .then((response) => {
                     this.sounds = response.data;
                     this.$store.commit('Updatedata', this.sounds);
-                    console.log("Updated table");
                 })
                 .catch(function (error) {
                     console.log(error);
@@ -104,7 +103,7 @@
         SetTopPid() {
             axios.get("api/auth/mqttdata/pid")
             .then((response) => {
-                this.pid = response.data;
+                this.pid = response.data[0].pid;
                 this.$store.commit('OldData',this.pid);
             })
             .catch(function (error) {
@@ -116,12 +115,19 @@
         CheckNewData() {
             axios.get("api/auth/mqttdata/pid")
             .then((response) => {
-                this.pid = response.data;
-                console.log("checknewdata");
+                this.pid = response.data[0].pid;
                 if (true){
-                    console.log("no new data");
-                    var message = axios.get("api/auth/mqttdata/last");
-                    axios.post("api/mail/send", message);                   
+                    // var message = axios.get("api/auth/mqttdata/last");
+                    // axios.post("api/mail/send", message);
+                    axios.get("api/auth/mqttdata/last")
+                    .then((response) =>{
+                        var bodyFormData = new FormData();
+                        console.log(bodyFormData);
+                        var text = "" + response.data[0].pid + " " + response.data[0].latitude + " " + response.data[0].longitude + " " + response.data[0].soundtype + " " + response.data[0].probability;
+                        console.log(text);
+                        bodyFormData.append('message', text);
+                        axios.post("api/mail/send", bodyFormData);
+                    })               
                 }
             }).catch(function (error) {
                     console.log("settopnewid");
@@ -136,7 +142,7 @@
         this.timer = setInterval(() => {
             if (this.$router.currentRoute.path != '/dashboard')
                 clearInterval(this.timer);
-                if (this.counter < 15) {
+                if (this.counter < 5) {
                     this.counter += 1;
                 } else {
                     this.GetSounds();

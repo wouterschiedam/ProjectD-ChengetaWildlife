@@ -4,6 +4,7 @@ using MimeKit;
 using System;
 using System.Data;
 using Newtonsoft.Json;
+using System.Text.Json;
 namespace ProjectD_ChengetaWildlife.controllers {
 
     
@@ -12,11 +13,12 @@ namespace ProjectD_ChengetaWildlife.controllers {
     {
 
         
-        [Route("api/mail/send")]
+        [Route("api/mail/send/")]
         [HttpPost]
-         public void SendEmail(string message)
+         public void SendEmail()
         {
-            Console.WriteLine("Sending email");
+            string message = HttpContext.Request.Form["message"];
+            Console.WriteLine(message);
             Database db = new();
             string email = "go73191@outlook.com";
             string password = "welkom123!?";
@@ -47,7 +49,7 @@ namespace ProjectD_ChengetaWildlife.controllers {
 
             catch (Exception e)
             {
-                Console.WriteLine(e.Message.ToString());
+                // Console.WriteLine(e.Message.ToString());
             }
             finally
             {
