@@ -78,7 +78,7 @@
             counter: 0,
             counterWeek: 0,
             filter: '',
-            pid: '',
+            pid: [],
             pidPlaceHolder: ""
         }
     },
@@ -110,7 +110,6 @@
                 // this.pidPlaceHolder = response.data[0].pid;
                 this.pid = response.data[0].pid;
                 this.$store.commit('OldData',this.pid);
-                console.log(this.$store.pid);
             })
             .catch(function (error) {
                     console.log("settopid");
@@ -122,7 +121,7 @@
             axios.get("api/auth/mqttdata/pid")
             .then((response) => {
                 this.pidPlaceHolder = response.data[0].pid;
-                if (this.pidPlaceHolder == this.$store.pid){
+                if (this.pidPlaceHolder != this.pid){
                     axios.get("api/auth/mqttdata/last")
                     .then((response) =>{
                         var bodyFormData = new FormData();

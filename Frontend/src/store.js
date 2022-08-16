@@ -9,7 +9,7 @@ export default new Vuex.Store({
         email: "",
         sounds: [],
         listMail: [],
-        pid: ""
+        pid: []
     },
     mutations: {
         setAuth(state, status) {
