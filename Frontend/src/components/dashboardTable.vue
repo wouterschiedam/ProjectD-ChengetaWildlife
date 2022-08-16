@@ -78,7 +78,8 @@
             counter: 0,
             counterWeek: 0,
             filter: '',
-            pidPlaceHolder: ''
+            pid: '',
+            pidPlaceHolder: ""
         }
     },
     methods: {
@@ -105,8 +106,11 @@
         SetTopPid() {
             axios.get("api/auth/mqttdata/pid")
             .then((response) => {
-                this.pidPlaceHolder = response.data[0].pid;
-                this.$store.commit('OldData',this.pidPlaceHolder);
+                
+                // this.pidPlaceHolder = response.data[0].pid;
+                this.pid = response.data[0].pid;
+                this.$store.commit('OldData',this.pid);
+                console.log(this.$store.pid);
             })
             .catch(function (error) {
                     console.log("settopid");
@@ -118,11 +122,11 @@
             axios.get("api/auth/mqttdata/pid")
             .then((response) => {
                 this.pidPlaceHolder = response.data[0].pid;
-                if (this.pidPlaceHolder != this.$store.pid){
+                if (this.pidPlaceHolder == this.$store.pid){
                     axios.get("api/auth/mqttdata/last")
                     .then((response) =>{
                         var bodyFormData = new FormData();
-                        var text = "\nPid: " + response.data[0].pid + "\nLat: " + response.data[0].latitude +
+                        var text = "\nTime: " + new Date(response.data[0].time * 1000).toLocaleDateString("en-NL") + "\nId: " + response.data[0].pid + "\nLat: " + response.data[0].latitude +
                          "\nLong: " + response.data[0].longitude + "\nType: " + response.data[0].soundtype + "\nProbability: " + response.data[0].probability;
                         console.log(text);// kan weg evt..
                         bodyFormData.append('message', text);
@@ -153,8 +157,12 @@
         this.timer = setInterval(() => {
             if (this.$router.currentRoute.path != '/dashboard')
                 clearInterval(this.timer);
-                if (this.counter < 59) {
+                if (this.counter < 9) {
                     this.counter += 1;
+                }
+                if(this.counter > 8){
+                    this.GetSounds();
+                    this.CheckNewData();
                 }
                 if (this.counterWeek < (60*60*24*7)){ //1 week
                     this.counterWeek += 1;
@@ -163,11 +171,11 @@
                         this.SendWeeklyReport();
                     }                    
                 }
-                else {
-                    this.GetSounds();
-                    this.CheckNewData();
+                // else {
+                //     this.GetSounds();
+                //     this.CheckNewData();
 
-                }
+                // }
             }, 1000);
     }
 }
