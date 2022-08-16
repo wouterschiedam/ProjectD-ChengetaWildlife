@@ -1,6 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Data;
+using System.Data.SqlClient;
+using System.Threading.Tasks;
+using System.Collections.Generic;
+using System;
 
 namespace ProjectD_ChengetaWildlife.controllers
 {
@@ -46,8 +50,10 @@ namespace ProjectD_ChengetaWildlife.controllers
         public string ReportList()
         {   
             // string[] events = HttpContext.Request.Form["message"];
+            TimeSpan t = DateTime.Now - new DateTime(1970, 1, 1);
+            int secondsSinceEpoch = (int)t.TotalSeconds;
             Database database = new Database();
-            DataTable events = database.BuildQuery($"SELECT * FROM mqttdata WHERE time >= NOW() - INTERVAL 168 HOURS").Select();
+            DataTable events = database.BuildQuery($"SELECT * FROM mqttdata WHERE time >= ({secondsSinceEpoch} - 604800)").Select();
 
             int gunshotEvents = 0;
             int animalEvents = 0;
@@ -70,6 +76,7 @@ namespace ProjectD_ChengetaWildlife.controllers
 
             database.Close();
             return message;
+    
         }
 
 

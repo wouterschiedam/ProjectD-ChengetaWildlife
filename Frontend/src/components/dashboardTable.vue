@@ -73,7 +73,6 @@
     data() {
         return {
             sounds: [],
-            reportMsg: "",
             timer: 0,
             counter: 0,
             counterWeek: 0,
@@ -142,12 +141,14 @@
         SendWeeklyReport(){
             axios.get("api/auth/mqttdata/message")
             .then((response) => {
-                this.reportMsg = response.data.toString();
-                console.log(reportMsg);//test regel..
+                this.reportMsg = response.data;
+                // console.log(this.reportMsg);//test regel..
                 var bodyFormData = new FormData();
-                bodyFormData.append('message',reportMsg);
+                bodyFormData.append('message', this.reportMsg);
                 axios.post("api/mail/send", bodyFormData);// bewust zelfde naam als regel 131
-            })        
+            }).catch(function (error) {
+                    console.log(error);
+                });        
         }
     },
     mounted() {
@@ -161,19 +162,20 @@
                 }
                 if(this.counter > 8){
                     this.GetSounds();
-                    this.CheckNewData();
+                    // this.CheckNewData();
+                    this.SendWeeklyReport();
                 }
             }, 1000);
 
-         this.timer2 = setInterval(() => {
-            if (this.counterWeek < (60*60*24*7)){ //1 week
-                    this.counterWeek += 1;
-                }
-            else{
-                this.counterWeek = 1;
-                this.SendWeeklyReport();
-            }                               
-         },1000)
+        //  this.timer2 = setInterval(() => {
+        //     if (this.counterWeek < (60*60*24*7)){ //1 week
+        //             this.counterWeek += 1;
+        //         }
+        //     else{
+        //         this.counterWeek = 1;
+        //         this.SendWeeklyReport();
+        //     }                               
+        //  },1000)
     }
 }
 </script>
