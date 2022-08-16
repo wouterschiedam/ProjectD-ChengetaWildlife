@@ -146,7 +146,7 @@
                 console.log(reportMsg);//test regel..
                 var bodyFormData = new FormData();
                 bodyFormData.append('message',reportMsg);
-                axios.post("api/mail/send", bodyFormData);// bewust zelfde naam als regel 128
+                axios.post("api/mail/send", bodyFormData);// bewust zelfde naam als regel 131
             })        
         }
     },
@@ -154,7 +154,7 @@
         this.GetSounds();
         this.SetTopPid();
         this.timer = setInterval(() => {
-            if (this.$router.currentRoute.path != '/dashboard')
+            if (this.$router.currentRoute.path != '/dashboard')// weekly report moet eigen timer krijgen die niet gecleared wordt
                 clearInterval(this.timer);
                 if (this.counter < 9) {
                     this.counter += 1;
@@ -163,14 +163,17 @@
                     this.GetSounds();
                     this.CheckNewData();
                 }
-                if (this.counterWeek < (60*60*24*7)){ //1 week
-                    this.counterWeek += 1;
-                    if (this.counterWeek % (60*60*24*7) == 0){
-                        this.counterWeek = 1;
-                        this.SendWeeklyReport();
-                    }                    
-                }
             }, 1000);
+
+         this.timer2 = setInterval(() => {
+            if (this.counterWeek < (60*60*24*7)){ //1 week
+                    this.counterWeek += 1;
+                }
+            else{
+                this.counterWeek = 1;
+                this.SendWeeklyReport();
+            }                               
+         },1000)
     }
 }
 </script>

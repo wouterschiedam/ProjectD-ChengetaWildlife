@@ -30,11 +30,11 @@ namespace ProjectD_ChengetaWildlife.controllers {
             string str = message.Substring(0,5).ToLower();
             if (str != "last"){
                msg.Subject = "New event occured!";
-               queryVar = "receiveRep"; // In database nog een bool toevoegen die receiveRep heet, if TRUE > senden we Mail.                
+               queryVar = "notif";                
             } 
             else{
                 msg.Subject = "Weekly report!";
-                queryVar = "notif"; 
+                queryVar = "superuser"; 
             } 
 
             msg.Body = new TextPart("plain")

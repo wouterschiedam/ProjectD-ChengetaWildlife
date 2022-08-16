@@ -53,15 +53,13 @@ namespace ProjectD_ChengetaWildlife.controllers
             int animalEvents = 0;
             int otherEvents = 0;
             int vehicleEvents = 0;
-            int rest = 0;
-            int total = gunshotEvents + animalEvents + otherEvents + vehicleEvents + rest;
+            int total = gunshotEvents + animalEvents + otherEvents + vehicleEvents;
 
             foreach (DataRow ev in events.Rows ){
                 if (ev["soundtype"].ToString() == "gunshot") gunshotEvents++;        
                 else if (ev["soundtype"].ToString() == "animal") animalEvents++;
                 else if (ev["soundtype"].ToString() == "unknown") otherEvents++;
-                else if (ev["soundtype"].ToString() == "vehicle") vehicleEvents++;  
-                else rest++;          
+                else if (ev["soundtype"].ToString() == "vehicle") vehicleEvents++;                       
             }
 
             string message = $"Last weeks total events: {total}.\n" +
