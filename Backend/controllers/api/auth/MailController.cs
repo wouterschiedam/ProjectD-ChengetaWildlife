@@ -105,52 +105,6 @@ namespace ProjectD_ChengetaWildlife.controllers {
             DataTable data = database.BuildQuery($"SELECT email FROM admins WHERE notif = true").Select();              
             database.Close();
             return JsonConvert.SerializeObject(data);
-        }
-
-        // [Route("api/mail/send/report")]
-        // [HttpPost]
-        //  public void Sendreport()
-        // {
-        //     string[] message = HttpContext.Request.Form["message"];
-            
-        //     Console.WriteLine(message);
-        //     Database db = new();
-        //     string email = "go73191@outlook.com";
-        //     string password = "welkom123!?";
-
-        //     var msg = new MimeMessage();
-        //     msg.From.Add(new MailboxAddress("noreply", email));        
-        //     msg.Subject = "Weekly report";
-        //     msg.Body = new TextPart("plain")
-        //     {
-        //         Text = $"{message}"
-        //     };
-
-        //     SmtpClient smtp = new SmtpClient();
-
-        //     try
-        //     {
-        //         smtp.Connect("smtp-mail.outlook.com", 587, false);
-        //         smtp.Authenticate(email, password);
-
-        //         DataTable notif = db.BuildQuery("select * from admins WHERE notif = true").Select(); //Where weekly report = true
-		// 		foreach (DataRow row in notif.Rows){
-		// 			msg.To.Add(MailboxAddress.Parse(row["email"].ToString()));
-        //             smtp.Send(msg);
-		// 		}					
-                
-        //         Console.WriteLine("lol");
-        //     }
-
-        //     catch (Exception e)
-        //     {
-        //         Console.WriteLine(e.Message.ToString());
-        //     }
-        //     finally
-        //     {
-        //         smtp.Disconnect(true);
-        //         smtp.Dispose();
-        //     }
-        // }
+        }   
     }
 }
