@@ -73,8 +73,10 @@
     data() {
         return {
             sounds: [],
+            reportMsg: "",
             timer: 0,
             counter: 0,
+            counterWeek: 0,
             filter: '',
             pidPlaceHolder: ''
         }
@@ -122,7 +124,7 @@
                         var bodyFormData = new FormData();
                         var text = "\nPid: " + response.data[0].pid + "\nLat: " + response.data[0].latitude +
                          "\nLong: " + response.data[0].longitude + "\nType: " + response.data[0].soundtype + "\nProbability: " + response.data[0].probability;
-                        console.log(text);
+                        console.log(text);// kan weg evt..
                         bodyFormData.append('message', text);
                         axios.post("api/mail/send", bodyFormData);
                     })
@@ -133,6 +135,16 @@
                     console.log(error);
                     alert(error);
                 });  
+        },
+        SendWeeklyReport(){
+            axios.get("api/auth/mqttdata/message")
+            .then((response) => {
+                this.reportMsg = response.data.toString();
+                console.log(reportMsg);//test regel..
+                var bodyFormData = new FormData();
+                bodyFormData.append('message',reportMsg);
+                axios.post("api/mail/send", bodyFormData);// bewust zelfde naam als regel 128
+            })        
         }
     },
     mounted() {
@@ -141,9 +153,17 @@
         this.timer = setInterval(() => {
             if (this.$router.currentRoute.path != '/dashboard')
                 clearInterval(this.timer);
-                if (this.counter < 5) {
+                if (this.counter < 59) {
                     this.counter += 1;
-                } else {
+                }
+                if (this.counterWeek < (60*60*24*7)){ //1 week
+                    this.counterWeek += 1;
+                    if (this.counterWeek % (60*60*24*7) == 0){
+                        this.counterWeek = 1;
+                        this.SendWeeklyReport();
+                    }                    
+                }
+                else {
                     this.GetSounds();
                     this.CheckNewData();
 
