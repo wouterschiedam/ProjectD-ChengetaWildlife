@@ -170,11 +170,6 @@
                         this.SendWeeklyReport();
                     }                    
                 }
-                // else {
-                //     this.GetSounds();
-                //     this.CheckNewData();
-
-                // }
             }, 1000);
     }
 }
