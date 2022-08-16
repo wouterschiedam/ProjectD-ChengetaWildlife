@@ -49,7 +49,7 @@ namespace ProjectD_ChengetaWildlife.controllers {
 
             catch (Exception e)
             {
-                // Console.WriteLine(e.Message.ToString());
+                Console.WriteLine(e.Message.ToString());
             }
             finally
             {

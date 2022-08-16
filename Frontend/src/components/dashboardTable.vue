@@ -76,7 +76,7 @@
             timer: 0,
             counter: 0,
             filter: '',
-            pid: ''
+            pidPlaceHolder: ''
         }
     },
     methods: {
@@ -103,8 +103,8 @@
         SetTopPid() {
             axios.get("api/auth/mqttdata/pid")
             .then((response) => {
-                this.pid = response.data[0].pid;
-                this.$store.commit('OldData',this.pid);
+                this.pidPlaceHolder = response.data[0].pid;
+                this.$store.commit('OldData',this.pidPlaceHolder);
             })
             .catch(function (error) {
                     console.log("settopid");
@@ -115,19 +115,18 @@
         CheckNewData() {
             axios.get("api/auth/mqttdata/pid")
             .then((response) => {
-                this.pid = response.data[0].pid;
-                if (true){
-                    // var message = axios.get("api/auth/mqttdata/last");
-                    // axios.post("api/mail/send", message);
+                this.pidPlaceHolder = response.data[0].pid;
+                if (this.pidPlaceHolder != this.$store.pid){
                     axios.get("api/auth/mqttdata/last")
                     .then((response) =>{
                         var bodyFormData = new FormData();
-                        console.log(bodyFormData);
-                        var text = "" + response.data[0].pid + " " + response.data[0].latitude + " " + response.data[0].longitude + " " + response.data[0].soundtype + " " + response.data[0].probability;
+                        var text = "\nPid: " + response.data[0].pid + "\nLat: " + response.data[0].latitude +
+                         "\nLong: " + response.data[0].longitude + "\nType: " + response.data[0].soundtype + "\nProbability: " + response.data[0].probability;
                         console.log(text);
                         bodyFormData.append('message', text);
                         axios.post("api/mail/send", bodyFormData);
-                    })               
+                    })
+                    this.$store.commit('OldData',this.pidPlaceHolder);               
                 }
             }).catch(function (error) {
                     console.log("settopnewid");
