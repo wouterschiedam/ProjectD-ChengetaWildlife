@@ -30,7 +30,7 @@ namespace ProjectD_ChengetaWildlife.controllers
             return JsonConvert.SerializeObject(data);
         }
 
-                [Route("api/auth/mqttdata/last")]
+        [Route("api/auth/mqttdata/last")]
          [HttpGet]
         public string Getlast()
         {   
@@ -39,6 +39,37 @@ namespace ProjectD_ChengetaWildlife.controllers
                 .Select();
             database.Close();
             return JsonConvert.SerializeObject(data);
+        }
+
+        [Route("api/auth/mqttdata/message")]
+         [HttpGet]
+        public string ReportList()
+        {   
+            // string[] events = HttpContext.Request.Form["message"];
+            Database database = new Database();
+            DataTable events = database.BuildQuery($"SELECT * FROM mqttdata WHERE time >= NOW() - INTERVAL 168 HOURS").Select();
+
+            int gunshotEvents = 0;
+            int animalEvents = 0;
+            int otherEvents = 0;
+            int rest = 0;
+            int total = gunshotEvents + animalEvents + otherEvents + rest;
+
+            foreach (DataRow ev in events.Rows ){
+                if (ev["soundtype"].ToString() == "lol") gunshotEvents++;        
+                else if (ev["soundtype"].ToString() == "lol") animalEvents++;
+                else if (ev["soundtype"].ToString() == "lol") otherEvents++;  
+                else rest++;          
+            }
+
+            string message = $"Last weeks total events: {total}.\n" +
+            $"of which {gunshotEvents} where gunshot events,\n" + 
+            $"and {animalEvents} where animal events,\n" +
+            $"also {otherEvents} where vehicle events," +
+            $"and at last {rest} where other events!";
+
+            database.Close();
+            return message;
         }
 
 
