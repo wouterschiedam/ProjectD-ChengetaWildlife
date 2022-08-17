@@ -157,25 +157,26 @@
         this.timer = setInterval(() => {
             if (this.$router.currentRoute.path != '/dashboard')// weekly report moet eigen timer krijgen die niet gecleared wordt
                 clearInterval(this.timer);
-                if (this.counter < 59) {
+                if (this.counter < 9) {
                     this.counter += 1;
                 }
-                if(this.counter > 58){
+                if(this.counter > 8){
                     this.GetSounds();
                     this.CheckNewData();
+                    this.SendWeeklyReport();
                     
                 }
             }, 1000);
 
-         this.timer2 = setInterval(() => {
-            if (this.counterWeek < (60*60*24*7)){ //1 week
-                    this.counterWeek += 1;
-                }
-            else{
-                this.counterWeek = 1;
-                this.SendWeeklyReport();
-            }                               
-         },1000)
+        //  this.timer2 = setInterval(() => {
+        //     if (this.counterWeek < (60*60*24*7)){ //1 week
+        //             this.counterWeek += 1;
+        //         }
+        //     else{
+        //         this.counterWeek = 1;
+        //         this.SendWeeklyReport();
+        //     }                               
+        //  },1000)
     }
 }
 </script>

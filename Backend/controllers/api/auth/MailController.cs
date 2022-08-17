@@ -55,7 +55,6 @@ namespace ProjectD_ChengetaWildlife.controllers {
                     smtp.Send(msg);
 				}					
                 
-                Console.WriteLine("lol");
             }
 
             catch (Exception e)
