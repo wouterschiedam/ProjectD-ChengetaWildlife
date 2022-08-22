@@ -132,6 +132,9 @@
                 legend2.addTo(map);
                 this.AddMarkers(map);
             },
+            myFunction(value) {
+
+            },
             AddMarkers(map) {
                 MyMarkers = new L.featureGroup()
                 for (var i = 0; i < 15; i++) {
