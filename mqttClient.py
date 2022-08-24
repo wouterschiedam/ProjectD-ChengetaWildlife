@@ -52,8 +52,7 @@ def subscribe(client: mqtt, db_conn, cursor) -> None:
             cursor.execute("INSERT INTO mqttdata(id, latitude, longitude, soundtype, probability, sound, time) VALUES (%s, %s, %s, %s, %s, %s, %s)", query)
             db_conn.commit()
             cursor.execute("SELECT time FROM mqttdata")
-            dates = cursor.fetchall()
-            
+            dates = cursor.fetchall()            
             Currentdate = int(datetime.datetime.now().timestamp() - 86400 )
             if dates[0][0] < Currentdate:
                 cursor.execute("DELETE FROM  mqttdata WHERE time < %s", (Currentdate))

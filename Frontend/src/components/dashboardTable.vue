@@ -62,8 +62,8 @@
 <script>
     import axios from "axios";
     import Progress from "easy-circular-progress";
-import store from "../store";
-import Vuex from "vuex";
+    import store from "../store";
+    import Vuex from "vuex";
     export default {
     name: 'dashboardTable',
     components: {
@@ -75,7 +75,10 @@ import Vuex from "vuex";
             sounds: [],
             timer: 0,
             counter: 0,
-            filter: ''
+            counterWeek: 0,
+            filter: '',
+            pid: [],
+            pidPlaceHolder: ""
         }
     },
     methods: {
@@ -93,25 +96,87 @@ import Vuex from "vuex";
                 .then((response) => {
                     this.sounds = response.data;
                     this.$store.commit('Updatedata', this.sounds);
-                    console.log("Updated table");
                 })
                 .catch(function (error) {
                     console.log(error);
                     alert(error);
                 });
         },
+        SetTopPid() {
+            axios.get("api/auth/mqttdata/pid")
+            .then((response) => {
+                
+                // this.pidPlaceHolder = response.data[0].pid;
+                this.pid = response.data[0].pid;
+                this.$store.commit('OldData',this.pid);
+            })
+            .catch(function (error) {
+                    console.log("settopid");
+                    console.log(error);
+                    alert(error);
+                });          
+        },
+        CheckNewData() {
+            axios.get("api/auth/mqttdata/pid")
+            .then((response) => {
+                this.pidPlaceHolder = response.data[0].pid;
+                if (this.pidPlaceHolder != this.pid){
+                    axios.get("api/auth/mqttdata/last")
+                    .then((response) =>{
+                        var bodyFormData = new FormData();
+                        var text = "\nTime: " + new Date(response.data[0].time * 1000).toLocaleDateString("en-NL") + "\nId: " + response.data[0].pid + "\nLat: " + response.data[0].latitude +
+                         "\nLong: " + response.data[0].longitude + "\nType: " + response.data[0].soundtype + "\nProbability: " + response.data[0].probability;
+                        console.log(text);// kan weg evt..
+                        bodyFormData.append('message', text);
+                        axios.post("api/mail/send", bodyFormData);
+                    })
+                    this.$store.commit('OldData',this.pidPlaceHolder);               
+                }
+            }).catch(function (error) {
+                    console.log("settopnewid");
+                    console.log(error);
+                    alert(error);
+                });  
+        },
+        SendWeeklyReport(){
+            axios.get("api/auth/mqttdata/message")
+            .then((response) => {
+                this.reportMsg = response.data;
+                // console.log(this.reportMsg);//test regel..
+                var bodyFormData = new FormData();
+                bodyFormData.append('message', this.reportMsg);
+                axios.post("api/mail/send", bodyFormData);// bewust zelfde naam als regel 131
+            }).catch(function (error) {
+                    console.log(error);
+                });        
+        }
     },
     mounted() {
         this.GetSounds();
+        this.SetTopPid();
         this.timer = setInterval(() => {
-            if (this.$router.currentRoute.path != '/dashboard')
+            if (this.$router.currentRoute.path != '/dashboard')// weekly report moet eigen timer krijgen die niet gecleared wordt
                 clearInterval(this.timer);
-                if (this.counter < 59) {
+                if (this.counter < 9) {
                     this.counter += 1;
-                } else {
+                }
+                if(this.counter > 8){
                     this.GetSounds();
+                    this.CheckNewData();
+                    this.SendWeeklyReport();
+                    
                 }
             }, 1000);
+
+        //  this.timer2 = setInterval(() => {
+        //     if (this.counterWeek < (60*60*24*7)){ //1 week
+        //             this.counterWeek += 1;
+        //         }
+        //     else{
+        //         this.counterWeek = 1;
+        //         this.SendWeeklyReport();
+        //     }                               
+        //  },1000)
     }
 }
 </script>

@@ -40,7 +40,7 @@ export default {
       verified: '',
       token: '',
       errormessage: '',
-      isSuperUser: false,
+      isSuperUser: false, ///////////
     }
   },
   metaInfo: {

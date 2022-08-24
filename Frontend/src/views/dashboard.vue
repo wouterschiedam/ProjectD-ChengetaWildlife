@@ -42,6 +42,10 @@
                     <span class="material-symbols-outlined">map</span>
                     <h3>Toggle map</h3>
                 </a>
+                <a v-if="this.$store.state.superUser" @click="ConfigEmail()">
+                    <span class="material-icons-sharp">mail</span>
+                    <h3>EmailConfig</h3>
+                </a>
                 <a @click="Logout()">
                     <span class="material-icons-sharp">logout</span>
                     <h3>Uitloggen</h3>
@@ -88,7 +92,7 @@ export default {
     props: ["superUser"],
     data() {
         return {
-            LoggedIn: null,
+            Loggedin: null,
             sounds: [],
             point: null,
             current: true,
@@ -104,13 +108,24 @@ export default {
             }
             console.log(this.current);
         },
+        ConfigEmail(){
+            this.$router.replace({ name: "emailConfig" });
+        },
         historyData() {
             this.$router.replace({ name: "historyData" });
+        },
+        isSuperUser() {
+        if (this.issuperUser == "") {
+            document.getElementById("error").style.display = "block";
+            this.errormessage = "U heeft geen superuser geselecteerd";
+            return false;
+        }
+        return true;
         },
         Account: function () {
             router.push({
                 name: "newUser",
-                params: { LoggedIn: this.LoggedIn, superUser: this.superUser },
+                params: { Loggedin: this.Loggedin, superUser: this.superUser },
             });
         },
         Logout() {

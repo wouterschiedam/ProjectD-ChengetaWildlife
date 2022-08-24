@@ -1,5 +1,5 @@
 <template>
-  <div class="container" v-if="isLoggedIn()">
+  <div class="container" v-if="isLoggedin()">
   <div class="burger-menu">
         <button id="menubtn" @click="Sidebaropen()">
         <span class="material-icons-sharp">menu</span>
@@ -83,7 +83,7 @@ export default {
         Account: function () {
             router.push({
                 name: "newUser",
-                params: { LoggedIn: this.LoggedIn, superUser: this.superUser },
+                params: { Loggedin: this.Loggedin, superUser: this.superUser },
             });
         },
     dashboard() {
@@ -94,8 +94,8 @@ export default {
       this.$cookie.delete("superUser");
       this.$router.push("/");
     },
-    async isLoggedIn() {
-      return this.LoggedIn;
+    async isLoggedin() {
+      return this.Loggedin;
     },
     Sidebaropen() {
       var sideMenu = document.getElementById("sidebar");

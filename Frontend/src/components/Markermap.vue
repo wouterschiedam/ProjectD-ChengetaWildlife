@@ -3,22 +3,6 @@
 </template>
 
 <script>
-    import { latLngBounds } from "leaflet";
-    import { LMap, LTileLayer, LMarker, LPopup, LFeatureGroup } from "vue2-leaflet";
-    import "leaflet.heat";
-    import axios from "axios";
-    import store from "../store";
-    import Vuex from "vuex";
-    var map;
-    var MyMarkers;
-    var newMyMarkers;
-    export default {
-        components: {
-            LMap,
-            LTileLayer,
-            LMarker,
-            LPopup,
-            LFeatureGroup,
         },
         data() {
             return {

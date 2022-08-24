@@ -6,6 +6,7 @@ import Meta from "vue-meta";
 var VueCookie = require("vue-cookie");
 import Login from "./views/login";
 import Dashboard from "./views/dashboard";
+import emailConfig from "./views/emailConfig";
 import HistoryData from "./views/historyData";
 import newUser from "./views/newUser";
 import "./style.css";
@@ -55,6 +56,18 @@ export default new Router({
             name: "historyData",
             path: "/historyData",
             component: HistoryData,
+            beforeEnter: (to, from, next) => {
+              if (store.state.authenticated) {
+                  next();
+              } else {
+                  next({name: "Log in"});
+              }
+          },
+        },
+        {
+            name: "emailConfig",
+            path: "/emailConfig",
+            component: emailConfig,
             beforeEnter: (to, from, next) => {
               if (store.state.authenticated) {
                   next();
