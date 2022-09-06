@@ -76,6 +76,7 @@ namespace ProjectD_ChengetaWildlife.controllers {
             Database db = new Database();
 
             db.BuildQuery("UPDATE admins SET notif = true WHERE email = @Email").AddParameter("email", Email).Select();
+            db.BuildQuery("UPDATE admins SET notifSMS = true WHERE email = @Email").AddParameter("email", Email).Select();
 
 	
 			db.Close();        
@@ -90,6 +91,7 @@ namespace ProjectD_ChengetaWildlife.controllers {
             Database db = new Database();
 
             db.BuildQuery("UPDATE admins SET notif = false WHERE email = @Email").AddParameter("email", Email).Select();
+            db.BuildQuery("UPDATE admins SET notifSMS = false WHERE email = @Email").AddParameter("email", Email).Select();
 
 	
 			db.Close();        
@@ -101,9 +103,13 @@ namespace ProjectD_ChengetaWildlife.controllers {
         public string Get()
         {   
             Database database = new Database();
-            DataTable data = database.BuildQuery($"SELECT email FROM admins WHERE notif = true").Select();              
+            DataTable data = database.BuildQuery($"SELECT email FROM admins WHERE notif = true").Select();
+            DataTable data = database.BuildQuery($"SELECT email FROM admins WHERE notifSMS = true").Select();              
             database.Close();
             return JsonConvert.SerializeObject(data);
-        }   
+        }  
+
+    //////////////////////////
+    [Route("api/mail/update")] 
     }
 }
