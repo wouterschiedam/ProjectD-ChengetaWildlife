@@ -9,21 +9,47 @@ namespace ProjectD_ChengetaWildlife.controllers {
 
     
     [ApiController]
-    public class MailService : ControllerBase
+    public class SMSService : ControllerBase
     {
 
         
-        [Route("api/mail/send/")]
+        [Route("api/sms/send")]
         [HttpPost]
-         public void SendEmail()
+         public void SendSMS()
         {
             string message = HttpContext.Request.Form["message"];
-             var queryVar = ""; 
-            Console.WriteLine(message);
             Database db = new();
-            string email = "go73191@outlook.com";
-            string password = "welkom123!?";
+            string accountSid = Environment.GetEnvironmentVariable("TWILIO_ACCOUNT_SID");
+            string authToken = Environment.GetEnvironmentVariable("TWILIO_AUTH_TOKEN");
 
+            TwilioClient.Init(accountSid, authToken);
+
+            var message = MessageResource.Create(
+                body: "New event occured!",
+                from: new Twilio.Types.PhoneNumber("+31636283411"),
+                
+                try
+                {
+                    DataTable notif = db.BuildQuery($"select * from admins WHERE notifSMS = true").Select();
+                    foreach (DataRow row in notif.Rows){
+                        to: new Twilio.Types.PhoneNumber(row["PhoneNumber"].ToString())
+                        //smtp.Send(msg);
+                    }
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message.ToString());
+                }
+                finally
+                {
+                    db.Dispose();
+                }
+                
+        );
+        				
+				}	
+
+        Console.WriteLine(message.Sid);
             var msg = new MimeMessage();
             msg.From.Add(new MailboxAddress("noreply", email));
 
@@ -65,7 +91,6 @@ namespace ProjectD_ChengetaWildlife.controllers {
             {
                 smtp.Disconnect(true);
                 smtp.Dispose();
-                db.Dispose();
             }
         }
 /////////////////////////////////////////////////////////////////////////////////////////////
