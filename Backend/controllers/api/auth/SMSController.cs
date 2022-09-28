@@ -96,7 +96,7 @@ namespace ProjectD_ChengetaWildlife.controllers {
 /////////////////////////////////////////////////////////////////////////////////////////////
         [Route("api/mail/update")]
         [HttpPost]
-		public void Update() { //void maken na test
+		public void Update() { 
 			string Email = HttpContext.Request.Form["Email"];
 
             Database db = new Database();
@@ -107,10 +107,10 @@ namespace ProjectD_ChengetaWildlife.controllers {
 	
 			db.Close();        
 		}
-/////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////
 		[Route("api/mail/del")]
         [HttpPost]
-		public void Del() { //void maken na test
+		public void Del() { 
 			
 			string Email = HttpContext.Request.Form["Email"];
 
