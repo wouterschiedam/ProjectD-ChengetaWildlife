@@ -19,14 +19,14 @@ namespace ProjectD_ChengetaWildlife.controllers {
         {
             string message = HttpContext.Request.Form["message"];
             Database db = new();
-            string accountSid = Environment.GetEnvironmentVariable("TWILIO_ACCOUNT_SID");
-            string authToken = Environment.GetEnvironmentVariable("TWILIO_AUTH_TOKEN");
+            string accountSid = Environment.GetEnvironmentVariable("AC6c92e0d7f8b568c6f45d51c56aaf6df9");
+            string authToken = Environment.GetEnvironmentVariable("b0b7ebac2bddc9f6fb19a9ed5780e7a8");
 
             TwilioClient.Init(accountSid, authToken);
 
             var message = MessageResource.Create(
                 body: "New event occured!",
-                from: new Twilio.Types.PhoneNumber("+31636283411"),
+                from: new Twilio.Types.PhoneNumber("+19706506540"),
                 
                 try
                 {
