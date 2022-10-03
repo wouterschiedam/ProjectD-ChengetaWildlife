@@ -9,21 +9,47 @@ namespace ProjectD_ChengetaWildlife.controllers {
 
     
     [ApiController]
-    public class MailService : ControllerBase
+    public class SMSService : ControllerBase
     {
 
         
-        [Route("api/mail/send/")]
+        [Route("api/sms/send")]
         [HttpPost]
-         public void SendEmail()
+         public void SendSMS()
         {
             string message = HttpContext.Request.Form["message"];
-             var queryVar = ""; 
-            Console.WriteLine(message);
             Database db = new();
-            string email = "go73191@outlook.com";
-            string password = "welkom123!?";
+            string accountSid = Environment.GetEnvironmentVariable("AC6c92e0d7f8b568c6f45d51c56aaf6df9");
+            string authToken = Environment.GetEnvironmentVariable("b0b7ebac2bddc9f6fb19a9ed5780e7a8");
 
+            TwilioClient.Init(accountSid, authToken);
+
+            var message = MessageResource.Create(
+                body: "New event occured!",
+                from: new Twilio.Types.PhoneNumber("+19706506540"),
+                
+                try
+                {
+                    DataTable notif = db.BuildQuery($"select * from admins WHERE notifSMS = true").Select();
+                    foreach (DataRow row in notif.Rows){
+                        to: new Twilio.Types.PhoneNumber(row["PhoneNumber"].ToString())
+                        //smtp.Send(msg);
+                    }
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message.ToString());
+                }
+                finally
+                {
+                    db.Dispose();
+                }
+                
+        );
+        				
+				}	
+
+        Console.WriteLine(message.Sid);
             var msg = new MimeMessage();
             msg.From.Add(new MailboxAddress("noreply", email));
 
@@ -65,13 +91,12 @@ namespace ProjectD_ChengetaWildlife.controllers {
             {
                 smtp.Disconnect(true);
                 smtp.Dispose();
-                db.Dispose();
             }
         }
 /////////////////////////////////////////////////////////////////////////////////////////////
         [Route("api/mail/update")]
         [HttpPost]
-		public void Update() { //void maken na test
+		public void Update() { 
 			string Email = HttpContext.Request.Form["Email"];
 
             Database db = new Database();
@@ -82,10 +107,10 @@ namespace ProjectD_ChengetaWildlife.controllers {
 	
 			db.Close();        
 		}
-/////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////
 		[Route("api/mail/del")]
         [HttpPost]
-		public void Del() { //void maken na test
+		public void Del() { 
 			
 			string Email = HttpContext.Request.Form["Email"];
 
