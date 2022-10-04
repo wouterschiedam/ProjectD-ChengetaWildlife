@@ -109,12 +109,14 @@ export default {
       } else {
         return true;
       }
+      ////// validateNumber()
     },
     async sendToServer() {
       if (this.nameCheck() && this.passwordCheck() && this.validateEmail() && this.isSuperUser()) {
         var bodyFormData = new FormData();
         bodyFormData.append("Name", document.getElementById("name").value);
         bodyFormData.append("Email", document.getElementById("email").value);
+        bodyFormData.append("Telefoonnumer", document.getElementById("phonenumber").value);
         bodyFormData.append("Superuser", this.issuperUser);
         bodyFormData.append("Password", document.getElementById("password").value);
         bodyFormData.append("oauth", localStorage.getItem("token"));

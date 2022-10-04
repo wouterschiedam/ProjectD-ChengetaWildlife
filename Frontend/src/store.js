@@ -7,8 +7,10 @@ export default new Vuex.Store({
         authenticated: false,
         superUser: false,
         email: "",
+        phonenumber: "",
         sounds: [],
         listMail: [],
+        listNumber: [],
         pid: []
     },
     mutations: {
@@ -17,6 +19,9 @@ export default new Vuex.Store({
         },
         setEmail(state, status) {
             state.email = status;
+        },
+        setNumber(state, status) {
+            state.phonenumber = status;
         },
         setsuperUser(state, status){
             state.superUser = status

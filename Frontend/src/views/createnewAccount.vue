@@ -14,6 +14,7 @@
       <div class="login-container2">
         <input type="text" placeholder="Voornaam" id="Naam" class="login-textinput input" />
         <input type="text" placeholder="Email" id="Email" class="login-textinput input" />
+        <input type="text" placeholder="Telefoon Nummer" id="PhoneNumber" class="login-textinput input" />
         <input type="text" placeholder="Wachtwoord" id="wachtwoord" class="login-textinput input" />
         <input type="text" placeholder="Wachtwoord herhalen" id="wachtwoord2" class="login-textinput input" />
         <a class="h3-error">{{ errormessage }}</a>
@@ -82,6 +83,7 @@ export default {
         var bodyFormData = new FormData();
         bodyFormData.append("Name", document.getElementById("Naam").value);
         bodyFormData.append("Email", document.getElementById("Email").value);
+        bodyFormData.append("PhoneNumber", document.getElementById("PhoneNumber").value);
         bodyFormData.append("Password", document.getElementById("wachtwoord").value);
         bodyFormData.append("Superuser", this.isSuperUser);
         bodyFormData.append("oauth", VueCookieNext.getCookie("token"));
