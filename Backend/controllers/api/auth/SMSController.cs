@@ -5,6 +5,8 @@ using System;
 using System.Data;
 using Newtonsoft.Json;
 using System.Text.Json;
+using Twilio;
+using Twilio.Rest.Api.V2010.Account;
 namespace ProjectD_ChengetaWildlife.controllers {
 
     
@@ -23,8 +25,23 @@ namespace ProjectD_ChengetaWildlife.controllers {
             string authToken = Environment.GetEnvironmentVariable("b0b7ebac2bddc9f6fb19a9ed5780e7a8");
 
             TwilioClient.Init(accountSid, authToken);
+            var msg = new MimeMessage();
+            msg.From.Add(new SMSAddress("noreply", PhoneNumber));
+            string str = message.Substring(0,5).ToLower();
+            if (str != "last"){
+               msg.Subject = "New event occured!";
+               queryVar = "notif";                
+            } 
+            else{
+                msg.Subject = "Weekly report!";
+                queryVar = "superuser"; 
+            } 
 
-            var message = MessageResource.Create(
+            msg.Body = new TextPart("plain")
+            {
+                Text = $"{message}"
+            };
+            var Message = MessageResource.Create(
                 body: "New event occured!",
                 from: new Twilio.Types.PhoneNumber("+19706506540"),
                 
@@ -33,7 +50,7 @@ namespace ProjectD_ChengetaWildlife.controllers {
                     DataTable notif = db.BuildQuery($"select * from admins WHERE notifSMS = true").Select();
                     foreach (DataRow row in notif.Rows){
                         to: new Twilio.Types.PhoneNumber(row["PhoneNumber"].ToString())
-                        //smtp.Send(msg);
+                        smtp.Send(msg);
                     }
                 }
                 catch (Exception e)
@@ -49,24 +66,7 @@ namespace ProjectD_ChengetaWildlife.controllers {
         				
 				}	
 
-        Console.WriteLine(message.Sid);
-            var msg = new MimeMessage();
-            msg.From.Add(new MailboxAddress("noreply", email));
-
-            string str = message.Substring(0,5).ToLower();
-            if (str != "last"){
-               msg.Subject = "New event occured!";
-               queryVar = "notif";                
-            } 
-            else{
-                msg.Subject = "Weekly report!";
-                queryVar = "superuser"; 
-            } 
-
-            msg.Body = new TextPart("plain")
-            {
-                Text = $"{message}"
-            };
+            
 
             SmtpClient smtp = new SmtpClient();
 
@@ -77,7 +77,7 @@ namespace ProjectD_ChengetaWildlife.controllers {
 
                 DataTable notif = db.BuildQuery($"select * from admins WHERE {queryVar} = true").Select();
 				foreach (DataRow row in notif.Rows){
-					msg.To.Add(MailboxAddress.Parse(row["email"].ToString()));
+					msg.To.Add(MailboxAddress.Parse(row["phone"].ToString()));
                     smtp.Send(msg);
 				}					
                 

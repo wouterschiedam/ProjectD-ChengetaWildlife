@@ -76,5 +76,17 @@ export default new Router({
               }
           },
         },
+        {
+            name: "phoneConfig",
+            path: "/phoneConfig",
+            component: phoneConfig,
+            beforeEnter: (to, from, next) => {
+              if (store.state.authenticated) {
+                  next();
+              } else {
+                  next({name: "Log in"});
+              }
+          },
+        }
     ],
 });

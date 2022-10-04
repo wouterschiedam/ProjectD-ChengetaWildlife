@@ -26,6 +26,7 @@ namespace ProjectD_ChengetaWildlife.controllers {
 
 			string Name = HttpContext.Request.Form["Name"];
 			string Email = HttpContext.Request.Form["Email"];
+			string PhoneNumber = HttpContext.Request.Form["PhoneNumber"];
             string Password = HttpContext.Request.Form["Password"];
 			string oauth = HttpContext.Request.Form["oauth"].ToString();
 			bool newsuperUser = bool.Parse(HttpContext.Request.Form["Superuser"].ToString());
@@ -68,10 +69,11 @@ namespace ProjectD_ChengetaWildlife.controllers {
             //Query to insert the new users information into the database
 			if(superUser){
 				DataTable data = database.BuildQuery($"SELECT (id) FROM admins").Select();
-				database.BuildQuery($"INSERT INTO admins (id, name, email, password, twofa, salt, superuser, loggedin, notif) VALUES (@id, @name, @email, @password, @twofa, @salt, @superuser, @loggedin, @notif)")
+				database.BuildQuery($"INSERT INTO admins (id, name, email, phonenumber, password, twofa, salt, superuser, loggedin, notif) VALUES (@id, @name, @email, @password, @twofa, @salt, @superuser, @loggedin, @notif)")
 					.AddParameter("id", (data.Rows.Count + 1))
 					.AddParameter("name", Name)
 					.AddParameter("email", Email)
+					.AddParameter("phonenumber", PhoneNumber)
 					.AddParameter("twofa", false)
 					.AddParameter("superuser", newsuperUser)
 					.AddParameter("password", hash)

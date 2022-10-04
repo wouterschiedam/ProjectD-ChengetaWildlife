@@ -25,7 +25,7 @@ namespace ProjectD_ChengetaWildlife.controllers.api
 			return data.Rows.Count == 1;
 		}
 
-		public bool CreateUser(string Name = null, string Email = null, string Password = null, string oauth = null, bool newsuperUser = false, bool superUser = false)
+		public bool CreateUser(string Name = null, string Email = null, string PhoneNumber = null, string Password = null, string oauth = null, bool newsuperUser = false, bool superUser = false)
 		{
 			// Get a value called email & password from the Request 
 
@@ -67,10 +67,11 @@ namespace ProjectD_ChengetaWildlife.controllers.api
 			if (superUser)
 			{
 				DataTable data = database.BuildQuery($"SELECT (id) FROM admins").Select();
-				database.BuildQuery($"INSERT INTO admins (id name, email, password, twofa, salt, superuser, loggedin) VALUES (@id, @name, @email, @password, @twofa, @salt, @superuser)")
+				database.BuildQuery($"INSERT INTO admins (id name, email, phonenumber, password, twofa, salt, superuser, loggedin) VALUES (@id, @name, @email, @password, @twofa, @salt, @superuser)")
 					.AddParameter("id", (data.Rows.Count + 1))
 					.AddParameter("name", Name)
 					.AddParameter("email", Email)
+					.AddParameter("phonenumber", PhoneNumber)
 					.AddParameter("twofa", false)
 					.AddParameter("superuser", newsuperUser)
 					.AddParameter("password", hash)
