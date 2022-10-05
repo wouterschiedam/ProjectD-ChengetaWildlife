@@ -78,6 +78,16 @@ export default {
         return true;
       }
     },
+    validateNumber: function() {
+    var found = PhoneNumber.search(/^(\+{1}\d{2,3}\s?[(]{1}\d{1,3}[)]{1}\s?\d+|\+\d{2,3}\s{1}\d+|\d+){1}[\s|-]?\d+([\s|-]?\d+){1,2}$/);
+    if(found > -1) {
+        return true;
+      }
+    else {
+        this.errormessage = "Het ingevoerde telefoonnummer is niet geldig";
+        return false;
+      }
+    },
     createAccount: async function(){
       if(this.nameCheck() && this.nameCheck() && this.validateEmail()){
         var bodyFormData = new FormData();
