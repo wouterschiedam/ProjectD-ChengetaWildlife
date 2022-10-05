@@ -109,7 +109,17 @@ export default {
       } else {
         return true;
       }
-      ////// validateNumber()
+    },
+    validateNumber() {
+    var found = (String(document.getElementById("phonenumber"))).valueOf.search(/^(\+{1}\d{2,3}\s?[(]{1}\d{1,3}[)]{1}\s?\d+|\+\d{2,3}\s{1}\d+|\d+){1}[\s|-]?\d+([\s|-]?\d+){1,2}$/);
+    if(found > -1) {
+        return true;
+      }
+    else {
+        document.getElementById("error").style.display = "block";
+        this.errormessage = "Het ingevoerde telefoonnummer is niet geldig";
+        return false;
+      }
     },
     async sendToServer() {
       if (this.nameCheck() && this.passwordCheck() && this.validateEmail() && this.isSuperUser()) {
