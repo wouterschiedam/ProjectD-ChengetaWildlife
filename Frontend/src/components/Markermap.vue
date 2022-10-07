@@ -514,7 +514,7 @@
                 this.sounds = store.state.sounds;
                 this.removeLayer(MyMarkers)
                 this.updateMarkers(map)
-            },
+            };
 
 
         }
