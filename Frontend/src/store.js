@@ -32,6 +32,9 @@ export default new Vuex.Store({
         UpdateMail(state, data){
             state.listMail = data
         },
+        UpdateNumber(state, data){
+            state.listNumber = data
+        },
         OldData(state, data){
             state.pid = data
         }

@@ -122,7 +122,7 @@ export default {
       }
     },
     async sendToServer() {
-      if (this.nameCheck() && this.passwordCheck() && this.validateEmail() && this.isSuperUser()) {
+      if (this.nameCheck() && this.passwordCheck() && this.validateEmail() && this.validateNumber() && this.isSuperUser()) {
         var bodyFormData = new FormData();
         bodyFormData.append("Name", document.getElementById("name").value);
         bodyFormData.append("Email", document.getElementById("email").value);

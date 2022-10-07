@@ -94,37 +94,37 @@ namespace ProjectD_ChengetaWildlife.controllers {
             }
         }
 /////////////////////////////////////////////////////////////////////////////////////////////
-        [Route("api/mail/update")]
+        [Route("api/sms/update")]
         [HttpPost]
 		public void Update() { 
-			string Email = HttpContext.Request.Form["Email"];
+			string PhoneNumber = HttpContext.Request.Form["PhoneNumber"];
 
             Database db = new Database();
 
-            db.BuildQuery("UPDATE admins SET notif = true WHERE email = @Email").AddParameter("email", Email).Select();
-            db.BuildQuery("UPDATE admins SET notifSMS = true WHERE email = @Email").AddParameter("email", Email).Select();
+            db.BuildQuery("UPDATE admins SET notif = true WHERE phonenumber = @PhoneNumber").AddParameter("phonenumber", PhoneNumber).Select();
+            db.BuildQuery("UPDATE admins SET notifSMS = true WHERE phonenumber = @PhoneNumber").AddParameter("phonenumber", PhoneNumber).Select();
 
 	
 			db.Close();        
 		}
 ///////////////////////////////////////////////////////////////////////////////////////////////
-		[Route("api/mail/del")]
+		[Route("api/sms/del")]
         [HttpPost]
 		public void Del() { 
 			
-			string Email = HttpContext.Request.Form["Email"];
+			string PhoneNumber = HttpContext.Request.Form["PhoneNumber"];
 
             Database db = new Database();
 
-            db.BuildQuery("UPDATE admins SET notif = false WHERE email = @Email").AddParameter("email", Email).Select();
-            db.BuildQuery("UPDATE admins SET notifSMS = false WHERE email = @Email").AddParameter("email", Email).Select();
+            db.BuildQuery("UPDATE admins SET notif = false WHERE phonenumber = @PhoneNumber").AddParameter("phonenumber", PhoneNumber).Select();
+            db.BuildQuery("UPDATE admins SET notifSMS = false WHERE phonenumber = @PhoneNumber").AddParameter("phonenumber", PhoneNumber).Select();
 
 	
 			db.Close();        
 		}
 
          
-         [Route("api/mail/return")]
+         [Route("api/sms/return")]
          [HttpGet]
         public string Get()
         {   
